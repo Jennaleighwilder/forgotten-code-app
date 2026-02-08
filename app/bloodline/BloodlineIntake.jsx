@@ -74,9 +74,9 @@ function FourSeasonsTree() {
   const tree=useMemo(()=>generateTree(777),[]);
   const season=SEASONS[si]; const isW=si===0;
   useEffect(()=>{const t=setInterval(()=>{setVis(0);setTimeout(()=>{setSi(s=>(s+1)%4);setVis(1)},900)},5500);return()=>clearInterval(t)},[]);
-  const canopyLeaves=useMemo(()=>{if(!season.leafColors)return[];const rng=sRng(si*1000+42);const lv=[];
+  const canopyLeaves=useMemo(()=>{if(!season.leafColors)return[];const rng=sRng(si*1000+42);const lv=[];const centerX=250;
     const spots = tree.leafSpots.slice(0, 80);
-    spots.forEach((s,idx)=>{const c=1+Math.floor(rng()*2);for(let j=0;j<c;j++)lv.push({cx:s.x+(rng()-0.5)*22,cy:s.y+(rng()-0.5)*18,r:si===1?2+rng()*5:3+rng()*7,color:season.leafColors[(idx+j)%season.leafColors.length],opacity:0.45+rng()*0.35,delay:rng()*0.6})});return lv},[si,tree.leafSpots]);
+    spots.forEach((s,idx)=>{const c=1+Math.floor(rng()*2);for(let j=0;j<c;j++){const jx=(rng()-0.5)*22,jy=(rng()-0.5)*18;const cx=s.x+jx,cy=s.y+jy;lv.push({cx,cy,r:si===1?2+rng()*5:3+rng()*7,color:season.leafColors[(idx+j)%season.leafColors.length],opacity:0.45+rng()*0.35,delay:rng()*0.6});lv.push({cx:centerX*2-cx,cy,r:si===1?2+rng()*5:3+rng()*7,color:season.leafColors[(idx+j)%season.leafColors.length],opacity:0.45+rng()*0.35,delay:rng()*0.6})}});return lv},[si,tree.leafSpots]);
   const particles=useMemo(()=>{const p=[];
     if(si===0){for(let i=0;i<40;i++)p.push({type:"snow",x:5+Math.random()*90,delay:Math.random()*6,dur:3+Math.random()*4,size:1+Math.random()*2.5,color:"#c8d8e8",drift:`${-15+Math.random()*30}px`,fall:`${350+Math.random()*150}px`})}
     else if(si===1){for(let i=0;i<30;i++)p.push({type:"petal",x:15+Math.random()*70,delay:Math.random()*5,dur:4+Math.random()*5,size:3+Math.random()*5,color:season.pColors[i%season.pColors.length],drift:`${-30+Math.random()*60}px`,fall:`${350+Math.random()*150}px`})}
@@ -223,7 +223,7 @@ export default function BloodlineIntake() {
         background:"linear-gradient(90deg,#d4c4a0 0%,#f0e0c0 20%,#ffffff 35%,#f5ddb5 50%,#d4c4a0 65%,#c8a870 80%,#d4c4a0 100%)",backgroundSize:"200% 100%",
         WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text",animation:"titleShimmer 6s ease-in-out infinite",
         filter:"drop-shadow(0 2px 12px #8b1a1a33) drop-shadow(0 0 40px #8b1a1a18)"}}>BLOODLINE</h1>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.2rem,3.5vw,1.65rem)",color:"#c8b89a",fontStyle:"italic",marginTop:12,letterSpacing:"0.04em",animation:"subtitlePulse 5s ease-in-out infinite"}}>Ancestral Heritage Dossier</p>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.2rem,3.5vw,1.65rem)",color:"#c8b89a",marginTop:12,letterSpacing:"0.04em",animation:"subtitlePulse 5s ease-in-out infinite"}}>Ancestral Heritage Dossier</p>
       <div style={{fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:"0.4em",color:`${R.blood}22`,marginTop:20}}>MINI PREVIEW + FULL DEEP INTAKE</div>
       <Divider/>
       <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.05rem,2.5vw,1.18rem)",color:`${T.bone}40`,lineHeight:2,maxWidth:480,fontStyle:"italic"}}>
