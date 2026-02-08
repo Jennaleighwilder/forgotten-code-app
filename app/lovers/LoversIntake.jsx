@@ -11,78 +11,20 @@ import { useState, useEffect, useRef, useCallback } from "react";
 const P = { hot:"#ff2d7b", neon:"#ff69b4", mag:"#ff1493", blush:"#ffb6c1", pale:"#ffd6e7", white:"#fff0f5", electric:"#ff0080", blue:"#00d4ff", violet:"#bf5fff" };
 const D = { black:"#0a0a0f", charcoal:"#141418", slate:"#1a1a22" };
 
-// ═══ HEART RAIN — Canvas-based falling neon hearts ═══
-function HeartRain({ intensity = 1 }) {
-  const canvasRef = useRef(null);
-  const heartsRef = useRef([]);
-  const animRef = useRef(null);
-  const mouseRef = useRef({ x: -1, y: -1 });
-
-  const makeHeart = useCallback((w, h, fromTop) => {
-    const sz = Math.random() * 18 + 5;
-    const cols = [P.hot, P.neon, P.mag, P.electric, P.violet, P.blue];
-    return { x: Math.random() * w, y: fromTop ? -sz - Math.random() * 80 : Math.random() * h,
-      sz, col: cols[Math.floor(Math.random() * cols.length)],
-      speed: Math.random() * 1 + 0.25, drift: (Math.random() - 0.5) * 0.3,
-      wob: Math.random() * Math.PI * 2, wobSpd: Math.random() * 0.02 + 0.005,
-      opa: Math.random() * 0.35 + 0.04, fadeDir: Math.random() > 0.5 ? 1 : -1,
-      fadeSp: Math.random() * 0.003 + 0.001, rot: Math.random() * Math.PI * 2,
-      rotSp: (Math.random() - 0.5) * 0.012, glow: Math.random() * 8 + 2,
-      pulse: Math.random() * Math.PI * 2 };
-  }, []);
-
-  useEffect(() => {
-    const c = canvasRef.current; if (!c) return;
-    const ctx = c.getContext("2d");
-    const resize = () => { c.width = window.innerWidth; c.height = window.innerHeight; };
-    resize(); window.addEventListener("resize", resize);
-    const count = Math.floor(30 * intensity);
-    heartsRef.current = Array.from({ length: count }, () => makeHeart(c.width, c.height, false));
-
-    const drawH = (ctx, x, y, sz, rot) => {
-      ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
-      const s = sz / 30;
-      ctx.moveTo(0, -5*s);
-      ctx.bezierCurveTo(-7*s,-15*s,-15*s,-8*s,-15*s,0);
-      ctx.bezierCurveTo(-15*s,10*s,0,17*s,0,22*s);
-      ctx.bezierCurveTo(0,17*s,15*s,10*s,15*s,0);
-      ctx.bezierCurveTo(15*s,-8*s,7*s,-15*s,0,-5*s);
-      ctx.closePath(); ctx.restore();
-    };
-
-    const loop = () => {
-      ctx.clearRect(0, 0, c.width, c.height);
-      heartsRef.current.forEach(h => {
-        h.wob += h.wobSpd; h.y += h.speed; h.x += h.drift + Math.sin(h.wob) * 0.3;
-        h.rot += h.rotSp; h.pulse += 0.02;
-        h.opa += h.fadeSp * h.fadeDir;
-        if (h.opa > 0.45) h.fadeDir = -1;
-        if (h.opa < 0.03) h.fadeDir = 1;
-        h.opa = Math.max(0.02, Math.min(0.45, h.opa));
-        const mx = mouseRef.current.x, my = mouseRef.current.y;
-        if (mx > 0) { const dx = h.x-mx, dy = h.y-my, dist = Math.sqrt(dx*dx+dy*dy);
-          if (dist < 100) { const f = (100-dist)/100*0.7; h.x += (dx/dist)*f; h.y += (dy/dist)*f*0.3; h.opa = Math.min(h.opa+0.04, 0.55); }
-        }
-        if (h.y > c.height + 30) Object.assign(h, makeHeart(c.width, c.height, true));
-        if (h.x < -30) h.x = c.width + 20; if (h.x > c.width + 30) h.x = -20;
-        const pg = h.glow + Math.sin(h.pulse)*3;
-        ctx.save(); ctx.globalAlpha = h.opa; ctx.shadowColor = h.col; ctx.shadowBlur = pg;
-        ctx.fillStyle = h.col; drawH(ctx, h.x, h.y, h.sz, h.rot); ctx.fill();
-        ctx.globalAlpha = h.opa * 0.4; ctx.shadowBlur = pg*1.5; ctx.lineWidth = 0.5;
-        ctx.strokeStyle = h.col; drawH(ctx, h.x, h.y, h.sz*0.6, h.rot); ctx.stroke();
-        ctx.restore();
-      });
-      animRef.current = requestAnimationFrame(loop);
-    };
-    loop();
-    const onM = e => { mouseRef.current = { x: e.clientX, y: e.clientY }; };
-    const onL = () => { mouseRef.current = { x: -1, y: -1 }; };
-    window.addEventListener("mousemove", onM); window.addEventListener("mouseleave", onL);
-    return () => { cancelAnimationFrame(animRef.current); window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", onM); window.removeEventListener("mouseleave", onL); };
-  }, [intensity, makeHeart]);
-
-  return <canvas ref={canvasRef} style={{ position: "fixed", inset: 0, zIndex: 1, pointerEvents: "none" }} />;
+// ═══ DUST EMBERS — Small, sharp particles (embers / dust in light), moody, minimal ═══
+function DustEmbers() {
+  const particles = Array.from({ length: 14 }, (_, i) => ({
+    left: Math.random() * 100, delay: Math.random() * 12, dur: 14 + Math.random() * 10,
+    size: 0.8 + Math.random() * 1.2, opa: 0.06 + Math.random() * 0.1,
+    color: [P.hot, P.neon, P.mag, "#d4a030", P.blush][i % 5],
+  }));
+  return <div style={{ position: "fixed", inset: 0, zIndex: 1, pointerEvents: "none", overflow: "hidden" }}>
+    {particles.map((p, i) => <div key={i} style={{
+      position: "absolute", left: `${p.left}%`, bottom: "-2%", width: p.size, height: p.size, borderRadius: "50%",
+      background: p.color, boxShadow: `0 0 ${p.size * 4}px ${p.color}40`,
+      opacity: p.opa, animation: `dustFloat ${p.dur}s linear ${p.delay}s infinite`,
+    }} />)}
+  </div>;
 }
 
 // ═══ MCQ DATA — 24 Pattern Questions ═══
@@ -247,36 +189,42 @@ const CSS = `
 html,body{overflow-x:hidden}
 textarea:focus,input:focus{outline:none}
 ::selection{background:#ff2d7b33;color:#fff0f5}
-@keyframes neonFlicker{0%,19%,21%,23%,25%,54%,56%,100%{text-shadow:0 0 7px #ff2d7b88,0 0 20px #ff2d7b55,0 0 42px #ff2d7b33,0 0 82px #ff2d7b22;opacity:1}20%,24%,55%{text-shadow:none;opacity:0.85}}
-@keyframes neonBorderPulse{0%,100%{border-color:#ff2d7b44;box-shadow:0 0 8px #ff2d7b22}50%{border-color:#ff2d7b88;box-shadow:0 0 20px #ff2d7b44,0 0 40px #ff2d7b15}}
+@keyframes neonFlicker{0%,92%,94%,96%,100%{opacity:1;filter:brightness(1)}93%,95%{opacity:0.92;filter:brightness(0.97)}}
+@keyframes neonBorderPulse{0%,100%{border-color:rgba(255,45,123,0.35);box-shadow:0 0 8px rgba(255,45,123,0.15)}50%{border-color:rgba(255,45,123,0.6);box-shadow:0 0 18px rgba(255,45,123,0.25)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
-@keyframes glowPulse{0%,100%{filter:drop-shadow(0 0 8px #ff2d7b44)}50%{filter:drop-shadow(0 0 25px #ff2d7baa)}}
-@keyframes heartBeat{0%,40%,100%{transform:scale(1)}10%{transform:scale(1.1)}20%{transform:scale(1)}30%{transform:scale(1.06)}}
-@keyframes titleGlow{0%,100%{text-shadow:0 0 20px #ff2d7b55,0 0 60px #ff2d7b22}50%{text-shadow:0 0 40px #ff2d7b88,0 0 80px #ff2d7b44,0 0 120px #ff2d7b22}}
+@keyframes btnSweep{0%{transform:translateX(-100%) skewX(-12deg)}100%{transform:translateX(200%) skewX(-12deg)}}
+@keyframes dustFloat{0%{transform:translateY(0) translateX(0);opacity:0}8%{opacity:0.15}92%{opacity:0.08}100%{transform:translateY(-100vh) translateX(15px);opacity:0}}
 `;
 
-// ═══ NEON HEART SVG ═══
+// ═══ REAL NEON HEART — White-hot core, pink bleed, tube highlight, subtle flicker ═══
 function NeonHeart({ size = 80 }) {
-  return <div style={{ width: size, height: size, animation: "glowPulse 2s ease-in-out infinite, heartBeat 1.5s ease-in-out infinite", lineHeight: 0, margin: "0 auto" }}>
+  return <div style={{ width: size, height: size, animation: "neonFlicker 8s ease-in-out infinite", lineHeight: 0, margin: "0 auto" }}>
     <svg viewBox="0 0 60 60" width="100%" height="100%">
-      <defs><filter id="ng"><feGaussianBlur stdDeviation="2.5" result="b"/><feComposite in="SourceGraphic" in2="b" operator="over"/></filter>
-      <filter id="ng2"><feGaussianBlur stdDeviation="5" result="b"/><feComposite in="SourceGraphic" in2="b" operator="over"/></filter></defs>
-      <g fill="none" stroke={P.hot} strokeWidth="1" opacity="0.25" filter="url(#ng2)"><path d="M30 50 L10 28 A11 11 0 0 1 30 18 A11 11 0 0 1 50 28Z"/></g>
-      <g fill="none" stroke={P.hot} strokeWidth="2" filter="url(#ng)"><path d="M30 50 L10 28 A11 11 0 0 1 30 18 A11 11 0 0 1 50 28Z"/></g>
-      <g fill="none" stroke={P.neon} strokeWidth="1" opacity="0.4"><path d="M30 44 L16 30 A8 8 0 0 1 30 22 A8 8 0 0 1 44 30Z"/></g>
+      <defs>
+        <filter id="ngGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="ngOuter"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <path d="M30 50 L10 28 A11 11 0 0 1 30 18 A11 11 0 0 1 50 28Z" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="4" filter="url(#ngOuter)"/>
+      <path d="M30 50 L10 28 A11 11 0 0 1 30 18 A11 11 0 0 1 50 28Z" fill="none" stroke={P.hot} strokeWidth="2.5" filter="url(#ngGlow)" opacity="0.9"/>
+      <path d="M30 44 L16 30 A8 8 0 0 1 30 22 A8 8 0 0 1 44 30Z" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="0.8" opacity="0.95"/>
+      <path d="M30 50 L10 28 A11 11 0 0 1 30 18 A11 11 0 0 1 50 28Z" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="0.6" strokeLinecap="round" opacity="0.8"/>
     </svg>
   </div>;
 }
 
-// ═══ SHARED UI ═══
+function FilmGrain() {
+  const svg = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"><filter id="gf"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(%23gf)"/></svg>');
+  return <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 2, backgroundImage: `url("${svg}")`, backgroundRepeat: "repeat", opacity: 0.04 }} />;
+}
+
 function Shell({ children, step }) {
   const [show, setShow] = useState(false);
   useEffect(() => { setShow(false); setTimeout(() => setShow(true), 100) }, [step]);
   return <div style={{ minHeight: "100vh", padding: "50px 24px 100px", background: D.black, position: "relative" }}>
     <style>{CSS}</style>
-    <HeartRain intensity={0.8} />
-    <div style={{ position: "fixed", inset: 0, pointerEvents: "none", background: `radial-gradient(ellipse at 30% 60%,${P.hot}08,transparent 55%),radial-gradient(ellipse at 70% 20%,${P.violet}06,transparent 50%)`, zIndex: 2 }} />
+    <FilmGrain />
+    <DustEmbers />
+    <div style={{ position: "fixed", inset: 0, pointerEvents: "none", background: `radial-gradient(ellipse at 30% 60%,${P.hot}06,transparent 55%),radial-gradient(ellipse at 70% 20%,${P.violet}05,transparent 50%)`, zIndex: 3 }} />
     <div style={{ position: "relative", zIndex: 10, maxWidth: 640, margin: "0 auto", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(25px)", transition: "all 0.7s ease" }}>{children}</div>
   </div>;
 }
@@ -297,7 +245,7 @@ function Header({ title, sub, progress }) {
     </div>}
     <NeonHeart size={55} />
     <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.8rem,6vw,2.8rem)", color: P.hot, letterSpacing: "0.15em", marginTop: 8, textShadow: `0 0 15px ${P.hot}44` }}>{title}</div>
-    <div style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(0.95rem,2.5vw,1.15rem)", color: `${P.blush}55`, fontStyle: "italic", marginTop: 8 }}>{sub}</div>
+    <div style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(0.95rem,2.5vw,1.15rem)", color: "#C4B59A", fontStyle: "italic", marginTop: 8 }}>{sub}</div>
     <Divider />
   </div>;
 }
@@ -316,15 +264,18 @@ function TI({ label, hint, value, onChange, placeholder, multi, rows }) {
 }
 
 function Btn({ label, onClick, disabled, primary, full }) {
-  return <div onClick={() => !disabled && onClick()}
-    style={{ display: full ? "block" : "inline-block", padding: primary ? "18px 50px" : "14px 35px",
-      border: `${primary ? 2 : 1}px solid ${disabled ? P.blush + "08" : primary ? P.hot + "55" : P.blush + "22"}`,
+  const [hover, setHover] = useState(false);
+  return <div onClick={() => !disabled && onClick()} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+    style={{ position: "relative", overflow: "hidden", display: full ? "block" : "inline-block", padding: primary ? "18px 50px" : "14px 35px",
+      border: `1px solid ${disabled ? P.blush + "08" : primary ? P.hot + "55" : P.blush + "22"}`,
       cursor: disabled ? "default" : "pointer", textAlign: "center",
       fontFamily: "'Bebas Neue',sans-serif", fontSize: primary ? 18 : 14, letterSpacing: "0.15em",
-      color: disabled ? `${P.blush}15` : primary ? P.pale : `${P.blush}77`, transition: "all 0.3s", borderRadius: 2,
+      color: disabled ? `${P.blush}15` : primary ? P.pale : `${P.blush}77`, transition: "border-color 0.3s, box-shadow 0.3s", borderRadius: 2,
       background: primary && !disabled ? `${P.hot}22` : "transparent",
       animation: primary && !disabled ? "neonBorderPulse 3s ease-in-out infinite" : "none", opacity: disabled ? 0.3 : 1 }}>
-    {label}</div>;
+    {hover && !disabled && <div style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, transparent 0%, transparent 40%, rgba(255,248,240,0.08) 50%, transparent 60%, transparent 100%)", animation: "btnSweep 0.5s ease-out forwards", pointerEvents: "none" }} />}
+    <span style={{ position: "relative", zIndex: 1 }}>{label}</span>
+  </div>;
 }
 
 const ACCESS_CODE = "LOVERS2026";
@@ -350,18 +301,18 @@ export default function LoversIntake() {
     <div style={{ minHeight: "90vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
       <NeonHeart size={100} />
       <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(3.5rem,14vw,6.5rem)", letterSpacing: "0.12em", lineHeight: 0.95, marginTop: 20,
-        color: P.hot, animation: "titleGlow 4s ease-in-out infinite" }}>LOVERS<br/><span style={{ fontSize: "0.5em", letterSpacing: "0.3em", color: P.neon, opacity: 0.6 }}>LIARS &</span><br/>ALL THINGS<br/>PATTERNED</h1>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: `${P.blush}66`, fontStyle: "italic", marginTop: 18 }}>Mirror Protocol™ · DYAD Engine™</p>
-      <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 11, letterSpacing: "0.4em", color: `${P.hot}22`, marginTop: 20 }}>MINI PREVIEW + FULL DEEP INTAKE</div>
+        color: P.hot, textShadow: "0 0 4px rgba(255,255,255,0.9), 0 0 12px #ff2d7b, 0 0 28px #ff2d7b88, 0 0 48px #ff2d7b44, 0 0 80px #ff2d7b22", animation: "neonFlicker 8s ease-in-out infinite" }}>LOVERS<br/><span style={{ fontSize: "0.5em", letterSpacing: "0.3em", color: P.neon, opacity: 0.7 }}>LIARS &</span><br/>ALL THINGS<br/>PATTERNED</h1>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: "#C4B59A", fontStyle: "italic", marginTop: 18 }}>Mirror Protocol™ · DYAD Engine™</p>
+      <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 11, letterSpacing: "0.4em", color: "rgba(255,248,240,0.7)", marginTop: 20 }}>MINI PREVIEW + FULL DEEP INTAKE</div>
       <Divider />
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: `${P.blush}44`, lineHeight: 2, maxWidth: 480, fontStyle: "italic" }}>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: "rgba(255,248,240,0.85)", lineHeight: 2, maxWidth: 480, fontStyle: "italic" }}>
         Every relationship has a pattern. A code running underneath the surface that neither of you can see but both of you feel. Give us one whisper about love — and we'll show you the thread.</p>
-      <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: "clamp(0.82rem,1.6vw,0.88rem)", color: `${P.blush}18`, lineHeight: 1.9, maxWidth: 460, marginTop: 12 }}>
+      <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: "clamp(0.82rem,1.6vw,0.88rem)", color: "rgba(255,248,240,0.65)", lineHeight: 1.9, maxWidth: 460, marginTop: 12 }}>
         Jennifer personally maps 24 pattern categories and 5 DYAD depth questions. No AI generation. Your patterns deserve that.</p>
       <div style={{ marginTop: 40 }}><Btn label="BEGIN THE PATTERN MAP" onClick={() => go("mini1")} primary /></div>
       <div style={{ marginTop: 60, display: "flex", alignItems: "center", gap: 12 }}>
         <div style={{ width: 30, height: 1, background: `${P.hot}0c` }} />
-        <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: 9, color: `${P.blush}10`, letterSpacing: "0.2em" }}>The Forgotten Code Research Institute</p>
+        <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: 9, color: "rgba(255,248,240,0.65)", letterSpacing: "0.2em" }}>The Forgotten Code Research Institute</p>
         <div style={{ width: 30, height: 1, background: `${P.hot}0c` }} />
       </div>
     </div></Shell>;
@@ -379,11 +330,11 @@ export default function LoversIntake() {
     <div style={{ textAlign: "center" }}>
       <NeonHeart size={70} />
       <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: P.hot, marginTop: 15, letterSpacing: "0.1em", textShadow: `0 0 20px ${P.hot}33` }}>YOUR PATTERN GLIMPSE</h2>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${P.blush}55`, fontStyle: "italic", marginTop: 12, lineHeight: 1.9 }}>The patterns have noticed you.</p>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: "rgba(255,248,240,0.85)", fontStyle: "italic", marginTop: 12, lineHeight: 1.9 }}>The patterns have noticed you.</p>
       <Divider />
       <div style={{ background: `${D.slate}cc`, border: `1px solid ${P.hot}22`, padding: "30px 25px", borderRadius: 2, textAlign: "left", marginBottom: 30 }}>
-        <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 12, letterSpacing: "0.25em", color: `${P.blush}33`, marginBottom: 25, fontWeight: 700 }}>INITIAL TRACE</div>
-        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 16, color: `${P.blush}55`, lineHeight: 2, fontStyle: "italic", marginBottom: 20 }}>
+        <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 12, letterSpacing: "0.25em", color: "rgba(255,248,240,0.65)", marginBottom: 25, fontWeight: 700 }}>INITIAL TRACE</div>
+        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 16, color: "rgba(255,248,240,0.85)", lineHeight: 2, fontStyle: "italic", marginBottom: 20 }}>
           {d.name} — something in your love pattern is trying to be seen. The fact that you're here means a thread has been activated in your relational code.</p>
         {d.miniWhisper && d.miniWhisper.trim() && <div style={{ marginBottom: 22, padding: "18px 20px", borderLeft: `2px solid ${P.hot}44`, background: `${P.hot}08` }}>
           <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 10, letterSpacing: "0.2em", color: `${P.hot}55`, marginBottom: 8, fontWeight: 700 }}>YOUR WHISPER</div>
@@ -403,7 +354,7 @@ export default function LoversIntake() {
     <div style={{ textAlign: "center" }}>
       <NeonHeart size={70} />
       <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.8rem,5vw,2.5rem)", color: P.hot, marginTop: 15, letterSpacing: "0.1em" }}>UNLOCK THE FULL PATTERN MAP</h2>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: `${P.blush}44`, fontStyle: "italic", marginTop: 12, lineHeight: 2, maxWidth: 480, margin: "12px auto 0" }}>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: "rgba(255,248,240,0.85)", fontStyle: "italic", marginTop: 12, lineHeight: 2, maxWidth: 480, margin: "12px auto 0" }}>
         Your pattern glimpse revealed the surface. The full Lovers & Liars Dossier goes 24 categories deep — mapping attachment wounds, defense mechanisms, communication loops, trust architecture, and the hidden codes running your love life.</p>
       <Divider />
       <div style={{ background: `${D.slate}cc`, border: `1px solid ${P.hot}22`, padding: "30px 25px", borderRadius: 2, textAlign: "left", maxWidth: 460, margin: "0 auto 30px" }}>

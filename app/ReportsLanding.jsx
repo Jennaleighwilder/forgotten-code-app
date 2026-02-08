@@ -62,6 +62,9 @@ html,body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
 @keyframes breathe{0%,100%{opacity:0.3}50%{opacity:0.6}}
 @keyframes goldDie{0%{transform:scale(1) rotate(0);opacity:0.9}100%{transform:scale(0) rotate(140deg) translateY(-20px);opacity:0}}
 @keyframes goldBurst{0%{transform:scale(0);opacity:0.8}100%{transform:scale(1);opacity:0}}
+@keyframes flameFlicker{0%,100%{transform:scale(1) scaleY(1);opacity:1;filter:blur(0)}25%{transform:scale(1.08) scaleY(1.12);opacity:0.92;filter:blur(0.5px)}50%{transform:scale(0.96) scaleY(0.94);opacity:1;filter:blur(0)}75%{transform:scale(1.04) scaleY(1.06);opacity:0.97;filter:blur(0.2px)}}
+@keyframes flameBreathe{0%,100%{opacity:0.25;transform:scale(1)}50%{opacity:0.45;transform:scale(1.15)}}
+@keyframes btnSweep{0%{transform:translateX(-100%) skewX(-12deg)}100%{transform:translateX(200%) skewX(-12deg)}}
 ::selection{background:rgba(201,165,90,0.25);color:#faf8f2}
 `;
 
@@ -121,22 +124,43 @@ function GoldBurst({ active, onDone }) {
   </div>;
 }
 
-function Candle({ size = 1 }) {
+function FilmGrain() {
+  const svg = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(%23g)"/></svg>');
+  return <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 50, backgroundImage: `url("${svg}")`, backgroundRepeat: "repeat", opacity: 0.04 }} />;
+}
+
+function RealisticFlame({ size = 1 }) {
   return <div style={{ display: "flex", flexDirection: "column", alignItems: "center", transform: `scale(${size})` }}>
     <div style={{ position: "relative" }}>
-      <div style={{ width: 8, height: 28, borderRadius: "50% 50% 20% 20%",
-        background: "linear-gradient(to top, #c06000, #e89000, #ffd060, #fff8e8)",
-        boxShadow: "0 0 30px rgba(224,144,0,0.5), 0 0 60px rgba(192,96,0,0.25)",
-        animation: "candleFlicker 1.8s ease-in-out infinite" }} />
-      <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)",
-        width: 30, height: 30, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(224,160,60,0.12), transparent 70%)",
-        animation: "breathe 2.5s ease-in-out infinite" }} />
+      <div style={{ position: "absolute", top: -40, left: "50%", transform: "translateX(-50%)", width: 120, height: 120,
+        background: "radial-gradient(ellipse at center, rgba(255,200,100,0.15) 0%, transparent 60%)",
+        animation: "flameBreathe 3s ease-in-out infinite" }} />
+      <div style={{ position: "relative", width: 24, height: 56, margin: "0 auto" }}>
+        <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: 20, height: 48,
+          background: "radial-gradient(ellipse 60% 100% at 50% 100%, rgba(120,60,20,0.4), transparent 70%)",
+          animation: "flameFlicker 0.4s ease-in-out infinite" }} />
+        <div style={{ position: "absolute", bottom: 4, left: "50%", transform: "translateX(-50%)", width: 14, height: 38,
+          background: "radial-gradient(ellipse 70% 100% at 50% 100%, rgba(255,140,40,0.9), rgba(255,100,20,0.5) 40%, transparent 75%)",
+          animation: "flameFlicker 0.35s ease-in-out infinite 0.05s" }} />
+        <div style={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)", width: 8, height: 22,
+          background: "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(255,248,240,0.95), rgba(255,220,150,0.6) 50%, transparent 80%)",
+          animation: "flameFlicker 0.25s ease-in-out infinite 0.1s" }} />
+      </div>
     </div>
-    <div style={{ width: 2, height: 5, background: "#222", marginTop: -2 }} />
-    <div style={{ width: 14, height: 44, borderRadius: "2px 2px 4px 4px",
-      background: "linear-gradient(to right, #c8b890, #e8dcc4, #c8b890)", marginTop: -1,
-      boxShadow: "inset -2px 0 5px rgba(0,0,0,0.08)" }} />
+    <div style={{ width: 2, height: 6, background: "#0a0806", marginTop: -4 }} />
+    <div style={{ width: 12, height: 36, background: "linear-gradient(to right, #1a1510, #252018, #1a1510)", marginTop: -2, borderRadius: "0 0 1px 1px", boxShadow: "inset 0 0 20px rgba(0,0,0,0.5)" }} />
+  </div>;
+}
+
+function EnterButton() {
+  const [hover, setHover] = useState(false);
+  return <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+    style={{ position: "relative", overflow: "hidden", padding: "14px 50px", border: "1px solid rgba(180,140,80,0.7)", borderRadius: 2,
+      fontFamily: "'Cinzel', serif", fontSize: "clamp(0.9rem, 2vw, 1.05rem)", color: GOLD.warm,
+      letterSpacing: "0.2em", fontWeight: 600, transition: "border-color 0.3s, box-shadow 0.3s",
+      boxShadow: hover ? "0 0 20px rgba(180,140,80,0.25)" : "none" }}>
+    {hover && <div style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, transparent 0%, transparent 35%, rgba(255,248,240,0.12) 50%, transparent 65%, transparent 100%)", animation: "btnSweep 0.6s ease-out forwards", pointerEvents: "none" }} />}
+    <span style={{ position: "relative", zIndex: 1 }}>ENTER</span>
   </div>;
 }
 
@@ -152,7 +176,7 @@ export default function ReportsLanding() {
     setBurst(true);
   };
 
-  // ── INTRO: Candle + glitter dust + Enter → explode glitter then menu ──
+  // ── INTRO: Realistic flame + vault feel + Enter (gold border, light sweep on hover) ──
   if (!entered) {
     return (
       <>
@@ -162,27 +186,24 @@ export default function ReportsLanding() {
         alignItems: "center", justifyContent: "center", background: VOID.deep, cursor: "pointer", overflow: "hidden",
       }}>
         <style>{CSS}</style>
+        <FilmGrain />
         <GoldDustField />
-        <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 50% 40%, rgba(200,150,60,0.06), transparent 55%)`, pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 50% 38%, rgba(180,120,40,0.04), transparent 50%)`, pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 2, textAlign: "center", opacity: vis ? 1 : 0, transition: "opacity 1s" }}>
-          <div style={{ margin: "0 auto 36px", animation: "gentleBob 5s ease-in-out infinite" }}>
-            <Candle size={1.8} />
+          <div style={{ margin: "0 auto 40px" }}>
+            <RealisticFlame size={1.8} />
           </div>
           <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1.75rem, 5vw, 3rem)", fontWeight: 700,
-            color: TEXT.primary, letterSpacing: "0.14em", marginBottom: 14, textShadow: "0 0 30px rgba(201,165,90,0.2)" }}>
+            color: TEXT.primary, letterSpacing: "0.14em", marginBottom: 14, textShadow: "0 0 30px rgba(201,165,90,0.15)" }}>
             THE FORGOTTEN CODE
           </h1>
           <p style={{ fontFamily: "'Crimson Text', serif", fontSize: "clamp(1.05rem, 2.5vw, 1.3rem)",
             color: TEXT.secondary, letterSpacing: "0.05em", marginBottom: 40 }}>
             Research Institute
           </p>
-          <div style={{ padding: "14px 50px", border: `2px solid ${GOLD.warm}66`, borderRadius: 4,
-            fontFamily: "'Cinzel', serif", fontSize: "clamp(0.9rem, 2vw, 1.05rem)", color: GOLD.warm,
-            letterSpacing: "0.2em", fontWeight: 600 }}>
-            ENTER
-          </div>
+          <EnterButton />
         </div>
-        <p style={{ position: "absolute", bottom: 28, fontFamily: "'Inter', sans-serif", fontSize: 11, color: TEXT.muted, letterSpacing: "0.15em" }}>
+        <p style={{ position: "absolute", bottom: 28, fontFamily: "'Inter', sans-serif", fontSize: 11, color: "rgba(255,248,240,0.65)", letterSpacing: "0.15em" }}>
           Click to enter
         </p>
       </div>
@@ -197,10 +218,10 @@ export default function ReportsLanding() {
       <GoldDustField />
 
       <div style={{ position: "relative", zIndex: 10, maxWidth: 1120, margin: "0 auto" }}>
-        {/* Candle on top of menu */}
+        <FilmGrain />
         <div style={{ textAlign: "center", marginBottom: 48, opacity: vis ? 1 : 0, animation: vis ? "fadeIn 0.8s ease" : "none" }}>
-          <div style={{ margin: "0 auto 20px", animation: "gentleBob 5s ease-in-out infinite" }}>
-            <Candle size={1.4} />
+          <div style={{ margin: "0 auto 20px" }}>
+            <RealisticFlame size={1.4} />
           </div>
           <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1.5rem, 4vw, 2.5rem)", fontWeight: 700,
             color: TEXT.primary, letterSpacing: "0.12em", marginBottom: 8 }}>

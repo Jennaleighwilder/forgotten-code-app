@@ -48,6 +48,7 @@ textarea:focus,input:focus,select:focus{outline:none}
 @keyframes constellationPulse{0%,100%{opacity:0.3}50%{opacity:0.8}}
 @keyframes goldBorderPulse{0%,100%{border-color:#c9a84c22;box-shadow:0 0 8px #0d284711}50%{border-color:#c9a84c55;box-shadow:0 0 25px #2a9d8f11}}
 @keyframes inkBleed{from{width:0}to{width:100%}}
+@keyframes btnSweep{0%{transform:translateX(-100%) skewX(-12deg)}100%{transform:translateX(200%) skewX(-12deg)}}
 `;
 
 function Stars() {
@@ -249,17 +250,25 @@ function SelectInput({ label, value, onChange, options }) {
 }
 
 function NavButton({ label, onClick, disabled, primary }) {
-  return <div onClick={() => !disabled && onClick()}
-    style={{ display: "inline-block", padding: primary ? "16px 50px" : "14px 35px",
-      border: `${primary ? 2 : 1}px solid ${disabled ? L.mist + "08" : primary ? G.gold + "44" : B.cobalt + "55"}`,
+  const [hover, setHover] = useState(false);
+  return <div onClick={() => !disabled && onClick()} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+    style={{ position: "relative", overflow: "hidden", display: "inline-block", padding: primary ? "16px 50px" : "14px 35px",
+      border: `1px solid ${disabled ? L.mist + "08" : primary ? G.gold + "44" : B.cobalt + "55"}`,
       cursor: disabled ? "default" : "pointer", textAlign: "center",
       fontFamily: "'Cinzel',serif", fontSize: primary ? 15 : 13, letterSpacing: "0.15em",
-      color: disabled ? `${L.mist}15` : primary ? G.gold : L.mist, transition: "all 0.3s",
+      color: disabled ? `${L.mist}15` : primary ? G.gold : L.mist, transition: "border-color 0.3s, box-shadow 0.3s",
       textShadow: disabled ? "none" : primary ? `0 0 10px ${G.gold}22` : "none",
       background: primary && !disabled ? `${B.midnight}44` : "transparent",
       animation: primary && !disabled ? "goldBorderPulse 3s ease-in-out infinite" : "none",
       opacity: disabled ? 0.3 : 1, borderRadius: 2 }}>
-    {label}</div>;
+    {hover && !disabled && <div style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, transparent 0%, transparent 40%, rgba(255,248,240,0.08) 50%, transparent 60%, transparent 100%)", animation: "btnSweep 0.5s ease-out forwards", pointerEvents: "none" }} />}
+    <span style={{ position: "relative", zIndex: 1 }}>{label}</span>
+  </div>;
+}
+
+function FilmGrain() {
+  const svg = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"><filter id="df"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(%23df)"/></svg>');
+  return <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, backgroundImage: `url("${svg}")`, backgroundRepeat: "repeat", opacity: 0.04 }} />;
 }
 
 function PageShell({ children, section }) {
@@ -267,6 +276,7 @@ function PageShell({ children, section }) {
   useEffect(() => { setShow(false); setTimeout(() => setShow(true), 100) }, [section]);
   return <div style={{ minHeight: "100vh", padding: "60px 24px 100px", background: V.void, position: "relative" }}>
     <style>{CSS}</style>
+    <FilmGrain />
     <Stars />
     <FogMist />
     <div style={{ position: "fixed", inset: 0, pointerEvents: "none",
@@ -332,17 +342,17 @@ export default function DreamAtlasIntake() {
     <div style={{ minHeight: "85vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
       <CrescentMoon size={110} />
       <h1 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(2rem,7vw,3.5rem)", color: G.pale, letterSpacing: "0.1em", marginTop: 30, lineHeight: 1.1, textShadow: `0 0 15px ${B.cobalt}88,0 0 40px ${C.teal}22,0 0 80px ${B.ocean}11` }}>THE DREAM ATLAS</h1>
-      <div style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: `${L.whisper}77`, fontStyle: "italic", marginTop: 10 }}>& The Forbidden Library</div>
-      <div style={{ fontFamily: "'Cinzel',serif", fontSize: 11, letterSpacing: "0.35em", color: `${C.teal}30`, marginTop: 25 }}>MINI PREVIEW + FULL DEEP INTAKE</div>
+      <div style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: "#C4B59A", fontStyle: "italic", marginTop: 10 }}>& The Forbidden Library</div>
+      <div style={{ fontFamily: "'Cinzel',serif", fontSize: 11, letterSpacing: "0.35em", color: "rgba(255,248,240,0.7)", marginTop: 25 }}>MINI PREVIEW + FULL DEEP INTAKE</div>
       <SectionDivider />
-      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.2rem)", color: `${L.frost}44`, lineHeight: 2, maxWidth: 480, fontStyle: "italic" }}>
+      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.2rem)", color: "rgba(255,248,240,0.85)", lineHeight: 2, maxWidth: 480, fontStyle: "italic" }}>
         Your dreams are not random. They are the oldest language your soul still speaks. Give us one returning dream \u2014 and we\u2019ll show you the thread your sleeping mind has been weaving.</p>
-      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "clamp(0.82rem,1.6vw,0.9rem)", color: `${L.mist}22`, lineHeight: 1.9, maxWidth: 460, marginTop: 12 }}>
+      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "clamp(0.82rem,1.6vw,0.9rem)", color: "rgba(255,248,240,0.65)", lineHeight: 1.9, maxWidth: 460, marginTop: 12 }}>
         Jennifer personally maps every symbol, landscape, figure, and forbidden book in your dreamscape. No AI generation. Your dreams deserve that.</p>
       <div style={{ marginTop: 40 }}><NavButton label="OPEN THE ATLAS" onClick={() => go("mini1")} primary /></div>
       <div style={{ marginTop: 60, display: "flex", alignItems: "center", gap: 12 }}>
         <div style={{ width: 30, height: 1, background: `${B.cobalt}18` }} />
-        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 9, color: `${L.mist}12`, letterSpacing: "0.2em" }}>The Forgotten Code Research Institute</p>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 9, color: "rgba(255,248,240,0.65)", letterSpacing: "0.2em" }}>The Forgotten Code Research Institute</p>
         <div style={{ width: 30, height: 1, background: `${B.cobalt}18` }} />
       </div>
     </div>

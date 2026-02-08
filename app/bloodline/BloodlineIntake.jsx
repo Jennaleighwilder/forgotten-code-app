@@ -29,6 +29,9 @@ html,body{overflow-x:hidden}
 @keyframes bloodPulse{0%,100%{border-color:#8b1a1a18;box-shadow:0 0 8px #0e0a0800}50%{border-color:#8b1a1a55;box-shadow:0 0 25px #8b1a1a12}}
 @keyframes dustDrift{0%{transform:translateY(0) translateX(0);opacity:0}15%{opacity:var(--peak,0.25)}85%{opacity:calc(var(--peak,0.25)*0.5)}100%{transform:translateY(-80vh) translateX(30px);opacity:0}}
 @keyframes dnaPulse{0%,100%{opacity:0.4}50%{opacity:1}}
+@keyframes emberDrift{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:var(--peak,0.2)}90%{opacity:0}100%{transform:translateY(var(--rise,-120px)) translateX(var(--drift-x,0));opacity:0}}
+@keyframes scrollPulse{0%,100%{opacity:0.35;transform:translateY(0)}50%{opacity:0.7;transform:translateY(4px)}}
+@keyframes btnSweep{0%{transform:translateX(-100%) skewX(-12deg)}100%{transform:translateX(200%) skewX(-12deg)}}
 `;
 
 // ════════════════════════════════════════════════
@@ -134,9 +137,11 @@ function Divider(){return<div style={{display:"flex",alignItems:"center",justify
   <div style={{width:4,height:4,borderRadius:"50%",background:R.blood,opacity:0.15}}/>
   <div style={{width:50,height:1,background:`linear-gradient(90deg,${R.blood}22,transparent)`}}/></div>}
 
+function FilmGrain(){const svg="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"><filter id="bf"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(%23bf)"/></svg>');
+  return<div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:0,backgroundImage:`url("${svg}")`,backgroundRepeat:"repeat",opacity:0.04}}/>;}
 function Shell({children,step}){const[show,setShow]=useState(false);useEffect(()=>{setShow(false);setTimeout(()=>setShow(true),100)},[step]);
   return<div style={{minHeight:"100vh",padding:"50px 24px 100px",background:D.void,position:"relative"}}>
-    <style>{CSS}</style><DustMotes/>
+    <style>{CSS}</style><FilmGrain/><DustMotes/>
     <div style={{position:"fixed",inset:0,pointerEvents:"none",background:`radial-gradient(ellipse at 25% 65%,${R.wine}0a,transparent 55%),radial-gradient(ellipse at 75% 25%,${E.bark}0c,transparent 50%)`}}/>
     <div style={{position:"relative",zIndex:10,maxWidth:640,margin:"0 auto",opacity:show?1:0,transform:show?"translateY(0)":"translateY(25px)",transition:"all 0.7s ease"}}>{children}</div></div>}
 
@@ -159,12 +164,16 @@ function SI({label,value,onChange,options}){return<div><label style={labelStyle}
   <select value={value}onChange={e=>onChange(e.target.value)}style={{...inputBase,cursor:"pointer",appearance:"none",backgroundImage:`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239a8a6e' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,backgroundRepeat:"no-repeat",backgroundPosition:"right 16px center"}}>
     <option value="">{label}</option>{options.map(o=><option key={o}value={o}>{o}</option>)}</select></div>}
 
-function Btn({label,onClick,disabled,primary,full}){return<div onClick={()=>!disabled&&onClick()}
-  style={{display:full?"block":"inline-block",padding:primary?"18px 50px":"14px 35px",border:`${primary?2:1}px solid ${disabled?T.dust+"08":primary?R.blood+"44":E.bark+"44"}`,
-    cursor:disabled?"default":"pointer",textAlign:"center",fontFamily:"'Cinzel',serif",fontSize:primary?16:13,letterSpacing:"0.15em",
-    color:disabled?`${T.dust}15`:primary?E.parchment:T.dust,transition:"all 0.3s",borderRadius:2,
-    background:primary&&!disabled?`${R.wine}33`:"transparent",animation:primary&&!disabled?"bloodPulse 3s ease-in-out infinite":"none",opacity:disabled?0.3:1}}>
-  {label}</div>}
+function Btn({label,onClick,disabled,primary,full,gold}){const[h,setH]=useState(false);
+  return<div onClick={()=>!disabled&&onClick()} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
+  style={{position:"relative",overflow:"hidden",display:full?"block":"inline-block",padding:primary?"18px 50px":"14px 35px",
+    border:`1px solid ${disabled?T.dust+"08":gold?"rgba(180,140,80,0.6)":primary?R.blood+"44":E.bark+"44"}`,
+    cursor:disabled?"default":"pointer",textAlign:"center",fontFamily:"'Cinzel',serif",fontSize:primary?(gold?17:16):13,letterSpacing:"0.15em",
+    color:disabled?`${T.dust}15`:primary?E.parchment:T.dust,transition:"border-color 0.3s, box-shadow 0.3s",borderRadius:2,
+    background:primary&&!disabled?`${R.wine}33`:"transparent",animation:primary&&!disabled&&!gold?"bloodPulse 3s ease-in-out infinite":"none",opacity:disabled?0.3:1,
+    boxShadow:gold&&h?"0 0 25px rgba(180,140,80,0.3)":"none"}}>
+  {h&&!disabled&&<div style={{position:"absolute",inset:0,background:"linear-gradient(105deg,transparent 0%,transparent 40%,rgba(255,248,240,0.1) 50%,transparent 60%,transparent 100%)",animation:"btnSweep 0.5s ease-out forwards",pointerEvents:"none"}}/>}
+  <span style={{position:"relative",zIndex:1}}>{label}</span></div>}
 
 function Header({title,sub,progress}){return<div style={{textAlign:"center",marginBottom:40}}>
   {progress!==undefined&&<div style={{width:"100%",height:2,background:`${E.bark}33`,marginBottom:25,position:"relative",overflow:"hidden"}}>
@@ -191,6 +200,7 @@ const TRADITION_OPTS=["Christianity (folk/mystical)","Catholicism","Judaism","Is
 // Phases: intro → mini1 → miniResult → gate → code → deep1..deep10 → complete
 
 const ACCESS_CODE = "BLOODLINE2026";
+const INTRO_EMBERS = Array.from({length:18},()=>({left:5+Math.random()*90,bottom:10+Math.random()*40,size:1.5+Math.random()*2,delay:Math.random()*8,dur:12+Math.random()*10,rise:-(80+Math.random()*80),peak:0.08+Math.random()*0.12}));
 
 export default function BloodlineIntake() {
   const [phase, setPhase] = useState("intro");
@@ -216,24 +226,29 @@ export default function BloodlineIntake() {
 
   // ── INTRO ──
   if(phase==="intro") return<Shell step="intro">
-    <div style={{minHeight:"90vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center"}}>
+      <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:1,background:"radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.4) 100%)"}}/>
+      <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:2,overflow:"hidden"}}>
+        {INTRO_EMBERS.map((e,i)=><div key={i} style={{position:"absolute",left:`${e.left}%`,bottom:e.bottom+"%",width:e.size,height:e.size,borderRadius:"50%",background:"linear-gradient(180deg,#d4a030,#8b6914)",boxShadow:"0 0 6px rgba(212,160,48,0.4)",opacity:0.6,"--rise":e.rise+"px","--peak":e.peak,"--drift-x":(Math.random()-0.5)*20+"px",animation:`emberDrift ${e.dur}s linear ${e.delay}s infinite`}}/>)}
+      </div>
+    <div style={{minHeight:"90vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",position:"relative",zIndex:10}}>
       <FourSeasonsTree/>
       <h1 style={{fontFamily:"'Cinzel',serif",fontSize:"clamp(3.2rem,12vw,5.5rem)",fontWeight:700,letterSpacing:"0.14em",lineHeight:1,marginTop:18,
         background:"linear-gradient(90deg,#d4c4a0 0%,#f0e0c0 20%,#ffffff 35%,#f5ddb5 50%,#d4c4a0 65%,#c8a870 80%,#d4c4a0 100%)",backgroundSize:"200% 100%",
         WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text",animation:"titleShimmer 6s ease-in-out infinite",
-        filter:"drop-shadow(0 2px 12px #8b1a1a33) drop-shadow(0 0 40px #8b1a1a18)"}}>BLOODLINE</h1>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.2rem,3.5vw,1.65rem)",color:"#c8b89a",marginTop:12,letterSpacing:"0.04em",animation:"subtitlePulse 5s ease-in-out infinite"}}>Ancestral Heritage Dossier</p>
-      <div style={{fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:"0.4em",color:`${R.blood}22`,marginTop:20}}>MINI PREVIEW + FULL DEEP INTAKE</div>
+        filter:"drop-shadow(0 2px 12px #8b1a1a33) drop-shadow(0 0 40px #8b1a1a18)",textShadow:"0 0 40px rgba(180,140,80,0.2), 0 0 80px rgba(180,140,80,0.1)"}}>BLOODLINE</h1>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.2rem,3.5vw,1.65rem)",color:"#C4B59A",marginTop:12,letterSpacing:"0.04em",animation:"subtitlePulse 5s ease-in-out infinite"}}>Ancestral Heritage Dossier</p>
+      <div style={{fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:"0.4em",color:"rgba(255,248,240,0.7)",marginTop:20}}>MINI PREVIEW + FULL DEEP INTAKE</div>
       <Divider/>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.05rem,2.5vw,1.18rem)",color:`${T.bone}40`,lineHeight:2,maxWidth:480,fontStyle:"italic"}}>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.05rem,2.5vw,1.18rem)",color:"rgba(255,248,240,0.85)",lineHeight:2,maxWidth:480,fontStyle:"italic"}}>
         Your blood carries codes older than language. Give us your name and one whisper — receive a free ancestral glimpse. If the ancestors call you deeper, unlock the full Heritage Dossier.</p>
-      <p style={{fontFamily:"'Inter',sans-serif",fontSize:"clamp(0.82rem,1.6vw,0.88rem)",color:`${T.dust}18`,lineHeight:1.9,maxWidth:460,marginTop:12}}>
+      <p style={{fontFamily:"'Inter',sans-serif",fontSize:"clamp(0.82rem,1.6vw,0.88rem)",color:"rgba(255,248,240,0.65)",lineHeight:1.9,maxWidth:460,marginTop:12}}>
         Jennifer personally reads every word and crafts your dossier by hand. No AI generation. Your ancestors deserve that.</p>
-      <div style={{marginTop:40}}><Btn label="BEGIN THE BLOODLINE" onClick={()=>go("mini1")} primary/></div>
+      <div style={{marginTop:40}}><Btn label="BEGIN THE BLOODLINE" onClick={()=>go("mini1")} primary gold/></div>
       <div style={{marginTop:60,display:"flex",alignItems:"center",gap:12}}>
         <div style={{width:30,height:1,background:`${R.blood}0c`}}/>
-        <p style={{fontFamily:"'Cinzel',serif",fontSize:9,color:`${T.dust}10`,letterSpacing:"0.2em"}}>The Forgotten Code Research Institute</p>
+        <p style={{fontFamily:"'Cinzel',serif",fontSize:9,color:"rgba(255,248,240,0.65)",letterSpacing:"0.2em"}}>The Forgotten Code Research Institute</p>
         <div style={{width:30,height:1,background:`${R.blood}0c`}}/></div>
+      <div style={{position:"fixed",bottom:24,left:"50%",transform:"translateX(-50%)",fontFamily:"'Cinzel',serif",fontSize:10,letterSpacing:"0.3em",color:"rgba(255,248,240,0.5)",animation:"scrollPulse 2.5s ease-in-out infinite",zIndex:20}}>scroll</div>
     </div></Shell>;
 
   // ── MINI INTAKE: Step 1 — Identity ──
