@@ -37,7 +37,7 @@ const KNOWLEDGE_OPTS = ["Past-life memory","Ancestral language","Prophecy","Heal
 const TRADITION_OPTS = ["Jungian","Daoist","Vedic/Hindu","Shamanic","Indigenous","Sufi","Kabbalistic","Buddhist","Norse/Germanic","Celtic","Egyptian","Gnostic","Hermetic","Yoruba/Ifa"];
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:hidden}
 textarea:focus,input:focus,select:focus{outline:none}
@@ -201,7 +201,7 @@ const inputBase = { width: "100%", padding: "14px 18px", background: `${V.indigo
 const labelStyle = { fontFamily: "'Cinzel',serif", fontSize: 13, color: `${L.mist}88`,
   letterSpacing: "0.08em", display: "block", marginBottom: 6, marginTop: 20 };
 const hintStyle = { fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.whisper}55`,
-  fontStyle: "italic", marginTop: 4, marginBottom: 2 };
+ marginTop: 4, marginBottom: 2 };
 
 function TextInput({ label, hint, value, onChange, placeholder, multiline, rows }) {
   const Tag = multiline ? "textarea" : "input";
@@ -300,7 +300,7 @@ function SectionHeader({ title, sub, progress }) {
       color: G.pale, letterSpacing: "0.12em", fontWeight: 500,
       textShadow: `0 0 20px ${B.cobalt}44,0 0 40px ${C.teal}11` }}>{title}</div>
     <div style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(0.95rem,2.5vw,1.15rem)",
-      color: `${L.whisper}66`, fontStyle: "italic", marginTop: 8 }}>{sub}</div>
+      color: `${L.whisper}66`,  marginTop: 8 }}>{sub}</div>
     <SectionDivider />
   </div>;
 }
@@ -342,13 +342,11 @@ export default function DreamAtlasIntake() {
     <div style={{ minHeight: "85vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
       <CrescentMoon size={110} />
       <h1 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(2rem,7vw,3.5rem)", color: G.pale, letterSpacing: "0.1em", marginTop: 30, lineHeight: 1.1, textShadow: `0 0 15px ${B.cobalt}88,0 0 40px ${C.teal}22,0 0 80px ${B.ocean}11` }}>THE DREAM ATLAS</h1>
-      <div style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: "#C4B59A", fontStyle: "italic", marginTop: 10 }}>& The Forbidden Library</div>
+      <div style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: "#C4B59A",  marginTop: 10 }}>& The Forbidden Library</div>
       <div style={{ fontFamily: "'Cinzel',serif", fontSize: 11, letterSpacing: "0.35em", color: "rgba(255,248,240,0.7)", marginTop: 25 }}>MINI PREVIEW + FULL DEEP INTAKE</div>
       <SectionDivider />
-      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.2rem)", color: "rgba(255,248,240,0.85)", lineHeight: 2, maxWidth: 480, fontStyle: "italic" }}>
+      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.2rem)", color: "rgba(255,248,240,0.85)", lineHeight: 2, maxWidth: 480,  }}>
         Your dreams are not random. They are the oldest language your soul still speaks. Give us one returning dream \u2014 and we\u2019ll show you the thread your sleeping mind has been weaving.</p>
-      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "clamp(0.82rem,1.6vw,0.9rem)", color: "rgba(255,248,240,0.65)", lineHeight: 1.9, maxWidth: 460, marginTop: 12 }}>
-        Jennifer personally maps every symbol, landscape, figure, and forbidden book in your dreamscape. No AI generation. Your dreams deserve that.</p>
       <div style={{ marginTop: 40 }}><NavButton label="OPEN THE ATLAS" onClick={() => go("mini1")} primary /></div>
       <div style={{ marginTop: 60, display: "flex", alignItems: "center", gap: 12 }}>
         <div style={{ width: 30, height: 1, background: `${B.cobalt}18` }} />
@@ -372,15 +370,15 @@ export default function DreamAtlasIntake() {
     <div style={{ textAlign: "center" }}>
       <CrescentMoon size={70} />
       <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: G.pale, marginTop: 15, letterSpacing: "0.1em", textShadow: `0 0 15px ${B.cobalt}66,0 0 30px ${C.teal}22` }}>YOUR DREAM GLIMPSE</h2>
-      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${L.whisper}55`, fontStyle: "italic", marginTop: 12, lineHeight: 1.9 }}>The dreamscape has noticed you.</p>
+      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${L.whisper}55`,  marginTop: 12, lineHeight: 1.9 }}>The dreamscape has noticed you.</p>
       <SectionDivider />
       <div style={{ background: `${V.indigo}cc`, border: `1px solid ${B.midnight}44`, padding: "30px 25px", borderRadius: 2, textAlign: "left", marginBottom: 30 }}>
         <div style={{ fontFamily: "'Cinzel',serif", fontSize: 12, letterSpacing: "0.25em", color: `${L.mist}33`, marginBottom: 25 }}>INITIAL TRACE</div>
-        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 16, color: `${L.frost}55`, lineHeight: 2, fontStyle: "italic", marginBottom: 20 }}>
+        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 16, color: `${L.frost}55`, lineHeight: 2,  marginBottom: 20 }}>
           {d.name} \u2014 something in your dreamscape is trying to surface. The fact that you\u2019re here means a thread has been activated in the architecture of your sleeping mind.</p>
         {d.miniWhisper && d.miniWhisper.trim() && <div style={{ marginBottom: 22, padding: "18px 20px", borderLeft: `2px solid ${C.teal}44`, background: `${B.midnight}33` }}>
           <div style={{ fontFamily: "'Cinzel',serif", fontSize: 10, letterSpacing: "0.2em", color: `${C.teal}55`, marginBottom: 8 }}>YOUR RETURNING DREAM</div>
-          <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 15, color: `${L.frost}55`, lineHeight: 1.9, fontStyle: "italic" }}>"{d.miniWhisper}"</p>
+          <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 15, color: `${L.frost}55`, lineHeight: 1.9,  }}>"{d.miniWhisper}"</p>
         </div>}
         <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 15, color: `${L.mist}44`, lineHeight: 2 }}>
           This returning dream is the surface of something your soul has been writing for years. Your full Dream Atlas maps every symbol, landscape, shadow figure, portal, and forbidden book \u2014 revealing the hidden architecture your sleeping mind has been building.</p>
@@ -395,7 +393,7 @@ export default function DreamAtlasIntake() {
     <div style={{ textAlign: "center" }}>
       <CrescentMoon size={70} />
       <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.8rem,5vw,2.5rem)", color: G.pale, marginTop: 15, letterSpacing: "0.1em" }}>UNLOCK THE FULL ATLAS</h2>
-      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: `${L.frost}44`, fontStyle: "italic", marginTop: 12, lineHeight: 2, maxWidth: 480, margin: "12px auto 0" }}>
+      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: `${L.frost}44`,  marginTop: 12, lineHeight: 2, maxWidth: 480, margin: "12px auto 0" }}>
         Your dream glimpse revealed the surface. The full Dream Atlas goes twelve layers deep \u2014 mapping every symbol, animal guide, shadow figure, dream landscape, portal crossing, and the forbidden books your soul has been writing in the dark.</p>
       <SectionDivider />
       <div style={{ background: `${V.indigo}cc`, border: `1px solid ${B.midnight}44`, padding: "30px 25px", borderRadius: 2, textAlign: "left", maxWidth: 460, margin: "0 auto 30px" }}>
@@ -404,12 +402,12 @@ export default function DreamAtlasIntake() {
           <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12 }}>
             <div style={{ color: `${C.teal}55`, fontSize: 12, marginTop: 2, flexShrink: 0 }}>\u263D</div>
             <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 14, color: `${L.frost}44`, lineHeight: 1.6 }}>{s}</p></div>)}
-        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}33`, fontStyle: "italic", marginTop: 14, lineHeight: 1.7 }}>
+        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}33`,  marginTop: 14, lineHeight: 1.7 }}>
           Hand-crafted personally by Jennifer. No AI generation. Delivered within 5-7 days.</p>
       </div>
 
       <div style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.5rem,4vw,2rem)", color: G.gold, letterSpacing: "0.15em", marginBottom: 8 }}>$111</div>
-      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}33`, fontStyle: "italic", marginBottom: 25 }}>One-time payment \u00b7 Lifetime access</p>
+      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}33`,  marginBottom: 25 }}>One-time payment \u00b7 Lifetime access</p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 380, margin: "0 auto" }}>
         {[
@@ -443,7 +441,7 @@ export default function DreamAtlasIntake() {
           style={{ ...inputBase, textAlign: "center", letterSpacing: "0.3em", fontFamily: "'Cinzel',serif", fontSize: 14 }}
           onFocus={e => { e.target.style.borderColor = `${C.teal}55` }}
           onBlur={e => { e.target.style.borderColor = `${B.midnight}44` }} />
-        {d.codeError && <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: C.teal, textAlign: "center", marginTop: 8, fontStyle: "italic" }}>Invalid access code. Please check and try again.</p>}
+        {d.codeError && <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: C.teal, textAlign: "center", marginTop: 8,  }}>Invalid access code. Please check and try again.</p>}
         <div style={{ marginTop: 18, textAlign: "center" }}>
           <NavButton label="UNLOCK FULL INTAKE" onClick={() => { if (d.accessCode === ACCESS_CODE) go("deep1"); else set("codeError", true) }} primary /></div>
       </div>
@@ -588,7 +586,7 @@ export default function DreamAtlasIntake() {
       <div style={{ textAlign: "center" }}>
         <CrescentMoon size={80} />
         <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: G.gold, marginTop: 20, letterSpacing: "0.12em", animation: "moonGlow 4s ease-in-out infinite" }}>ATLAS SEALED</h2>
-        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${L.mist}88`, fontStyle: "italic", marginTop: 12, lineHeight: 1.9, maxWidth: 460, margin: "12px auto 0" }}>
+        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${L.mist}88`,  marginTop: 12, lineHeight: 1.9, maxWidth: 460, margin: "12px auto 0" }}>
           Your celestial map has been drawn. Jennifer will personally chart every symbol, decode every dream-book, and craft your Dream Atlas by hand.</p>
         <SectionDivider />
         <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "center", marginBottom: 40 }}>
@@ -604,7 +602,7 @@ export default function DreamAtlasIntake() {
           <div style={{ maxHeight: 350, overflow: "auto", paddingRight: 8 }}>
             <pre style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}44`, lineHeight: 1.8, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{summary}</pre></div>
         </div>
-        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}44`, marginTop: 35, lineHeight: 1.9, fontStyle: "italic" }}>
+        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}44`, marginTop: 35, lineHeight: 1.9,  }}>
           Your Dream Atlas will be delivered within 5-7 days.<br />
           <span style={{ color: `${G.gold}55` }}>theforgottencode780@gmail.com</span> · (423) 388-8304</p>
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 9, color: `${G.gold}22`, marginTop: 40, letterSpacing: "0.15em" }}>

@@ -13,7 +13,7 @@ const D = { void:"#0a0806", earth:"#1a1410", loam:"#221c14" };
 const T = { bone:"#c8b89a", sand:"#b8a882", dust:"#9a8a6e", sage:"#8a9a7a", copper:"#b87333" };
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:hidden}
 ::selection{background:#8b1a1a44;color:#d4c4a0}
@@ -147,7 +147,7 @@ function Shell({children,step}){const[show,setShow]=useState(false);useEffect(()
 
 const inputBase={width:"100%",padding:"14px 18px",background:`${D.loam}cc`,border:`1px solid ${E.bark}55`,color:E.parchment,fontFamily:"'Crimson Text',serif",fontSize:16,transition:"all 0.3s",lineHeight:1.7,borderRadius:2};
 const labelStyle={fontFamily:"'Cinzel',serif",fontSize:13,color:`${T.dust}99`,letterSpacing:"0.08em",display:"block",marginBottom:6,marginTop:22};
-const hintStyle={fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.sage}55`,fontStyle:"italic",marginTop:4,marginBottom:2};
+const hintStyle={fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.sage}55`,marginTop:4,marginBottom:2};
 
 function TI({label,hint,value,onChange,placeholder,multi,rows}){const Tag=multi?"textarea":"input";
   return<div><label style={labelStyle}>{label}</label>{hint&&<p style={hintStyle}>{hint}</p>}
@@ -181,7 +181,7 @@ function Header({title,sub,progress}){return<div style={{textAlign:"center",marg
     <div style={{position:"absolute",top:-3,left:`${progress}%`,width:8,height:8,borderRadius:"50%",background:R.ember,boxShadow:`0 0 10px ${R.ember}55`,transition:"left 0.6s ease",transform:"translateX(-50%)"}}/></div>}
   <DNAHelix size={55}/>
   <div style={{fontFamily:"'Cinzel',serif",fontSize:"clamp(1.5rem,5vw,2.2rem)",color:E.parchment,letterSpacing:"0.12em",fontWeight:500,marginTop:8,textShadow:`0 0 15px ${R.blood}22`}}>{title}</div>
-  <div style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(0.95rem,2.5vw,1.15rem)",color:`${T.dust}55`,fontStyle:"italic",marginTop:8}}>{sub}</div>
+  <div style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(0.95rem,2.5vw,1.15rem)",color:`${T.dust}55`,marginTop:8}}>{sub}</div>
   <Divider/></div>}
 
 // ════════════════════════════════════════════════
@@ -239,10 +239,8 @@ export default function BloodlineIntake() {
       <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.2rem,3.5vw,1.65rem)",color:"#C4B59A",marginTop:12,letterSpacing:"0.04em",animation:"subtitlePulse 5s ease-in-out infinite"}}>Ancestral Heritage Dossier</p>
       <div style={{fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:"0.4em",color:"rgba(255,248,240,0.7)",marginTop:20}}>MINI PREVIEW + FULL DEEP INTAKE</div>
       <Divider/>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.05rem,2.5vw,1.18rem)",color:"rgba(255,248,240,0.85)",lineHeight:2,maxWidth:480,fontStyle:"italic"}}>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.05rem,2.5vw,1.18rem)",color:"rgba(255,248,240,0.85)",lineHeight:2,maxWidth:480,}}>
         Your blood carries codes older than language. Give us your name and one whisper — receive a free ancestral glimpse. If the ancestors call you deeper, unlock the full Heritage Dossier.</p>
-      <p style={{fontFamily:"'Inter',sans-serif",fontSize:"clamp(0.82rem,1.6vw,0.88rem)",color:"rgba(255,248,240,0.65)",lineHeight:1.9,maxWidth:460,marginTop:12}}>
-        Jennifer personally reads every word and crafts your dossier by hand. No AI generation. Your ancestors deserve that.</p>
       <div style={{marginTop:40}}><Btn label="BEGIN THE BLOODLINE" onClick={()=>go("mini1")} primary gold/></div>
       <div style={{marginTop:60,display:"flex",alignItems:"center",gap:12}}>
         <div style={{width:30,height:1,background:`${R.blood}0c`}}/>
@@ -272,7 +270,7 @@ export default function BloodlineIntake() {
     <div style={{textAlign:"center"}}>
       <DNAHelix size={70}/>
       <h2 style={{fontFamily:"'Cinzel',serif",fontSize:"clamp(1.8rem,5vw,2.5rem)",color:E.parchment,marginTop:15,letterSpacing:"0.1em"}}>UNLOCK THE FULL BLOODLINE</h2>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.05rem,2.5vw,1.18rem)",color:`${T.bone}44`,fontStyle:"italic",marginTop:12,lineHeight:2,maxWidth:480,margin:"12px auto 0"}}>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.05rem,2.5vw,1.18rem)",color:`${T.bone}44`,marginTop:12,lineHeight:2,maxWidth:480,margin:"12px auto 0"}}>
         Your ancestral glimpse revealed the surface. The full Heritage Dossier goes seven generations deep — tracing physical markers, spiritual gifts, family mysteries, sacred objects, and the hidden codes written in your blood.</p>
       <Divider/>
 
@@ -282,12 +280,12 @@ export default function BloodlineIntake() {
           <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:12}}>
             <div style={{color:`${R.blood}55`,fontSize:12,marginTop:2,flexShrink:0}}>◈</div>
             <p style={{fontFamily:"'Crimson Text',serif",fontSize:14,color:`${T.bone}44`,lineHeight:1.6}}>{s}</p></div>)}
-        <p style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.dust}33`,fontStyle:"italic",marginTop:14,lineHeight:1.7}}>
+        <p style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.dust}33`,marginTop:14,lineHeight:1.7}}>
           Hand-crafted personally by Jennifer. No AI generation. Delivered within 5-7 days.</p>
       </div>
 
       <div style={{fontFamily:"'Cinzel',serif",fontSize:"clamp(1.5rem,4vw,2rem)",color:E.parchment,letterSpacing:"0.15em",marginBottom:8}}>$111</div>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.dust}33`,fontStyle:"italic",marginBottom:25}}>One-time payment · Lifetime access</p>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.dust}33`,marginBottom:25}}>One-time payment · Lifetime access</p>
 
       <div style={{display:"flex",flexDirection:"column",gap:12,maxWidth:380,margin:"0 auto"}}>
         {[
@@ -309,7 +307,7 @@ export default function BloodlineIntake() {
 
       <Divider/>
       <p style={{fontFamily:"'Cinzel',serif",fontSize:12,letterSpacing:"0.15em",color:`${T.dust}44`,marginBottom:12}}>ALREADY PAID?</p>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:14,color:`${T.bone}33`,lineHeight:1.8,maxWidth:420,margin:"0 auto 18px",fontStyle:"italic"}}>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:14,color:`${T.bone}33`,lineHeight:1.8,maxWidth:420,margin:"0 auto 18px",}}>
         Let Jennifer know so she can send your access code.</p>
       <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Bloodline Payment Confirmation — ${d.name}`)}&body=${encodeURIComponent(`Hi Jennifer,\n\nI just completed payment for the Bloodline Heritage Dossier ($111).\n\nName: ${d.name}\nEmail: ${d.email}\nPayment method: [Venmo/CashApp/PayPal/Stripe]\n\nPlease send my access code when ready.\n\nThank you.`)}`}
         style={{display:"block",width:"min(100%,380px)",padding:"16px 25px",margin:"0 auto",border:`1px solid ${R.blood}33`,textDecoration:"none",textAlign:"center",fontFamily:"'Cinzel',serif",fontSize:13,letterSpacing:"0.12em",color:E.parchment,background:`${R.wine}22`,borderRadius:2}}>
@@ -324,7 +322,7 @@ export default function BloodlineIntake() {
           style={{...inputBase,textAlign:"center",letterSpacing:"0.3em",fontFamily:"'Cinzel',serif",fontSize:14}}
           onFocus={e=>{e.target.style.borderColor=`${R.blood}44`}}
           onBlur={e=>{e.target.style.borderColor=`${E.bark}55`}}/>
-        {d.codeError&&<p style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:R.ember,textAlign:"center",marginTop:8,fontStyle:"italic"}}>Invalid access code. Please check and try again.</p>}
+        {d.codeError&&<p style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:R.ember,textAlign:"center",marginTop:8,}}>Invalid access code. Please check and try again.</p>}
         <div style={{marginTop:18,textAlign:"center"}}>
           <Btn label="UNLOCK FULL INTAKE" onClick={()=>{if(d.accessCode===ACCESS_CODE)go("deep1");else set("codeError",true)}} primary/></div>
       </div>
@@ -437,7 +435,7 @@ function MiniResult({data:d,onDeeper,onBack}) {
     <div style={{opacity:show?1:0,transform:show?"translateY(0)":"translateY(30px)",transition:"all 1s ease",textAlign:"center"}}>
       <DNAHelix size={70}/>
       <h2 style={{fontFamily:"'Cinzel',serif",fontSize:"clamp(1.8rem,5vw,2.8rem)",color:E.parchment,marginTop:15,letterSpacing:"0.1em",textShadow:`0 0 20px ${R.blood}33`}}>YOUR BLOODLINE GLIMPSE</h2>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1rem,2.5vw,1.15rem)",color:`${T.dust}55`,fontStyle:"italic",marginTop:12,lineHeight:1.9,maxWidth:460,margin:"12px auto 0"}}>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1rem,2.5vw,1.15rem)",color:`${T.dust}55`,marginTop:12,lineHeight:1.9,maxWidth:460,margin:"12px auto 0"}}>
         The ancestors have noticed you.</p>
       <Divider/>
 
@@ -445,12 +443,12 @@ function MiniResult({data:d,onDeeper,onBack}) {
       <div style={{background:`${D.loam}cc`,border:`1px solid ${E.bark}33`,padding:"30px 25px",borderRadius:2,textAlign:"left",marginBottom:30}}>
         <div style={{fontFamily:"'Cinzel',serif",fontSize:12,letterSpacing:"0.25em",color:`${T.dust}22`,marginBottom:25}}>INITIAL TRACE</div>
         
-        <p style={{fontFamily:"'Crimson Text',serif",fontSize:16,color:`${T.bone}55`,lineHeight:2,fontStyle:"italic",marginBottom:20}}>
+        <p style={{fontFamily:"'Crimson Text',serif",fontSize:16,color:`${T.bone}55`,lineHeight:2,marginBottom:20}}>
           {d.name} — something in your blood is trying to speak. The fact that you're here means a thread has been activated in your ancestral line.</p>
 
         {hasWhisper&&<div style={{marginBottom:22,padding:"18px 20px",borderLeft:`2px solid ${R.blood}33`,background:`${R.wine}0a`}}>
           <div style={{fontFamily:"'Cinzel',serif",fontSize:10,letterSpacing:"0.2em",color:`${R.blood}44`,marginBottom:8}}>YOUR WHISPER</div>
-          <p style={{fontFamily:"'Crimson Text',serif",fontSize:15,color:`${T.bone}44`,lineHeight:1.9,fontStyle:"italic"}}>"{d.miniWhisper}"</p>
+          <p style={{fontFamily:"'Crimson Text',serif",fontSize:15,color:`${T.bone}44`,lineHeight:1.9,}}>"{d.miniWhisper}"</p>
         </div>}
 
         <p style={{fontFamily:"'Crimson Text',serif",fontSize:15,color:`${T.dust}44`,lineHeight:2}}>
@@ -497,7 +495,7 @@ function Complete({data:d,onBack}) {
         background:"linear-gradient(90deg,#d4c4a0 0%,#f0e0c0 20%,#ffffff 35%,#f5ddb5 50%,#d4c4a0 65%,#c8a870 80%,#d4c4a0 100%)",backgroundSize:"200% 100%",
         WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text",animation:"titleShimmer 6s ease-in-out infinite",
         filter:"drop-shadow(0 2px 12px #8b1a1a33)"}}>BLOODLINE SEALED</h2>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1rem,2.5vw,1.15rem)",color:`${T.dust}55`,fontStyle:"italic",marginTop:12,lineHeight:1.9,maxWidth:460,margin:"12px auto 0"}}>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1rem,2.5vw,1.15rem)",color:`${T.dust}55`,marginTop:12,lineHeight:1.9,maxWidth:460,margin:"12px auto 0"}}>
         Your ancestral codes have been captured. Jennifer will personally trace every thread and craft your Heritage Dossier by hand.</p>
       <Divider/>
       <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",marginBottom:40}}>
@@ -513,7 +511,7 @@ function Complete({data:d,onBack}) {
         <div style={{maxHeight:350,overflow:"auto",paddingRight:8}}>
           <pre style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.bone}25`,lineHeight:1.8,whiteSpace:"pre-wrap",wordBreak:"break-word"}}>{summary}</pre></div>
       </div>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.dust}25`,marginTop:35,lineHeight:1.9,fontStyle:"italic"}}>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.dust}25`,marginTop:35,lineHeight:1.9,}}>
         Your Heritage Dossier will be delivered within 5-7 days.<br/>
         <span style={{color:`${R.blood}33`}}>theforgottencode780@gmail.com</span> · (423) 388-8304</p>
       <p style={{fontFamily:"'Inter',sans-serif",fontSize:9,color:`${E.bark}22`,marginTop:40,letterSpacing:"0.15em"}}>

@@ -62,8 +62,8 @@ html,body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
 @keyframes breathe{0%,100%{opacity:0.3}50%{opacity:0.6}}
 @keyframes goldDie{0%{transform:scale(1) rotate(0);opacity:0.9}100%{transform:scale(0) rotate(140deg) translateY(-20px);opacity:0}}
 @keyframes goldBurst{0%{transform:scale(0);opacity:0.8}100%{transform:scale(1);opacity:0}}
-@keyframes flameFlicker{0%,100%{transform:scale(1) scaleY(1);opacity:1;filter:blur(0)}25%{transform:scale(1.08) scaleY(1.12);opacity:0.92;filter:blur(0.5px)}50%{transform:scale(0.96) scaleY(0.94);opacity:1;filter:blur(0)}75%{transform:scale(1.04) scaleY(1.06);opacity:0.97;filter:blur(0.2px)}}
-@keyframes flameBreathe{0%,100%{opacity:0.25;transform:scale(1)}50%{opacity:0.45;transform:scale(1.15)}}
+@keyframes flameGlow{0%,100%{opacity:0.9}50%{opacity:1}}
+@keyframes flameBreathe{0%,100%{opacity:0.2;transform:scale(1)}50%{opacity:0.35;transform:scale(1.08)}}
 @keyframes btnSweep{0%{transform:translateX(-100%) skewX(-12deg)}100%{transform:translateX(200%) skewX(-12deg)}}
 ::selection{background:rgba(201,165,90,0.25);color:#faf8f2}
 `;
@@ -132,23 +132,15 @@ function FilmGrain() {
 function RealisticFlame({ size = 1 }) {
   return <div style={{ display: "flex", flexDirection: "column", alignItems: "center", transform: `scale(${size})` }}>
     <div style={{ position: "relative" }}>
-      <div style={{ position: "absolute", top: -40, left: "50%", transform: "translateX(-50%)", width: 120, height: 120,
-        background: "radial-gradient(ellipse at center, rgba(255,200,100,0.15) 0%, transparent 60%)",
-        animation: "flameBreathe 3s ease-in-out infinite" }} />
-      <div style={{ position: "relative", width: 24, height: 56, margin: "0 auto" }}>
-        <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: 20, height: 48,
-          background: "radial-gradient(ellipse 60% 100% at 50% 100%, rgba(120,60,20,0.4), transparent 70%)",
-          animation: "flameFlicker 0.4s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", bottom: 4, left: "50%", transform: "translateX(-50%)", width: 14, height: 38,
-          background: "radial-gradient(ellipse 70% 100% at 50% 100%, rgba(255,140,40,0.9), rgba(255,100,20,0.5) 40%, transparent 75%)",
-          animation: "flameFlicker 0.35s ease-in-out infinite 0.05s" }} />
-        <div style={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)", width: 8, height: 22,
-          background: "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(255,248,240,0.95), rgba(255,220,150,0.6) 50%, transparent 80%)",
-          animation: "flameFlicker 0.25s ease-in-out infinite 0.1s" }} />
-      </div>
+      <div style={{ position: "absolute", top: -35, left: "50%", transform: "translateX(-50%)", width: 100, height: 100,
+        background: "radial-gradient(ellipse at center, rgba(255,220,120,0.2) 0%, transparent 65%)",
+        animation: "flameBreathe 4s ease-in-out infinite" }} />
+      <div style={{ width: 10, height: 32, margin: "0 auto",
+        background: "linear-gradient(to top, rgba(200,100,20,0.5), rgba(255,180,60,0.95) 25%, rgba(255,240,180,0.98) 50%, rgba(255,248,240,0.9) 70%, transparent 100%)",
+        borderRadius: "50% 50% 40% 40%", boxShadow: "0 0 20px rgba(255,200,80,0.4)", animation: "flameGlow 2.5s ease-in-out infinite" }} />
     </div>
-    <div style={{ width: 2, height: 6, background: "#0a0806", marginTop: -4 }} />
-    <div style={{ width: 12, height: 36, background: "linear-gradient(to right, #1a1510, #252018, #1a1510)", marginTop: -2, borderRadius: "0 0 1px 1px", boxShadow: "inset 0 0 20px rgba(0,0,0,0.5)" }} />
+    <div style={{ width: 2, height: 4, background: "#1a1510", marginTop: -2 }} />
+    <div style={{ width: 14, height: 40, background: "linear-gradient(to right, #3d3528, #4a4035, #3d3528)", marginTop: -1, borderRadius: "0 0 2px 2px", boxShadow: "inset 1px 0 0 rgba(255,255,255,0.06)" }} />
   </div>;
 }
 

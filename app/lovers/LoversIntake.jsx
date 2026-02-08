@@ -184,12 +184,12 @@ const DYAD_QUESTIONS = [
 ];
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Manrope:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:hidden}
 textarea:focus,input:focus{outline:none}
 ::selection{background:#ff2d7b33;color:#fff0f5}
-@keyframes neonFlicker{0%,92%,94%,96%,100%{opacity:1;filter:brightness(1)}93%,95%{opacity:0.92;filter:brightness(0.97)}}
+@keyframes neonFlicker{0%,70%,72%,74%,78%,82%,86%,100%{opacity:1;filter:brightness(1)}71%,73%{opacity:0.5;filter:brightness(0.6)}75%,77%{opacity:0.85;filter:brightness(0.9)}79%,81%{opacity:0.35;filter:brightness(0.45)}83%,85%{opacity:0.7;filter:brightness(0.8)}87%,89%{opacity:0.25;filter:brightness(0.35)}}
 @keyframes neonBorderPulse{0%,100%{border-color:rgba(255,45,123,0.35);box-shadow:0 0 8px rgba(255,45,123,0.15)}50%{border-color:rgba(255,45,123,0.6);box-shadow:0 0 18px rgba(255,45,123,0.25)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes btnSweep{0%{transform:translateX(-100%) skewX(-12deg)}100%{transform:translateX(200%) skewX(-12deg)}}
@@ -245,14 +245,14 @@ function Header({ title, sub, progress }) {
     </div>}
     <NeonHeart size={55} />
     <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.8rem,6vw,2.8rem)", color: P.hot, letterSpacing: "0.15em", marginTop: 8, textShadow: `0 0 15px ${P.hot}44` }}>{title}</div>
-    <div style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(0.95rem,2.5vw,1.15rem)", color: "#C4B59A", fontStyle: "italic", marginTop: 8 }}>{sub}</div>
+    <div style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(0.95rem,2.5vw,1.15rem)", color: "#C4B59A",  marginTop: 8 }}>{sub}</div>
     <Divider />
   </div>;
 }
 
 const inputBase = { width: "100%", padding: "14px 18px", background: `${D.slate}cc`, border: `1px solid ${P.hot}22`, color: P.pale, fontFamily: "'Playfair Display',serif", fontSize: 16, transition: "all 0.3s", lineHeight: 1.7, borderRadius: 2 };
 const labelStyle = { fontFamily: "'Manrope',sans-serif", fontSize: 13, color: `${P.blush}77`, letterSpacing: "0.06em", fontWeight: 600, display: "block", marginBottom: 6, marginTop: 22 };
-const hintStyle = { fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.neon}44`, fontStyle: "italic", marginTop: 4, marginBottom: 2 };
+const hintStyle = { fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.neon}44`,  marginTop: 4, marginBottom: 2 };
 
 function TI({ label, hint, value, onChange, placeholder, multi, rows }) {
   const Tag = multi ? "textarea" : "input";
@@ -302,13 +302,11 @@ export default function LoversIntake() {
       <NeonHeart size={100} />
       <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(3.5rem,14vw,6.5rem)", letterSpacing: "0.12em", lineHeight: 0.95, marginTop: 20,
         color: P.hot, textShadow: "0 0 4px rgba(255,255,255,0.9), 0 0 12px #ff2d7b, 0 0 28px #ff2d7b88, 0 0 48px #ff2d7b44, 0 0 80px #ff2d7b22", animation: "neonFlicker 8s ease-in-out infinite" }}>LOVERS<br/><span style={{ fontSize: "0.5em", letterSpacing: "0.3em", color: P.neon, opacity: 0.7 }}>LIARS &</span><br/>ALL THINGS<br/>PATTERNED</h1>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: "#C4B59A", fontStyle: "italic", marginTop: 18 }}>Mirror Protocol™ · DYAD Engine™</p>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: "#C4B59A",  marginTop: 18 }}>Mirror Protocol™ · DYAD Engine™</p>
       <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 11, letterSpacing: "0.4em", color: "rgba(255,248,240,0.7)", marginTop: 20 }}>MINI PREVIEW + FULL DEEP INTAKE</div>
       <Divider />
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: "rgba(255,248,240,0.85)", lineHeight: 2, maxWidth: 480, fontStyle: "italic" }}>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: "rgba(255,248,240,0.85)", lineHeight: 2, maxWidth: 480,  }}>
         Every relationship has a pattern. A code running underneath the surface that neither of you can see but both of you feel. Give us one whisper about love — and we'll show you the thread.</p>
-      <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: "clamp(0.82rem,1.6vw,0.88rem)", color: "rgba(255,248,240,0.65)", lineHeight: 1.9, maxWidth: 460, marginTop: 12 }}>
-        Jennifer personally maps 24 pattern categories and 5 DYAD depth questions. No AI generation. Your patterns deserve that.</p>
       <div style={{ marginTop: 40 }}><Btn label="BEGIN THE PATTERN MAP" onClick={() => go("mini1")} primary /></div>
       <div style={{ marginTop: 60, display: "flex", alignItems: "center", gap: 12 }}>
         <div style={{ width: 30, height: 1, background: `${P.hot}0c` }} />
@@ -330,15 +328,15 @@ export default function LoversIntake() {
     <div style={{ textAlign: "center" }}>
       <NeonHeart size={70} />
       <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: P.hot, marginTop: 15, letterSpacing: "0.1em", textShadow: `0 0 20px ${P.hot}33` }}>YOUR PATTERN GLIMPSE</h2>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: "rgba(255,248,240,0.85)", fontStyle: "italic", marginTop: 12, lineHeight: 1.9 }}>The patterns have noticed you.</p>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: "rgba(255,248,240,0.85)",  marginTop: 12, lineHeight: 1.9 }}>The patterns have noticed you.</p>
       <Divider />
       <div style={{ background: `${D.slate}cc`, border: `1px solid ${P.hot}22`, padding: "30px 25px", borderRadius: 2, textAlign: "left", marginBottom: 30 }}>
         <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 12, letterSpacing: "0.25em", color: "rgba(255,248,240,0.65)", marginBottom: 25, fontWeight: 700 }}>INITIAL TRACE</div>
-        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 16, color: "rgba(255,248,240,0.85)", lineHeight: 2, fontStyle: "italic", marginBottom: 20 }}>
+        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 16, color: "rgba(255,248,240,0.85)", lineHeight: 2,  marginBottom: 20 }}>
           {d.name} — something in your love pattern is trying to be seen. The fact that you're here means a thread has been activated in your relational code.</p>
         {d.miniWhisper && d.miniWhisper.trim() && <div style={{ marginBottom: 22, padding: "18px 20px", borderLeft: `2px solid ${P.hot}44`, background: `${P.hot}08` }}>
           <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 10, letterSpacing: "0.2em", color: `${P.hot}55`, marginBottom: 8, fontWeight: 700 }}>YOUR WHISPER</div>
-          <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 15, color: `${P.blush}55`, lineHeight: 1.9, fontStyle: "italic" }}>"{d.miniWhisper}"</p>
+          <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 15, color: `${P.blush}55`, lineHeight: 1.9,  }}>"{d.miniWhisper}"</p>
         </div>}
         <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 15, color: `${P.blush}44`, lineHeight: 2 }}>
           This whisper is the surface of something much deeper. Your full Pattern Dossier maps 24 attachment categories, 5 DYAD depth questions, and reveals the invisible architecture of your relationship — the wounds, the loops, the exits, and the codes your nervous system is running without your permission.</p>
@@ -354,7 +352,7 @@ export default function LoversIntake() {
     <div style={{ textAlign: "center" }}>
       <NeonHeart size={70} />
       <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.8rem,5vw,2.5rem)", color: P.hot, marginTop: 15, letterSpacing: "0.1em" }}>UNLOCK THE FULL PATTERN MAP</h2>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: "rgba(255,248,240,0.85)", fontStyle: "italic", marginTop: 12, lineHeight: 2, maxWidth: 480, margin: "12px auto 0" }}>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: "rgba(255,248,240,0.85)",  marginTop: 12, lineHeight: 2, maxWidth: 480, margin: "12px auto 0" }}>
         Your pattern glimpse revealed the surface. The full Lovers & Liars Dossier goes 24 categories deep — mapping attachment wounds, defense mechanisms, communication loops, trust architecture, and the hidden codes running your love life.</p>
       <Divider />
       <div style={{ background: `${D.slate}cc`, border: `1px solid ${P.hot}22`, padding: "30px 25px", borderRadius: 2, textAlign: "left", maxWidth: 460, margin: "0 auto 30px" }}>
@@ -363,12 +361,12 @@ export default function LoversIntake() {
           <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12 }}>
             <div style={{ color: `${P.hot}55`, fontSize: 12, marginTop: 2, flexShrink: 0 }}>♦</div>
             <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 14, color: `${P.blush}44`, lineHeight: 1.6 }}>{s}</p></div>)}
-        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.blush}33`, fontStyle: "italic", marginTop: 14, lineHeight: 1.7 }}>
+        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.blush}33`,  marginTop: 14, lineHeight: 1.7 }}>
           Hand-mapped personally by Jennifer. No AI generation. Delivered within 5-7 days.</p>
       </div>
 
       <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.5rem,4vw,2rem)", color: P.hot, letterSpacing: "0.15em", marginBottom: 8 }}>$111</div>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.blush}33`, fontStyle: "italic", marginBottom: 25 }}>One-time payment · Lifetime access</p>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.blush}33`,  marginBottom: 25 }}>One-time payment · Lifetime access</p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 380, margin: "0 auto" }}>
         {[
@@ -389,7 +387,7 @@ export default function LoversIntake() {
 
       <Divider />
       <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: 12, letterSpacing: "0.15em", color: `${P.blush}44`, marginBottom: 12, fontWeight: 700 }}>ALREADY PAID?</p>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 14, color: `${P.blush}33`, lineHeight: 1.8, maxWidth: 420, margin: "0 auto 18px", fontStyle: "italic" }}>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 14, color: `${P.blush}33`, lineHeight: 1.8, maxWidth: 420, margin: "0 auto 18px",  }}>
         Let Jennifer know so she can send your access code.</p>
       <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Lovers & Liars Payment Confirmation — ${d.name}`)}&body=${encodeURIComponent(`Hi Jennifer,\n\nI just completed payment for the Lovers, Liars & All Things Patterned Dossier ($111).\n\nName: ${d.name}\nEmail: ${d.email}\nPayment method: [Venmo/CashApp/PayPal/Stripe]\n\nPlease send my access code when ready.\n\nThank you.`)}`}
         style={{ display: "block", width: "min(100%,380px)", padding: "16px 25px", margin: "0 auto", border: `1px solid ${P.hot}33`, textDecoration: "none", textAlign: "center", fontFamily: "'Bebas Neue',sans-serif", fontSize: 14, letterSpacing: "0.12em", color: P.pale, background: `${P.hot}18`, borderRadius: 2 }}>
@@ -404,7 +402,7 @@ export default function LoversIntake() {
           style={{ ...inputBase, textAlign: "center", letterSpacing: "0.3em", fontFamily: "'Bebas Neue',sans-serif", fontSize: 16 }}
           onFocus={e => { e.target.style.borderColor = `${P.hot}55` }}
           onBlur={e => { e.target.style.borderColor = `${P.hot}22` }} />
-        {d.codeError && <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: P.hot, textAlign: "center", marginTop: 8, fontStyle: "italic" }}>Invalid access code. Please check and try again.</p>}
+        {d.codeError && <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: P.hot, textAlign: "center", marginTop: 8,  }}>Invalid access code. Please check and try again.</p>}
         <div style={{ marginTop: 18, textAlign: "center" }}>
           <Btn label="UNLOCK FULL INTAKE" onClick={() => { if (d.accessCode === ACCESS_CODE) go("deep1"); else set("codeError", true) }} primary /></div>
       </div>
@@ -449,7 +447,7 @@ export default function LoversIntake() {
         <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: 11, color: `${P.blush}22`, letterSpacing: "0.1em" }}>{qi + 1} of {MCQ.length}</p>
       </div>
       <h3 style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.2rem,3.5vw,1.6rem)", color: P.pale, textAlign: "center", lineHeight: 1.5, marginBottom: 8 }}>{q.q}</h3>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.blush}33`, textAlign: "center", fontStyle: "italic", marginBottom: 30 }}>{q.sub}</p>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.blush}33`, textAlign: "center",  marginBottom: 30 }}>{q.sub}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {q.opts.map((opt, oi) => <div key={oi} onClick={() => {
           const newAnswers = [...d.mcqAnswers]; newAnswers[qi] = opt;
@@ -458,7 +456,7 @@ export default function LoversIntake() {
         }}
           style={{ padding: "16px 20px", border: `1px solid ${P.hot}22`, borderRadius: 2, cursor: "pointer", background: `${D.slate}cc`, transition: "all 0.3s" }}>
           <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 15, color: P.pale, lineHeight: 1.5 }}>{opt.text}</p>
-          <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 12, color: `${P.neon}33`, fontStyle: "italic", marginTop: 4 }}>{opt.detail}</p>
+          <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 12, color: `${P.neon}33`,  marginTop: 4 }}>{opt.detail}</p>
         </div>)}
       </div>
       {qi > 0 && <div style={{ marginTop: 25, textAlign: "center" }}>
@@ -469,7 +467,7 @@ export default function LoversIntake() {
   // ── DYAD SCREEN — Open-ended ──
   if (phase === "dyad") return <Shell step="dyad">
     <Header title="DYAD ENGINE™" sub="The questions underneath the questions" progress={75} />
-    <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 14, color: `${P.blush}33`, textAlign: "center", fontStyle: "italic", marginBottom: 30 }}>
+    <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 14, color: `${P.blush}33`, textAlign: "center",  marginBottom: 30 }}>
       These five questions reach where multiple choice cannot. Take your time. Write from the gut.</p>
     {DYAD_QUESTIONS.map((dq, i) => <TI key={i} label={dq.q} hint={dq.hint}
       value={d.dyadAnswers[i]} onChange={v => { const a = [...d.dyadAnswers]; a[i] = v; set("dyadAnswers", a) }}
@@ -494,7 +492,7 @@ export default function LoversIntake() {
       <div style={{ textAlign: "center" }}>
         <NeonHeart size={80} />
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(2rem,6vw,3rem)", color: P.hot, marginTop: 20, letterSpacing: "0.1em", animation: "titleGlow 4s ease-in-out infinite" }}>PATTERN MAP SEALED</h2>
-        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${P.blush}55`, fontStyle: "italic", marginTop: 12, lineHeight: 1.9, maxWidth: 460, margin: "12px auto 0" }}>
+        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${P.blush}55`,  marginTop: 12, lineHeight: 1.9, maxWidth: 460, margin: "12px auto 0" }}>
           Your relational codes have been captured. Jennifer will personally map every pattern and craft your Lovers & Liars Dossier by hand.</p>
         <Divider />
         <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "center", marginBottom: 40 }}>
@@ -510,7 +508,7 @@ export default function LoversIntake() {
           <div style={{ maxHeight: 350, overflow: "auto", paddingRight: 8 }}>
             <pre style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.blush}25`, lineHeight: 1.8, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{summary}</pre></div>
         </div>
-        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.blush}25`, marginTop: 35, lineHeight: 1.9, fontStyle: "italic" }}>
+        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.blush}25`, marginTop: 35, lineHeight: 1.9,  }}>
           Your Pattern Dossier will be delivered within 5-7 days.<br />
           <span style={{ color: `${P.hot}33` }}>theforgottencode780@gmail.com</span> · (423) 388-8304</p>
         <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: 9, color: `${P.hot}15`, marginTop: 40, letterSpacing: "0.15em" }}>
