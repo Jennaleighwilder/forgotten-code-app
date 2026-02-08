@@ -183,10 +183,7 @@ export default function ReportsLanding() {
         <GoldDustField />
         <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 50% 38%, rgba(180,120,40,0.04), transparent 50%)`, pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 2, textAlign: "center", opacity: vis ? 1 : 0, transition: "opacity 1s" }}>
-          <div style={{ margin: "0 auto 40px" }}>
-            <RealisticFlame size={1.8} />
-          </div>
-          <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1.75rem, 5vw, 3rem)", fontWeight: 700,
+          <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1.75rem, 5vw, 3rem)", fontWeight: 700, marginBottom: 14,
             color: TEXT.primary, letterSpacing: "0.14em", marginBottom: 14, textShadow: "0 0 30px rgba(201,165,90,0.15)" }}>
             THE FORGOTTEN CODE
           </h1>
@@ -213,9 +210,6 @@ export default function ReportsLanding() {
       <div style={{ position: "relative", zIndex: 10, maxWidth: 1120, margin: "0 auto" }}>
         <FilmGrain />
         <div style={{ textAlign: "center", marginBottom: 48, opacity: vis ? 1 : 0, animation: vis ? "fadeIn 0.8s ease" : "none" }}>
-          <div style={{ margin: "0 auto 20px" }}>
-            <RealisticFlame size={1.4} />
-          </div>
           <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1.5rem, 4vw, 2.5rem)", fontWeight: 700,
             color: TEXT.primary, letterSpacing: "0.12em", marginBottom: 8 }}>
             CHOOSE YOUR READING

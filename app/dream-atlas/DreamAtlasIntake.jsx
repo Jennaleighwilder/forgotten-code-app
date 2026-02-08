@@ -347,8 +347,6 @@ export default function DreamAtlasIntake() {
       <div style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: "#C4B59A",  marginTop: 10 }}>& The Forbidden Library</div>
       <div style={{ fontFamily: "'Cinzel',serif", fontSize: 11, letterSpacing: "0.35em", color: "rgba(255,248,240,0.7)", marginTop: 25 }}>MINI PREVIEW + FULL DEEP INTAKE</div>
       <SectionDivider />
-      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.2rem)", color: "rgba(255,248,240,0.85)", lineHeight: 2, maxWidth: 480,  }}>
-        Your dreams are not random. They are the oldest language your soul still speaks. Give us one returning dream \u2014 and we\u2019ll show you the thread your sleeping mind has been weaving.</p>
       <div style={{ marginTop: 40 }}><NavButton label="OPEN THE ATLAS" onClick={() => go("mini1")} primary /></div>
       <div style={{ marginTop: 60, display: "flex", alignItems: "center", gap: 12 }}>
         <div style={{ width: 30, height: 1, background: `${B.cobalt}18` }} />
