@@ -362,7 +362,7 @@ export default function LoversIntake() {
             <div style={{ color: `${P.hot}55`, fontSize: 12, marginTop: 2, flexShrink: 0 }}>♦</div>
             <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 14, color: `${P.blush}44`, lineHeight: 1.6 }}>{s}</p></div>)}
         <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.blush}33`,  marginTop: 14, lineHeight: 1.7 }}>
-          Hand-mapped personally by Jennifer. No AI generation. Delivered within 5-7 days.</p>
+          Delivered within 5-7 days.</p>
       </div>
 
       <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.5rem,4vw,2rem)", color: P.hot, letterSpacing: "0.15em", marginBottom: 8 }}>$111</div>
@@ -493,7 +493,7 @@ export default function LoversIntake() {
         <NeonHeart size={80} />
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(2rem,6vw,3rem)", color: P.hot, marginTop: 20, letterSpacing: "0.1em", animation: "titleGlow 4s ease-in-out infinite" }}>PATTERN MAP SEALED</h2>
         <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${P.blush}55`,  marginTop: 12, lineHeight: 1.9, maxWidth: 460, margin: "12px auto 0" }}>
-          Your relational codes have been captured. Jennifer will personally map every pattern and craft your Lovers & Liars Dossier by hand.</p>
+          Your relational codes have been captured. Your Pattern Dossier will be delivered within 5-7 days.</p>
         <Divider />
         <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "center", marginBottom: 40 }}>
           <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Lovers & Liars Full Intake — ${d.name}`)}&body=${encodeURIComponent(summary)}`}

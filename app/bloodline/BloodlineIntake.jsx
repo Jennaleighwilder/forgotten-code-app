@@ -281,7 +281,7 @@ export default function BloodlineIntake() {
             <div style={{color:`${R.blood}55`,fontSize:12,marginTop:2,flexShrink:0}}>◈</div>
             <p style={{fontFamily:"'Crimson Text',serif",fontSize:14,color:`${T.bone}44`,lineHeight:1.6}}>{s}</p></div>)}
         <p style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.dust}33`,marginTop:14,lineHeight:1.7}}>
-          Hand-crafted personally by Jennifer. No AI generation. Delivered within 5-7 days.</p>
+          Delivered within 5-7 days.</p>
       </div>
 
       <div style={{fontFamily:"'Cinzel',serif",fontSize:"clamp(1.5rem,4vw,2rem)",color:E.parchment,letterSpacing:"0.15em",marginBottom:8}}>$111</div>
@@ -496,7 +496,7 @@ function Complete({data:d,onBack}) {
         WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text",animation:"titleShimmer 6s ease-in-out infinite",
         filter:"drop-shadow(0 2px 12px #8b1a1a33)"}}>BLOODLINE SEALED</h2>
       <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1rem,2.5vw,1.15rem)",color:`${T.dust}55`,marginTop:12,lineHeight:1.9,maxWidth:460,margin:"12px auto 0"}}>
-        Your ancestral codes have been captured. Jennifer will personally trace every thread and craft your Heritage Dossier by hand.</p>
+        Your ancestral codes have been captured. Your Heritage Dossier will be delivered within 5-7 days.</p>
       <Divider/>
       <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",marginBottom:40}}>
         <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Bloodline Full Heritage Intake — ${d.name}`)}&body=${encodeURIComponent(summary)}`}

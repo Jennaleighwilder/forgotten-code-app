@@ -403,7 +403,7 @@ export default function DreamAtlasIntake() {
             <div style={{ color: `${C.teal}55`, fontSize: 12, marginTop: 2, flexShrink: 0 }}>\u263D</div>
             <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 14, color: `${L.frost}44`, lineHeight: 1.6 }}>{s}</p></div>)}
         <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}33`,  marginTop: 14, lineHeight: 1.7 }}>
-          Hand-crafted personally by Jennifer. No AI generation. Delivered within 5-7 days.</p>
+          Delivered within 5-7 days.</p>
       </div>
 
       <div style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.5rem,4vw,2rem)", color: G.gold, letterSpacing: "0.15em", marginBottom: 8 }}>$111</div>
@@ -587,7 +587,7 @@ export default function DreamAtlasIntake() {
         <CrescentMoon size={80} />
         <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: G.gold, marginTop: 20, letterSpacing: "0.12em", animation: "moonGlow 4s ease-in-out infinite" }}>ATLAS SEALED</h2>
         <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${L.mist}88`,  marginTop: 12, lineHeight: 1.9, maxWidth: 460, margin: "12px auto 0" }}>
-          Your celestial map has been drawn. Jennifer will personally chart every symbol, decode every dream-book, and craft your Dream Atlas by hand.</p>
+          Your celestial map has been drawn. Your Dream Atlas will be delivered within 5-7 days.</p>
         <SectionDivider />
         <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "center", marginBottom: 40 }}>
           <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Dream Atlas Full Intake — ${d.name}`)}&body=${encodeURIComponent(summary)}`}
