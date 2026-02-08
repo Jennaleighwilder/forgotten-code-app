@@ -75,7 +75,9 @@ function FourSeasonsTree() {
   const season=SEASONS[si]; const isW=si===0;
   useEffect(()=>{const t=setInterval(()=>{setVis(0);setTimeout(()=>{setSi(s=>(s+1)%4);setVis(1)},900)},5500);return()=>clearInterval(t)},[]);
   const canopyLeaves=useMemo(()=>{if(!season.leafColors)return[];const rng=sRng(si*1000+42);const lv=[];const centerX=250;
-    const spots = tree.leafSpots.slice(0, 80);
+    const branchSpots = tree.leafSpots.slice(0, 80);
+    const topMiddleSpots = Array.from({length:28},()=>({x:250+(rng()-0.5)*58,y:70+rng()*92}));
+    const spots = [...topMiddleSpots,...branchSpots];
     spots.forEach((s,idx)=>{const c=1+Math.floor(rng()*2);for(let j=0;j<c;j++){
       const cx=s.x+(rng()-0.5)*22,cy=s.y+(rng()-0.5)*18;
       const color=season.leafColors[(idx+j)%season.leafColors.length],opacity=0.45+rng()*0.35,delay=rng()*0.6,r=si===1?2+rng()*5:3+rng()*7;
