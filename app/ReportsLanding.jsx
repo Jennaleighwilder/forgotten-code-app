@@ -50,9 +50,11 @@ const REPORTS = [
 const LIVE_ROUTES = { 1: "/bloodline", 2: "/dream-atlas", 3: "/lovers" };
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
+@keyframes floatUp{0%,100%{transform:translateY(0) translateX(0)}25%{transform:translateY(-22px) translateX(6px)}50%{transform:translateY(-8px) translateX(-10px)}75%{transform:translateY(-30px) translateX(4px)}}
+@keyframes twinkle{0%,100%{opacity:0.08}50%{opacity:0.7}}
 @keyframes candleFlicker{0%{transform:scaleY(1) scaleX(1);opacity:1}25%{transform:scaleY(1.14) scaleX(0.86) translateX(-1px);opacity:0.85}50%{transform:scaleY(0.92) scaleX(1.08) translateX(1px);opacity:1}75%{transform:scaleY(1.06) scaleX(0.93);opacity:0.82}100%{transform:scaleY(1) scaleX(1);opacity:1}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -60,6 +62,25 @@ html,body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
 @keyframes breathe{0%,100%{opacity:0.3}50%{opacity:0.6}}
 ::selection{background:rgba(201,165,90,0.25);color:#faf8f2}
 `;
+
+function GoldDustField() {
+  const [p] = useState(() => Array.from({ length: 80 }, (_, i) => ({
+    id: i, x: Math.random() * 100, y: Math.random() * 100,
+    s: Math.random() * 2.5 + 0.3,
+    d: Math.random() * 30 + 12, dl: Math.random() * -25,
+    tw: Math.random() * 6 + 3, td: Math.random() * -6,
+    lum: Math.random() * 25 + 55,
+  })));
+  return <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 2, overflow: "hidden" }}>
+    {p.map(v => <div key={v.id} style={{
+      position: "absolute", left: `${v.x}%`, top: `${v.y}%`,
+      width: v.s, height: v.s, borderRadius: "50%",
+      background: `hsl(43, 60%, ${v.lum}%)`,
+      boxShadow: v.s > 1.2 ? `0 0 ${v.s * 5}px hsla(43, 60%, ${v.lum}%, 0.45)` : "none",
+      animation: `floatUp ${v.d}s ease-in-out ${v.dl}s infinite, twinkle ${v.tw}s ease-in-out ${v.td}s infinite`,
+    }} />)}
+  </div>;
+}
 
 function Candle({ size = 1 }) {
   return <div style={{ display: "flex", flexDirection: "column", alignItems: "center", transform: `scale(${size})` }}>
@@ -94,6 +115,7 @@ export default function ReportsLanding() {
         alignItems: "center", justifyContent: "center", background: VOID.deep, cursor: "pointer", overflow: "hidden",
       }}>
         <style>{CSS}</style>
+        <GoldDustField />
         <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 50% 40%, rgba(200,150,60,0.06), transparent 55%)`, pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 2, textAlign: "center", opacity: vis ? 1 : 0, transition: "opacity 1s" }}>
           <div style={{ margin: "0 auto 36px", animation: "gentleBob 5s ease-in-out infinite" }}>
@@ -104,7 +126,7 @@ export default function ReportsLanding() {
             THE FORGOTTEN CODE
           </h1>
           <p style={{ fontFamily: "'Crimson Text', serif", fontSize: "clamp(1.05rem, 2.5vw, 1.3rem)",
-            color: TEXT.secondary, fontStyle: "italic", letterSpacing: "0.05em", marginBottom: 40 }}>
+            color: TEXT.secondary, letterSpacing: "0.05em", marginBottom: 40 }}>
             Research Institute
           </p>
           <div style={{ padding: "14px 50px", border: `2px solid ${GOLD.warm}66`, borderRadius: 4,
@@ -120,11 +142,11 @@ export default function ReportsLanding() {
     );
   }
 
-  // ── MENU: Candle on top, no glitter, sharp contrast + bigger text ──
+  // ── MENU: Candle on top, gold glitter, sharp contrast + bigger text, no italics ──
   return (
-    <div style={{ minHeight: "100vh", padding: "40px 20px 80px", background: VOID.deep, position: "relative" }}>
+    <div style={{ minHeight: "100vh", padding: "40px 20px 80px", background: VOID.deep, position: "relative", overflow: "hidden" }}>
       <style>{CSS}</style>
-      {/* No glitter on menu */}
+      <GoldDustField />
 
       <div style={{ position: "relative", zIndex: 10, maxWidth: 1120, margin: "0 auto" }}>
         {/* Candle on top of menu */}
@@ -166,7 +188,7 @@ export default function ReportsLanding() {
                   {r.name}
                 </h3>
                 <p style={{ fontFamily: "'Crimson Text', serif", fontSize: "clamp(1.05rem, 1.8vw, 1.15rem)",
-                  color: TEXT.secondary, lineHeight: 1.65, fontStyle: "italic" }}>
+                  color: TEXT.secondary, lineHeight: 1.65 }}>
                   {r.desc}
                 </p>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: TEXT.muted, letterSpacing: "0.02em", lineHeight: 1.5, marginTop: 12 }}>
