@@ -60,6 +60,8 @@ html,body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes gentleBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes breathe{0%,100%{opacity:0.3}50%{opacity:0.6}}
+@keyframes goldDie{0%{transform:scale(1) rotate(0);opacity:0.9}100%{transform:scale(0) rotate(140deg) translateY(-20px);opacity:0}}
+@keyframes goldBurst{0%{transform:scale(0);opacity:0.8}100%{transform:scale(1);opacity:0}}
 ::selection{background:rgba(201,165,90,0.25);color:#faf8f2}
 `;
 
@@ -78,6 +80,43 @@ function GoldDustField() {
       background: `hsl(43, 60%, ${v.lum}%)`,
       boxShadow: v.s > 1.2 ? `0 0 ${v.s * 5}px hsla(43, 60%, ${v.lum}%, 0.45)` : "none",
       animation: `floatUp ${v.d}s ease-in-out ${v.dl}s infinite, twinkle ${v.tw}s ease-in-out ${v.td}s infinite`,
+    }} />)}
+  </div>;
+}
+
+function GoldBurst({ active, onDone }) {
+  const [sparks, setSparks] = useState([]);
+  useEffect(() => {
+    if (!active) return;
+    const s = Array.from({ length: 70 }, (_, i) => ({
+      id: i,
+      x: 50 + (Math.random() - 0.5) * 16,
+      y: 50 + (Math.random() - 0.5) * 16,
+      dx: (Math.random() - 0.5) * 120,
+      dy: (Math.random() - 0.5) * 120,
+      size: Math.random() * 5 + 1.5,
+      lum: Math.random() * 25 + 55,
+      delay: Math.random() * 0.25,
+      dur: Math.random() * 0.5 + 0.35,
+    }));
+    setSparks(s);
+    const timer = setTimeout(() => { setSparks([]); onDone?.(); }, 900);
+    return () => clearTimeout(timer);
+  }, [active]);
+  if (!sparks.length) return null;
+  return <div style={{ position: "fixed", inset: 0, zIndex: 9999, pointerEvents: "none" }}>
+    <div style={{ position: "absolute", inset: 0, background: "rgba(5,2,8,0.35)", animation: "fadeIn 0.15s" }} />
+    <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%)",
+      width: 12, height: 12, borderRadius: "50%",
+      background: "radial-gradient(circle, rgba(250,245,232,0.7), rgba(201,165,90,0.35), transparent)",
+      animation: "goldBurst 0.6s ease-out forwards" }} />
+    {sparks.map(s => <div key={s.id} style={{
+      position: "absolute",
+      left: `calc(${s.x}% + ${s.dx}px)`, top: `calc(${s.y}% + ${s.dy}px)`,
+      width: s.size, height: s.size, borderRadius: "50%",
+      background: `hsl(43, 55%, ${s.lum}%)`,
+      boxShadow: `0 0 ${s.size * 3}px hsla(43, 55%, ${s.lum - 8}%, 0.55)`,
+      animation: `goldDie ${s.dur}s ease-out ${s.delay}s forwards`,
     }} />)}
   </div>;
 }
@@ -103,14 +142,22 @@ function Candle({ size = 1 }) {
 
 export default function ReportsLanding() {
   const [entered, setEntered] = useState(false);
+  const [burst, setBurst] = useState(false);
   const [vis, setVis] = useState(false);
   const [hov, setHov] = useState(null);
   useEffect(() => { setTimeout(() => setVis(true), 200) }, []);
 
-  // ── INTRO: Candle only + Enter ──
+  const handleEnter = () => {
+    if (entered) return;
+    setBurst(true);
+  };
+
+  // ── INTRO: Candle + glitter dust + Enter → explode glitter then menu ──
   if (!entered) {
     return (
-      <div onClick={() => setEntered(true)} style={{
+      <>
+        {burst && <GoldBurst active={true} onDone={() => { setBurst(false); setEntered(true); }} />}
+      <div onClick={handleEnter} style={{
         position: "fixed", inset: 0, zIndex: 100, display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center", background: VOID.deep, cursor: "pointer", overflow: "hidden",
       }}>
@@ -139,6 +186,7 @@ export default function ReportsLanding() {
           Click to enter
         </p>
       </div>
+      </>
     );
   }
 
