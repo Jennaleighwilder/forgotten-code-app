@@ -190,7 +190,7 @@ html,body{overflow-x:hidden;font-style:normal}
 p, input, textarea, label { font-style: normal }
 textarea:focus,input:focus{outline:none}
 ::selection{background:#ff2d7b33;color:#fff0f5}
-@keyframes neonFlicker{0%,70%,72%,74%,78%,82%,86%,100%{opacity:1;filter:brightness(1)}71%,73%{opacity:0.5;filter:brightness(0.6)}75%,77%{opacity:0.85;filter:brightness(0.9)}79%,81%{opacity:0.35;filter:brightness(0.45)}83%,85%{opacity:0.7;filter:brightness(0.8)}87%,89%{opacity:0.25;filter:brightness(0.35)}}
+@keyframes neonFlicker{0%,60%,64%,68%,72%,76%,80%,84%,88%,92%,100%{opacity:1;filter:brightness(1)}61%,63%{opacity:0.4;filter:brightness(0.5)}65%,67%{opacity:0.85;filter:brightness(0.9)}69%,71%{opacity:0.3;filter:brightness(0.4)}73%,75%{opacity:0.7;filter:brightness(0.75)}77%,79%{opacity:0.25;filter:brightness(0.35)}81%,83%{opacity:0.9;filter:brightness(0.95)}85%,87%{opacity:0.35;filter:brightness(0.45)}89%,91%{opacity:0.5;filter:brightness(0.6)}93%,97%{opacity:0.2;filter:brightness(0.3)}}
 @keyframes neonBorderPulse{0%,100%{border-color:rgba(255,45,123,0.35);box-shadow:0 0 8px rgba(255,45,123,0.15)}50%{border-color:rgba(255,45,123,0.6);box-shadow:0 0 18px rgba(255,45,123,0.25)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes btnSweep{0%{transform:translateX(-100%) skewX(-12deg)}100%{transform:translateX(200%) skewX(-12deg)}}
@@ -198,8 +198,8 @@ textarea:focus,input:focus{outline:none}
 `;
 
 // ═══ REAL NEON HEART — White-hot core, pink bleed, tube highlight, subtle flicker ═══
-function NeonHeart({ size = 80 }) {
-  return <div style={{ width: size, height: size, animation: "neonFlicker 8s ease-in-out infinite", lineHeight: 0, margin: "0 auto" }}>
+function NeonHeart({ size = 80, delay = 0 }) {
+  return <div style={{ width: size, height: size, animation: `neonFlicker 4s ease-in-out ${delay}s infinite`, lineHeight: 0, margin: "0 auto" }}>
     <svg viewBox="0 0 60 60" width="100%" height="100%">
       <defs>
         <filter id="ngGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -300,18 +300,22 @@ export default function LoversIntake() {
   // ── INTRO ──
   if (phase === "intro") return <Shell step="intro">
     <div style={{ minHeight: "90vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
-      <NeonHeart size={100} />
+      <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <NeonHeart size={100} delay={0} />
+        <div style={{ position: "absolute", top: 70, left: "50%", transform: "translateX(calc(-50% - 38px))" }}><NeonHeart size={52} delay={1.2} /></div>
+        <div style={{ position: "absolute", top: 78, left: "50%", transform: "translateX(calc(-50% + 38px))" }}><NeonHeart size={44} delay={2.4} /></div>
+      </div>
       <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(3.5rem,14vw,6.5rem)", letterSpacing: "0.12em", lineHeight: 0.95, marginTop: 20,
-        color: P.hot, textShadow: "0 0 4px rgba(255,255,255,0.9), 0 0 12px #ff2d7b, 0 0 28px #ff2d7b88, 0 0 48px #ff2d7b44, 0 0 80px #ff2d7b22", animation: "neonFlicker 8s ease-in-out infinite" }}>LOVERS<br/><span style={{ fontSize: "0.5em", letterSpacing: "0.3em", color: P.neon, opacity: 0.7 }}>LIARS &</span><br/>ALL THINGS<br/>PATTERNED</h1>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: "#C4B59A",  marginTop: 18 }}>Mirror Protocol™ · DYAD Engine™</p>
+        color: P.hot, textShadow: "0 0 4px rgba(255,255,255,0.9), 0 0 12px #ff2d7b, 0 0 28px #ff2d7b88, 0 0 48px #ff2d7b44, 0 0 80px #ff2d7b22", animation: "neonFlicker 4s ease-in-out 0.6s infinite" }}>LOVERS<br/><span style={{ fontSize: "0.5em", letterSpacing: "0.3em", color: P.neon, opacity: 0.7 }}>LIARS &</span><br/>ALL THINGS<br/>PATTERNED</h1>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: "#C4B59A", fontStyle: "normal", marginTop: 18 }}>Mirror Protocol™ · DYAD Engine™</p>
       <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 11, letterSpacing: "0.4em", color: "rgba(255,248,240,0.7)", marginTop: 20 }}>MINI PREVIEW + FULL DEEP INTAKE</div>
       <Divider />
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: "rgba(255,248,240,0.85)", lineHeight: 2, maxWidth: 480,  }}>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: "rgba(255,248,240,0.85)", lineHeight: 2, maxWidth: 480, fontStyle: "normal" }}>
         Every relationship has a pattern. A code running underneath the surface that neither of you can see but both of you feel. Give us one whisper about love — and we'll show you the thread.</p>
       <div style={{ marginTop: 40 }}><Btn label="BEGIN THE PATTERN MAP" onClick={() => go("mini1")} primary /></div>
       <div style={{ marginTop: 60, display: "flex", alignItems: "center", gap: 12 }}>
         <div style={{ width: 30, height: 1, background: `${P.hot}0c` }} />
-        <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: 9, color: "rgba(255,248,240,0.65)", letterSpacing: "0.2em" }}>The Forgotten Code Research Institute</p>
+        <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: 9, color: "rgba(255,248,240,0.65)", letterSpacing: "0.2em", fontStyle: "normal" }}>The Forgotten Code Research Institute</p>
         <div style={{ width: 30, height: 1, background: `${P.hot}0c` }} />
       </div>
     </div></Shell>;

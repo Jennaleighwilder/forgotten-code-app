@@ -47,23 +47,24 @@ textarea:focus,input:focus,select:focus{outline:none}
 @keyframes moonGlow{0%,100%{filter:drop-shadow(0 0 15px #1a4a7a44)}50%{filter:drop-shadow(0 0 35px #2a9d8f44)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes constellationPulse{0%,100%{opacity:0.3}50%{opacity:0.8}}
+@keyframes starTwinkle{0%,100%{opacity:0.15;transform:scale(1)}25%{opacity:0.9;transform:scale(1.2)}50%{opacity:0.25;transform:scale(1)}75%{opacity:0.95;transform:scale(1.15)}}
 @keyframes goldBorderPulse{0%,100%{border-color:#c9a84c22;box-shadow:0 0 8px #0d284711}50%{border-color:#c9a84c55;box-shadow:0 0 25px #2a9d8f11}}
 @keyframes inkBleed{from{width:0}to{width:100%}}
 @keyframes btnSweep{0%{transform:translateX(-100%) skewX(-12deg)}100%{transform:translateX(200%) skewX(-12deg)}}
 `;
 
 function Stars() {
-  const stars = Array.from({ length: 60 }, (_, i) => ({
+  const stars = Array.from({ length: 120 }, (_, i) => ({
     left: Math.random() * 100, top: Math.random() * 100,
-    size: Math.random() * 2 + 0.5, delay: Math.random() * 8,
-    dur: Math.random() * 4 + 3, opacity: Math.random() * 0.5 + 0.2
+    size: Math.random() * 2.5 + 0.5, delay: Math.random() * 4,
+    dur: Math.random() * 1.5 + 1, opacity: Math.random() * 0.4 + 0.2
   }));
   return <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }}>
     {stars.map((s, i) => <div key={i} style={{
       position: "absolute", left: `${s.left}%`, top: `${s.top}%`,
       width: s.size, height: s.size, borderRadius: "50%",
       background: i % 3 === 0 ? G.gold : L.frost, opacity: s.opacity,
-      animation: `constellationPulse ${s.dur}s ease-in-out ${s.delay}s infinite`
+      animation: `starTwinkle ${s.dur}s ease-in-out ${s.delay}s infinite`
     }} />)}
   </div>;
 }
@@ -81,48 +82,48 @@ function FogMist() {
     const resize = () => { c.width = window.innerWidth; c.height = window.innerHeight; };
     resize(); window.addEventListener("resize", resize);
 
-    // Create fog banks — large, slow-moving ellipses with VISIBLE opacity
-    banksRef.current = Array.from({ length: 14 }, (_, i) => ({
-      x: Math.random() * c.width, y: c.height * 0.25 + Math.random() * c.height * 0.65,
-      w: Math.random() * 600 + 250, h: Math.random() * 160 + 60,
-      speed: (Math.random() - 0.5) * 0.4,
-      yDrift: Math.random() * Math.PI * 2, ySpeed: Math.random() * 0.003 + 0.001,
-      opa: Math.random() * 0.06 + 0.03,
-      opaPulse: Math.random() * Math.PI * 2, opaSp: Math.random() * 0.004 + 0.002,
+    // Fog — gentle drift across full width, minimal wave so it doesn't sit in weird waves
+    banksRef.current = Array.from({ length: 18 }, (_, i) => ({
+      x: Math.random() * c.width, y: c.height * 0.2 + Math.random() * c.height * 0.7,
+      w: Math.random() * 500 + 300, h: Math.random() * 120 + 50,
+      speed: (Math.random() - 0.5) * 0.15 + 0.08,
+      yDrift: Math.random() * Math.PI * 2, ySpeed: Math.random() * 0.001 + 0.0005,
+      opa: Math.random() * 0.05 + 0.025,
+      opaPulse: Math.random() * Math.PI * 2, opaSp: Math.random() * 0.002 + 0.001,
       color: i % 4 === 0 ? "rgba(42,157,143," : i % 4 === 1 ? "rgba(139,173,196," : i % 4 === 2 ? "rgba(168,200,216," : "rgba(13,40,71,"
     }));
 
-    // Create sands of time — tiny golden particles drifting upward like time dissolving
-    sandsRef.current = Array.from({ length: 60 }, () => ({
+    // Sands of time — full width coverage, more particles drifting up
+    sandsRef.current = Array.from({ length: 140 }, () => ({
       x: Math.random() * c.width,
-      y: c.height + Math.random() * 100,
-      size: Math.random() * 2 + 0.5,
-      speed: Math.random() * 0.6 + 0.2,
-      drift: (Math.random() - 0.5) * 0.3,
+      y: c.height + Math.random() * 200,
+      size: Math.random() * 2.5 + 0.6,
+      speed: Math.random() * 0.8 + 0.3,
+      drift: (Math.random() - 0.5) * 0.25,
       wobble: Math.random() * Math.PI * 2,
-      wobbleSpeed: Math.random() * 0.02 + 0.008,
-      opa: Math.random() * 0.4 + 0.1,
+      wobbleSpeed: Math.random() * 0.015 + 0.01,
+      opa: Math.random() * 0.45 + 0.12,
       color: Math.random() > 0.6 ? "rgba(201,168,76," : Math.random() > 0.3 ? "rgba(184,148,63," : "rgba(245,230,200,"
     }));
 
     const loop = () => {
       ctx.clearRect(0, 0, c.width, c.height);
 
-      // Draw fog
+      // Draw fog — gentle horizontal drift, very subtle vertical movement (no weird waves)
       banksRef.current.forEach(b => {
         b.x += b.speed;
         b.yDrift += b.ySpeed;
         b.opaPulse += b.opaSp;
-        const yOff = Math.sin(b.yDrift) * 12;
-        const opaOff = Math.sin(b.opaPulse) * 0.02;
-        const opa = Math.max(0.01, Math.min(0.1, b.opa + opaOff));
+        const yOff = Math.sin(b.yDrift) * 3;
+        const opaOff = Math.sin(b.opaPulse) * 0.01;
+        const opa = Math.max(0.015, Math.min(0.09, b.opa + opaOff));
 
         if (b.x > c.width + b.w) b.x = -b.w;
         if (b.x < -b.w) b.x = c.width + b.w;
 
         const grd = ctx.createRadialGradient(b.x, b.y + yOff, 0, b.x, b.y + yOff, b.w * 0.5);
         grd.addColorStop(0, b.color + opa + ")");
-        grd.addColorStop(0.4, b.color + (opa * 0.6) + ")");
+        grd.addColorStop(0.5, b.color + (opa * 0.5) + ")");
         grd.addColorStop(1, b.color + "0)");
         ctx.fillStyle = grd;
         ctx.beginPath();
