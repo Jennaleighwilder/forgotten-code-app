@@ -35,7 +35,7 @@ html,body{overflow-x:hidden}
 // SEEDED RNG + FRACTAL TREE
 // ════════════════════════════════════════════════
 
-function sRng(seed) { let s=seed; return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646} }
+function sRng(seed) { let s=seed; return()=>{s=(s*16807+0)%2147483647;return(s-1)/2147483646} }
 
 function generateTree(seed=777) {
   const rng=sRng(seed); const branches=[]; const leafSpots=[];
@@ -54,7 +54,7 @@ function generateTree(seed=777) {
     for(let i=0;i<n;i++){const t=n===1?0:(i/(n-1))*2-1;
       branch(x2,y2,angle+t*sp+(rng()-0.5)*0.2,length*(0.62+rng()*0.18),Math.max(0.5,width*(0.55+rng()*0.15)),depth+1,maxD)}
   }
-  branch(250,430,(sRng(seed)()-0.5)*0.05,100,18,0,6);
+  branch(250,430,(sRng(seed)()-0.5)*0.05,100,18,0,7);
   return{branches,leafSpots};
 }
 
@@ -74,16 +74,8 @@ function FourSeasonsTree() {
   const tree=useMemo(()=>generateTree(777),[]);
   const season=SEASONS[si]; const isW=si===0;
   useEffect(()=>{const t=setInterval(()=>{setVis(0);setTimeout(()=>{setSi(s=>(s+1)%4);setVis(1)},900)},5500);return()=>clearInterval(t)},[]);
-  const canopyLeaves=useMemo(()=>{if(!season.leafColors)return[];const rng=sRng(si*1000+42);const lv=[];const centerX=250;
-    const branchSpots=tree.leafSpots.slice(0,80);
-    const topCap=Array.from({length:12},()=>({x:210+rng()*80,y:90+rng()*50}));
-    const spots=[...topCap,...branchSpots];
-    spots.forEach((s,idx)=>{const c=1+Math.floor(rng()*2);for(let j=0;j<c;j++){
-      const cx=s.x+(rng()-0.5)*22,cy=s.y+(rng()-0.5)*18;
-      const r=si===1?2+rng()*5:3+rng()*7,color=season.leafColors[(idx+j)%season.leafColors.length],opacity=0.45+rng()*0.35,delay=rng()*0.6;
-      lv.push({cx,cy,r,color,opacity,delay});
-      lv.push({cx:centerX*2-cx,cy,r,color,opacity:0.45+rng()*0.35,delay:rng()*0.6});
-    }});return lv},[si,tree.leafSpots]);
+  const canopyLeaves=useMemo(()=>{if(!season.leafColors)return[];const rng=sRng(si*1000+42);const lv=[];
+    tree.leafSpots.forEach((s,idx)=>{const c=2+Math.floor(rng()*3);for(let j=0;j<c;j++)lv.push({cx:s.x+(rng()-0.5)*22,cy:s.y+(rng()-0.5)*18,r:si===1?2+rng()*5:3+rng()*7,color:season.leafColors[(idx+j)%season.leafColors.length],opacity:0.45+rng()*0.35,delay:rng()*0.6})});return lv},[si,tree.leafSpots]);
   const particles=useMemo(()=>{const p=[];
     if(si===0){for(let i=0;i<40;i++)p.push({type:"snow",x:5+Math.random()*90,delay:Math.random()*6,dur:3+Math.random()*4,size:1+Math.random()*2.5,color:"#c8d8e8",drift:`${-15+Math.random()*30}px`,fall:`${350+Math.random()*150}px`})}
     else if(si===1){for(let i=0;i<30;i++)p.push({type:"petal",x:15+Math.random()*70,delay:Math.random()*5,dur:4+Math.random()*5,size:3+Math.random()*5,color:season.pColors[i%season.pColors.length],drift:`${-30+Math.random()*60}px`,fall:`${350+Math.random()*150}px`})}
