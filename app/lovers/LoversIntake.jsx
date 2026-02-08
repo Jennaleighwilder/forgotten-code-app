@@ -186,7 +186,8 @@ const DYAD_QUESTIONS = [
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{overflow-x:hidden}
+html,body{overflow-x:hidden;font-style:normal}
+p, input, textarea, label { font-style: normal }
 textarea:focus,input:focus{outline:none}
 ::selection{background:#ff2d7b33;color:#fff0f5}
 @keyframes neonFlicker{0%,70%,72%,74%,78%,82%,86%,100%{opacity:1;filter:brightness(1)}71%,73%{opacity:0.5;filter:brightness(0.6)}75%,77%{opacity:0.85;filter:brightness(0.9)}79%,81%{opacity:0.35;filter:brightness(0.45)}83%,85%{opacity:0.7;filter:brightness(0.8)}87%,89%{opacity:0.25;filter:brightness(0.35)}}
@@ -250,9 +251,9 @@ function Header({ title, sub, progress }) {
   </div>;
 }
 
-const inputBase = { width: "100%", padding: "14px 18px", background: `${D.slate}cc`, border: `1px solid ${P.hot}22`, color: P.pale, fontFamily: "'Playfair Display',serif", fontSize: 16, transition: "all 0.3s", lineHeight: 1.7, borderRadius: 2 };
+const inputBase = { width: "100%", padding: "14px 18px", background: `${D.slate}cc`, border: `1px solid ${P.hot}22`, color: P.pale, fontFamily: "'Playfair Display',serif", fontSize: 16, fontStyle: "normal", transition: "all 0.3s", lineHeight: 1.7, borderRadius: 2 };
 const labelStyle = { fontFamily: "'Manrope',sans-serif", fontSize: 13, color: `${P.blush}77`, letterSpacing: "0.06em", fontWeight: 600, display: "block", marginBottom: 6, marginTop: 22 };
-const hintStyle = { fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.neon}44`,  marginTop: 4, marginBottom: 2 };
+const hintStyle = { fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.neon}44`, fontStyle: "normal", marginTop: 4, marginBottom: 2 };
 
 function TI({ label, hint, value, onChange, placeholder, multi, rows }) {
   const Tag = multi ? "textarea" : "input";

@@ -52,7 +52,8 @@ const LIVE_ROUTES = { 1: "/bloodline", 2: "/dream-atlas", 3: "/lovers" };
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
+html,body{overflow-x:hidden;-webkit-font-smoothing:antialiased;font-style:normal}
+p,input,textarea,label{font-style:normal}
 @keyframes floatUp{0%,100%{transform:translateY(0) translateX(0)}25%{transform:translateY(-22px) translateX(6px)}50%{transform:translateY(-8px) translateX(-10px)}75%{transform:translateY(-30px) translateX(4px)}}
 @keyframes twinkle{0%,100%{opacity:0.08}50%{opacity:0.7}}
 @keyframes candleFlicker{0%{transform:scaleY(1) scaleX(1);opacity:1}25%{transform:scaleY(1.14) scaleX(0.86) translateX(-1px);opacity:0.85}50%{transform:scaleY(0.92) scaleX(1.08) translateX(1px);opacity:1}75%{transform:scaleY(1.06) scaleX(0.93);opacity:0.82}100%{transform:scaleY(1) scaleX(1);opacity:1}}

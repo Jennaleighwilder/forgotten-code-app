@@ -39,7 +39,8 @@ const TRADITION_OPTS = ["Jungian","Daoist","Vedic/Hindu","Shamanic","Indigenous"
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{overflow-x:hidden}
+html,body{overflow-x:hidden;font-style:normal}
+p, input, textarea, label, select { font-style: normal }
 textarea:focus,input:focus,select:focus{outline:none}
 ::selection{background:#2a9d8f33;color:#e8dcc8}
 @keyframes starDrift{0%{transform:translateY(0) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-100vh) rotate(180deg);opacity:0}}
@@ -197,10 +198,10 @@ function SectionDivider() {
 // ═══ SHARED INPUT STYLES ═══
 const inputBase = { width: "100%", padding: "14px 18px", background: `${V.indigo}cc`,
   border: `1px solid ${B.midnight}44`, color: G.pale, fontFamily: "'Crimson Text',serif",
-  fontSize: 16, transition: "border-color 0.3s", lineHeight: 1.7, borderRadius: 2 };
+  fontSize: 16, fontStyle: "normal", transition: "border-color 0.3s", lineHeight: 1.7, borderRadius: 2 };
 const labelStyle = { fontFamily: "'Cinzel',serif", fontSize: 13, color: `${L.mist}88`,
   letterSpacing: "0.08em", display: "block", marginBottom: 6, marginTop: 20 };
-const hintStyle = { fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.whisper}55`,
+const hintStyle = { fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.whisper}55`, fontStyle: "normal",
  marginTop: 4, marginBottom: 2 };
 
 function TextInput({ label, hint, value, onChange, placeholder, multiline, rows }) {

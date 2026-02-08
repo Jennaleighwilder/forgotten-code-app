@@ -15,7 +15,8 @@ const T = { bone:"#c8b89a", sand:"#b8a882", dust:"#9a8a6e", sage:"#8a9a7a", copp
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{overflow-x:hidden}
+html,body{overflow-x:hidden;font-style:normal}
+p, input, textarea, label { font-style: normal }
 ::selection{background:#8b1a1a44;color:#d4c4a0}
 @keyframes snowFall{0%{transform:translateY(-20px) translateX(0) rotate(0deg);opacity:0}10%{opacity:0.7}90%{opacity:0.4}100%{transform:translateY(var(--fall)) translateX(var(--drift)) rotate(360deg);opacity:0}}
 @keyframes petalDrift{0%{transform:translateY(-20px) translateX(0) rotate(0deg) scale(1);opacity:0}12%{opacity:0.8}40%{transform:translateY(calc(var(--fall)*0.4)) translateX(calc(var(--drift)*1.2)) rotate(140deg) scale(0.9)}70%{transform:translateY(calc(var(--fall)*0.7)) translateX(calc(var(--drift)*-0.5)) rotate(280deg) scale(0.75)}100%{transform:translateY(var(--fall)) translateX(var(--drift)) rotate(420deg) scale(0.3);opacity:0}}
@@ -145,9 +146,9 @@ function Shell({children,step}){const[show,setShow]=useState(false);useEffect(()
     <div style={{position:"fixed",inset:0,pointerEvents:"none",background:`radial-gradient(ellipse at 25% 65%,${R.wine}0a,transparent 55%),radial-gradient(ellipse at 75% 25%,${E.bark}0c,transparent 50%)`}}/>
     <div style={{position:"relative",zIndex:10,maxWidth:640,margin:"0 auto",opacity:show?1:0,transform:show?"translateY(0)":"translateY(25px)",transition:"all 0.7s ease"}}>{children}</div></div>}
 
-const inputBase={width:"100%",padding:"14px 18px",background:`${D.loam}cc`,border:`1px solid ${E.bark}55`,color:E.parchment,fontFamily:"'Crimson Text',serif",fontSize:16,transition:"all 0.3s",lineHeight:1.7,borderRadius:2};
+const inputBase={width:"100%",padding:"14px 18px",background:`${D.loam}cc`,border:`1px solid ${E.bark}55`,color:E.parchment,fontFamily:"'Crimson Text',serif",fontSize:16,fontStyle:"normal",transition:"all 0.3s",lineHeight:1.7,borderRadius:2};
 const labelStyle={fontFamily:"'Cinzel',serif",fontSize:13,color:`${T.dust}99`,letterSpacing:"0.08em",display:"block",marginBottom:6,marginTop:22};
-const hintStyle={fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.sage}55`,marginTop:4,marginBottom:2};
+const hintStyle={fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.sage}55`,fontStyle:"normal",marginTop:4,marginBottom:2};
 
 function TI({label,hint,value,onChange,placeholder,multi,rows}){const Tag=multi?"textarea":"input";
   return<div><label style={labelStyle}>{label}</label>{hint&&<p style={hintStyle}>{hint}</p>}
