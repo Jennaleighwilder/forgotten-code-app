@@ -339,7 +339,7 @@ export default function DreamAtlasIntake() {
   const nav = (back, next, label = "CONTINUE", dis = false) => <div style={{ display: "flex", justifyContent: back ? "space-between" : "flex-end", marginTop: 40 }}>
     {back && <NavButton label="← BACK" onClick={() => go(back)} />}<NavButton label={label} onClick={() => go(next)} primary disabled={dis} /></div>;
 
-  // \u2500\u2500 INTRO \u2500\u2500
+  // ── INTRO ──
   if (phase === "intro") return <PageShell section={0}>
     <div style={{ minHeight: "85vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
       <CrescentMoon size={110} />
@@ -358,7 +358,7 @@ export default function DreamAtlasIntake() {
     </div>
   </PageShell>;
 
-  // \u2500\u2500 MINI TEASER \u2500\u2500
+  // ── MINI TEASER ──
   if (phase === "mini1") return <PageShell section="mini1">
     <SectionHeader title="FIRST THREAD" sub="Before the atlas opens" />
     <TextInput label="Your Name" value={d.name} onChange={v => set("name", v)} placeholder="First, middle, last" />
@@ -367,7 +367,7 @@ export default function DreamAtlasIntake() {
     {nav(null, "miniResult", "REVEAL MY DREAM GLIMPSE", !(d.name && d.email))}
   </PageShell>;
 
-  // \u2500\u2500 MINI RESULT \u2500\u2500
+  // ── MINI RESULT ──
   if (phase === "miniResult") return <PageShell section="miniResult">
     <div style={{ textAlign: "center" }}>
       <CrescentMoon size={70} />
@@ -390,7 +390,7 @@ export default function DreamAtlasIntake() {
     </div>
   </PageShell>;
 
-  // \u2500\u2500 GATE \u2014 Payment \u2500\u2500
+  // ── GATE — Payment ──
   if (phase === "gate") return <PageShell section="gate">
     <div style={{ textAlign: "center" }}>
       <CrescentMoon size={70} />
@@ -413,10 +413,10 @@ export default function DreamAtlasIntake() {
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 380, margin: "0 auto" }}>
         {[
-          { label: "PAY WITH STRIPE", href: "https://buy.stripe.com/PLACEHOLDER", icon: "\u25c7", note: "Credit / Debit Card" },
-          { label: "PAY WITH VENMO", href: "https://venmo.com/u/Jennifer-Coley-4", icon: "\u263d", note: "@Jennifer-Coley-4" },
-          { label: "PAY WITH CASHAPP", href: "https://cash.app/$jenniferWilderWest", icon: "\u2605", note: "$jenniferWilderWest" },
-          { label: "PAY WITH PAYPAL", href: "https://paypal.me/JSnider364/111", icon: "\u25c9", note: "PayPal.me/JSnider364" }
+          { label: "PAY WITH STRIPE", href: "https://buy.stripe.com/PLACEHOLDER", icon: "◇", note: "Credit / Debit Card" },
+          { label: "PAY WITH VENMO", href: "https://venmo.com/u/Jennifer-Coley-4", icon: "☽", note: "@Jennifer-Coley-4" },
+          { label: "PAY WITH CASHAPP", href: "https://cash.app/$jenniferWilderWest", icon: "★", note: "$jenniferWilderWest" },
+          { label: "PAY WITH PAYPAL", href: "https://paypal.me/JSnider364/111", icon: "◉", note: "PayPal.me/JSnider364" }
         ].map((pm, i) =>
           <a key={i} href={pm.href} target="_blank" rel="noopener noreferrer"
             style={{ display: "block", padding: "16px 20px", border: `1px solid ${B.midnight}55`, textDecoration: "none", borderRadius: 2, background: `${V.indigo}cc`, transition: "all 0.3s", textAlign: "center" }}>
