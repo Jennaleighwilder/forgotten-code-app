@@ -36,6 +36,35 @@ const PORTAL_OPTS = ["Doors","Staircases","Tunnels","Wells","Elevators","Mirrors
 const KNOWLEDGE_OPTS = ["Past-life memory","Ancestral language","Prophecy","Healing knowledge","Hidden power","Cosmic secrets","Death wisdom","Creation codes"];
 const TRADITION_OPTS = ["Jungian","Daoist","Vedic/Hindu","Shamanic","Indigenous","Sufi","Kabbalistic","Buddhist","Norse/Germanic","Celtic","Egyptian","Gnostic","Hermetic","Yoruba/Ifa"];
 
+// Mini report — 5 multi-choice questions for depth
+// Mini report — 5 questions one per screen, A/B/C/D → pre-written report (exact wording, no AI)
+const DREAM_QUESTIONS = [
+  { q: "Your dreams feel most like:", A: "Warnings — they're trying to tell me something urgent", B: "Other lives — I'm someone else, somewhere else", C: "A recurring world — I keep going back to the same place", D: "Messages — figures speak to me or show me things" },
+  { q: "The figure that appears most in your dreams is:", A: "Someone I know but they're different — wrong face, wrong voice, wrong age", B: "A stranger who feels deeply familiar", C: "Something not human — a presence, a shadow, a creature", D: "A version of myself I don't recognize" },
+  { q: "The landscape you return to most is:", A: "A building — house, library, temple, school, hospital", B: "Water — ocean, river, rain, flood, underwater", C: "Wilderness — forest, desert, mountain, cave", D: "A threshold — doors, staircases, bridges, elevators" },
+  { q: "The dream you cannot forget involves:", A: "Being chased or hunted", B: "Finding something hidden — a room, a book, a door", C: "Flying, falling, or moving through impossible space", D: "A death — yours, someone else's, or something symbolic" },
+  { q: "What do you most want your dreams to show you?", A: "Why certain dreams keep repeating", B: "Who the figures in my dreams actually are", C: "What my dreams are preparing me for", D: "How to use my dream world consciously" },
+];
+
+function getDominantAnswer(answers) {
+  const counts = { A: 0, B: 0, C: 0, D: 0 };
+  answers.forEach(a => { if (a && counts.hasOwnProperty(a)) counts[a]++; });
+  const max = Math.max(...Object.values(counts));
+  const dominantLetters = Object.keys(counts).filter(k => counts[k] === max);
+  if (dominantLetters.length === 1) return dominantLetters[0];
+  const q5 = answers[4];
+  if (q5 && dominantLetters.includes(q5)) return q5;
+  return "MIXED";
+}
+
+const DREAM_REPORTS = {
+  A: "Your Dream Archetype: The Warning Keeper\n\nYour dreams are not entertainment. They are surveillance. Your unconscious runs a constant scan of your waking life and delivers its findings at night in the form of urgency, pursuit, and repetition. When something is wrong — or about to be — your dreams know before you do.\n\nThe recurring patterns you experience are not random anxiety. They are your dream architecture functioning exactly as designed: flagging what your conscious mind is refusing to see. The chase dreams, the buildings that shift, the faces that don't match — these are all signal, not noise.\n\nYou have an unusually active warning system. The question is not whether your dreams are meaningful — it is whether you are reading them correctly.\n\nWhat your full Dream Atlas reveals:\nThe specific warning language your dreams use and how to decode it. The recurring symbol dictionary unique to your dreamscape. The difference between anxiety dreams and genuine prophetic signals. Your Atlas maps every repeated pattern, names every symbol, and gives you the translation key your dream world has been waiting for you to find.",
+  B: "Your Dream Archetype: The Realm Walker\n\nYou do not simply dream. You travel. The lives you inhabit at night, the strangers who feel like family, the places that carry more emotional weight than anywhere you've been awake — these are not inventions of a restless mind. They are visits.\n\nYour dream architecture is built for crossing. You move between layers of consciousness with unusual ease, and the figures you encounter carry knowledge that doesn't originate in your personal memory. The familiarity you feel with dream strangers is recognition, not imagination.\n\nYour dreams are showing you that consciousness is not confined to one life, one timeline, or one identity. You have access to more than most people can reach.\n\nWhat your full Dream Atlas reveals:\nThe specific realms your dreams access and the figures who inhabit them. The difference between memory processing and genuine realm-crossing in your dream patterns. The portal map — how your dream world connects to the places you visit repeatedly. Your Atlas charts the full geography of your dream travel and names the guides waiting for you on the other side.",
+  C: "Your Dream Archetype: The Landscape Builder\n\nYou have built a world. Night after night, your dreams return to the same terrain — the same forests, the same buildings, the same impossible geographies — because your unconscious has constructed a persistent reality. This is not repetition. This is architecture.\n\nThe non-human presences, the wilderness settings, the experiences of flight and impossible movement — these are features of a dreamscape that has developed its own consistency, its own rules, its own inhabitants. You are not visiting random scenes. You are returning to a place that exists because you built it.\n\nMost dreamers pass through disposable settings. You have a home territory in the dream world. That is significant. It means your unconscious is doing sustained work in that space.\n\nWhat your full Dream Atlas reveals:\nThe complete map of your dream territory — every recurring location, landmark, and pathway. The creatures and presences that inhabit your dreamscape and what role they serve. The rules of your dream world — how movement, time, and transformation function in your personal architecture. Your Atlas is the cartography of a world only you can access.",
+  D: "Your Dream Archetype: The Threshold Walker\n\nYour dreams live at the edge. Doors, staircases, bridges, elevators — your unconscious is obsessed with the space between. The figures that speak to you, the versions of yourself you don't recognize, the symbolic deaths — these are all threshold experiences. Your dreams are not about what's on either side. They are about the crossing itself.\n\nYou are being shown that transformation is your dream's primary function. Every death is an ending that precedes a becoming. Every unrecognizable self is a version of you that hasn't arrived yet. Every speaking figure is delivering instructions for the crossing you are in the middle of.\n\nYour dream world is a liminal space — and you are being trained to navigate it.\n\nWhat your full Dream Atlas reveals:\nThe specific thresholds your dreams keep presenting and what each one represents. The figures who serve as guides, gatekeepers, or tests at each crossing. The transformation map — what your dream world is preparing you to become. Your Atlas decodes the initiatory architecture of your dreamscape and names the crossings you have already completed and the ones still ahead.",
+  MIXED: "Your Dream Archetype: The Dream Weaver\n\nYour dream world does not follow a single pattern because it is not built for a single purpose. You receive warnings, cross realms, build persistent landscapes, and walk thresholds — sometimes in the same night. Your unconscious is running multiple programs simultaneously.\n\nThis is rare. Most dreamers have a dominant mode. You operate across the full spectrum of dream function, which means your relationship to the dream world is unusually sophisticated. The complexity you experience at night is not confusion — it is range.\n\nYour dream architecture is too multi-layered for a simple interpretation. It requires full mapping.\n\nWhat your full Dream Atlas reveals:\nThe complete architecture of your multi-dimensional dream world. How your warning, realm-walking, landscape, and threshold functions interact. Which dream modes are dominant, which are emerging, and which carry the most urgent messages. Your Atlas maps the entire system — every layer, every figure, every recurring world — and gives you the master key.",
+};
+
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -317,7 +346,7 @@ export default function DreamAtlasIntake() {
   const [phase, setPhase] = useState("intro");
   const [d, setD] = useState({
     name: "", otherNames: "", dob: "", tob: "", pob: "", location: "", email: "",
-    miniWhisper: "", accessCode: "", codeError: false,
+    miniAnswers: ["", "", "", "", ""], accessCode: "", codeError: false,
     dreamRecall: "", dreamRecord: "", firstDream: "", childhoodNightmares: "", currentThemes: "",
     dreamAnimals: [], otherAnimals: "", animalEmotions: "",
     dreamObjects: [], otherObjects: "", objectStates: "",
@@ -349,7 +378,7 @@ export default function DreamAtlasIntake() {
       <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.2rem)", color: `${L.frost}44`, lineHeight: 2, maxWidth: 480, marginTop: 28 }}>
         Your dreams are not random. They are the oldest language your soul still speaks. Give us one returning dream — and we'll show you the thread your sleeping mind has been weaving.</p>
       <SectionDivider />
-      <div style={{ marginTop: 40 }}><NavButton label="OPEN THE ATLAS" onClick={() => go("mini1")} primary /></div>
+      <div style={{ marginTop: 40 }}><NavButton label="CONTINUE" onClick={() => go("start")} primary /></div>
       <div style={{ marginTop: 60, display: "flex", alignItems: "center", gap: 12 }}>
         <div style={{ width: 30, height: 1, background: `${B.cobalt}18` }} />
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 9, color: "rgba(255,248,240,0.65)", letterSpacing: "0.2em" }}>The Forgotten Code Research Institute</p>
@@ -358,37 +387,68 @@ export default function DreamAtlasIntake() {
     </div>
   </PageShell>;
 
-  // ── MINI TEASER ──
-  if (phase === "mini1") return <PageShell section="mini1">
-    <SectionHeader title="FIRST THREAD" sub="Before the atlas opens" />
-    <TextInput label="Your Name" value={d.name} onChange={v => set("name", v)} placeholder="First, middle, last" />
-    <TextInput label="Email Address" value={d.email} onChange={v => set("email", v)} placeholder="For receiving your atlas" />
-    <TextInput label="What dream keeps coming back?" hint="The one your sleeping mind won't let go of — even fragments count" value={d.miniWhisper} onChange={v => set("miniWhisper", v)} placeholder="I keep dreaming about..." multiline rows={3} />
-    {nav(null, "miniResult", "REVEAL MY DREAM GLIMPSE", !(d.name && d.email))}
-  </PageShell>;
-
-  // ── MINI RESULT ──
-  if (phase === "miniResult") return <PageShell section="miniResult">
-    <div style={{ textAlign: "center" }}>
-      <CrescentMoon size={70} />
-      <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: G.pale, marginTop: 15, letterSpacing: "0.1em", textShadow: `0 0 15px ${B.cobalt}66,0 0 30px ${C.teal}22` }}>YOUR DREAM GLIMPSE</h2>
-      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${L.whisper}55`,  marginTop: 12, lineHeight: 1.9 }}>What you wrote is just the first thread. The full map goes twelve layers deep.</p>
-      <SectionDivider />
-      <div style={{ background: `${V.indigo}cc`, border: `1px solid ${B.midnight}44`, padding: "30px 25px", borderRadius: 2, textAlign: "left", marginBottom: 30 }}>
-        <div style={{ fontFamily: "'Cinzel',serif", fontSize: 12, letterSpacing: "0.25em", color: `${L.mist}33`, marginBottom: 25 }}>INITIAL TRACE</div>
-        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 16, color: `${L.frost}55`, lineHeight: 2,  marginBottom: 20 }}>
-          {d.name} — the dream you keep returning to is the surface of something your soul has been writing for years. Every symbol, animal guide, shadow figure, and forbidden book in your nights is part of one architecture. You've just named the first thread.</p>
-        {d.miniWhisper && d.miniWhisper.trim() && <div style={{ marginBottom: 22, padding: "18px 20px", borderLeft: `2px solid ${C.teal}44`, background: `${B.midnight}33` }}>
-          <div style={{ fontFamily: "'Cinzel',serif", fontSize: 10, letterSpacing: "0.2em", color: `${C.teal}55`, marginBottom: 8 }}>YOUR RETURNING DREAM</div>
-          <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 15, color: `${L.frost}55`, lineHeight: 1.9,  }}>"{d.miniWhisper}"</p>
-        </div>}
-        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 15, color: `${L.mist}44`, lineHeight: 2 }}>
-          The full Dream Atlas decodes that architecture — hand-crafted by Jennifer, no AI. You get the complete map: every recurring symbol, landscape, portal, and the Forbidden Library your soul has been writing in the dark. Most people never see it. You're one step away.</p>
-      </div>
-      <NavButton label="UNLOCK THE FULL DREAM ATLAS →" onClick={() => go("gate")} primary />
-      <div style={{ marginTop: 30 }}><NavButton label="← EDIT MY ANSWERS" onClick={() => go("mini1")} /></div>
+  // ── START: Name + Email (minimal, before Q1) ──
+  if (phase === "start") return <PageShell section="start">
+    <div style={{ minHeight: "80vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxWidth: 420, margin: "0 auto" }}>
+      <div style={{ fontFamily: "'Cinzel',serif", fontSize: 11, letterSpacing: "0.3em", color: `${L.mist}66`, marginBottom: 24 }}>BEFORE WE BEGIN</div>
+      <TextInput label="Your Name" value={d.name} onChange={v => set("name", v)} placeholder="First and last" />
+      <TextInput label="Email Address" value={d.email} onChange={v => set("email", v)} placeholder="For receiving your reading" />
+      <div style={{ marginTop: 36, width: "100%" }}><NavButton label="BEGIN" onClick={() => go("q1")} primary disabled={!(d.name && d.email)} /></div>
     </div>
   </PageShell>;
+
+  // ── MINI: 5 questions one at a time, A/B/C/D → pre-written report ──
+  const dreamQIndex = phase === "q1" ? 0 : phase === "q2" ? 1 : phase === "q3" ? 2 : phase === "q4" ? 3 : phase === "q5" ? 4 : -1;
+  const dreamAnswers = d.miniAnswers || ["", "", "", "", ""];
+  const setDreamAnswer = (i, letter) => { const a = [...dreamAnswers]; a[i] = letter; set("miniAnswers", a); go(i < 4 ? `q${i + 2}` : "miniResult"); };
+  if (dreamQIndex >= 0) {
+    const q = DREAM_QUESTIONS[dreamQIndex];
+    const opts = [{ letter: "A", text: q.A }, { letter: "B", text: q.B }, { letter: "C", text: q.C }, { letter: "D", text: q.D }];
+    return <PageShell section={`q${dreamQIndex + 1}`}>
+      <div style={{ textAlign: "center", marginBottom: 28 }}>
+        <div style={{ fontFamily: "'Cinzel',serif", fontSize: 11, letterSpacing: "0.2em", color: `${L.mist}44`, marginBottom: 20 }}>QUESTION {dreamQIndex + 1} OF 5</div>
+        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.1rem,2.8vw,1.35rem)", color: G.pale, lineHeight: 1.6, maxWidth: 520, margin: "0 auto" }}>"{q.q}"</p>
+        <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 32 }}>
+          {[0, 1, 2, 3, 4].map(i => <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: i <= dreamQIndex ? `${C.teal}66` : `${B.midnight}22` }} />)}
+        </div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {opts.map(({ letter, text }) => (
+          <div key={letter} onClick={() => setDreamAnswer(dreamQIndex, letter)} style={{ padding: "18px 20px", cursor: "pointer", border: `1px solid ${B.midnight}44`, background: `${V.indigo}cc`, borderRadius: 2, fontFamily: "'Crimson Text',serif", fontSize: 15, color: `${L.frost}99`, lineHeight: 1.6, transition: "all 0.3s", display: "flex", alignItems: "flex-start", gap: 12 }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = `${C.teal}55`; e.currentTarget.style.boxShadow = `0 0 18px ${C.teal}15` }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = `${B.midnight}44`; e.currentTarget.style.boxShadow = "none" }}>
+            <span style={{ fontFamily: "'Cinzel',serif", fontSize: 14, color: `${C.teal}99`, flexShrink: 0 }}>{letter})</span>
+            <span style={{ fontStyle: "normal" }}>{text}</span>
+          </div>
+        ))}
+      </div>
+    </PageShell>;
+  }
+
+  // ── MINI RESULT ──
+  if (phase === "miniResult") {
+    const dominant = getDominantAnswer(dreamAnswers);
+    const reportText = DREAM_REPORTS[dominant] || DREAM_REPORTS.MIXED;
+    const paragraphs = reportText.split("\n\n").filter(Boolean);
+    return <PageShell section="miniResult">
+      <div style={{ textAlign: "center" }}>
+        <CrescentMoon size={70} />
+        <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: G.pale, marginTop: 15, letterSpacing: "0.1em", textShadow: `0 0 15px ${B.cobalt}66,0 0 30px ${C.teal}22` }}>YOUR DREAM GLIMPSE</h2>
+        <SectionDivider />
+        <div style={{ background: `${V.indigo}cc`, border: `1px solid ${B.midnight}44`, padding: "30px 25px", borderRadius: 2, textAlign: "left", marginBottom: 30 }}>
+          {paragraphs.map((para, i) => (
+            <p key={i} style={{ fontFamily: "'Crimson Text',serif", fontSize: i === 0 ? 16 : 15, color: i === 0 ? `${L.frost}99` : `${L.frost}44`, lineHeight: 2, marginBottom: 20, fontStyle: "normal" }}>{para}</p>
+          ))}
+        </div>
+        <SectionDivider />
+        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.2vw,1.15rem)", color: `${L.frost}88`, marginBottom: 20 }}>Ready to see the full map?</p>
+        <NavButton label="ORDER YOUR FULL READING — $127" onClick={() => go("gate")} primary />
+        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 12, color: `${L.mist}44`, marginTop: 20, maxWidth: 420, margin: "20px auto 0", lineHeight: 1.7, fontStyle: "normal" }}>
+          After purchase, you'll receive a personal access code to complete your full intake. Jennifer will personally generate your complete Dream Mapping and deliver it within 5-7 business days.</p>
+        <div style={{ marginTop: 30 }}><NavButton label="← EDIT MY ANSWERS" onClick={() => go("q1")} /></div>
+      </div>
+    </PageShell>;
+  }
 
   // ── GATE — Payment ──
   if (phase === "gate") return <PageShell section="gate">
@@ -396,10 +456,10 @@ export default function DreamAtlasIntake() {
       <CrescentMoon size={70} />
       <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.8rem,5vw,2.5rem)", color: G.pale, marginTop: 15, letterSpacing: "0.1em" }}>UNLOCK THE FULL ATLAS</h2>
       <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: `${L.frost}44`,  marginTop: 12, lineHeight: 2, maxWidth: 480, margin: "12px auto 0" }}>
-        Your dream glimpse revealed the surface. The full Dream Atlas goes twelve layers deep — mapping every symbol, animal guide, shadow figure, dream landscape, portal crossing, and the forbidden books your soul has been writing in the dark.</p>
+        Your dream glimpse revealed the surface. Dream Mapping goes twelve layers deep — mapping every symbol, animal guide, shadow figure, dream landscape, portal crossing, and the forbidden books your soul has been writing in the dark.</p>
       <SectionDivider />
       <div style={{ background: `${V.indigo}cc`, border: `1px solid ${B.midnight}44`, padding: "30px 25px", borderRadius: 2, textAlign: "left", maxWidth: 460, margin: "0 auto 30px" }}>
-        <div style={{ fontFamily: "'Cinzel',serif", fontSize: 12, letterSpacing: "0.2em", color: `${L.mist}55`, marginBottom: 18 }}>YOUR DREAM ATLAS INCLUDES</div>
+        <div style={{ fontFamily: "'Cinzel',serif", fontSize: 12, letterSpacing: "0.2em", color: `${L.mist}55`, marginBottom: 18 }}>YOUR DREAM MAPPING INCLUDES</div>
         {["Dream foundations — earliest memories, recurring themes, childhood patterns", "Animal guides, totems, and dream guardians across your lifetime", "Sacred objects, motifs, and the language your dreams speak", "Shadow figures — beings, entities, and unresolved encounters", "Dream landscapes, portals, and threshold crossings", "The Forbidden Library — the books your soul keeps writing", "Synchronicities and dream-to-waking connections"].map((s, i) =>
           <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12 }}>
             <div style={{ color: `${C.teal}55`, fontSize: 12, marginTop: 2, flexShrink: 0 }}>☽</div>
@@ -408,7 +468,7 @@ export default function DreamAtlasIntake() {
           Hand-crafted personally by Jennifer. No AI generation. Delivered within 5-7 days.</p>
       </div>
 
-      <div style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.5rem,4vw,2rem)", color: G.gold, letterSpacing: "0.15em", marginBottom: 8 }}>$111</div>
+      <div style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.5rem,4vw,2rem)", color: G.gold, letterSpacing: "0.15em", marginBottom: 8 }}>$127</div>
       <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}33`,  marginBottom: 25 }}>One-time payment · Lifetime access</p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 380, margin: "0 auto" }}>
@@ -416,7 +476,7 @@ export default function DreamAtlasIntake() {
           { label: "PAY WITH STRIPE", href: "https://buy.stripe.com/PLACEHOLDER", icon: "◇", note: "Credit / Debit Card" },
           { label: "PAY WITH VENMO", href: "https://venmo.com/u/Jennifer-Coley-4", icon: "☽", note: "@Jennifer-Coley-4" },
           { label: "PAY WITH CASHAPP", href: "https://cash.app/$jenniferWilderWest", icon: "★", note: "$jenniferWilderWest" },
-          { label: "PAY WITH PAYPAL", href: "https://paypal.me/JSnider364/111", icon: "◉", note: "PayPal.me/JSnider364" }
+          { label: "PAY WITH PAYPAL", href: "https://paypal.me/JSnider364/127", icon: "◉", note: "PayPal.me/JSnider364" }
         ].map((pm, i) =>
           <a key={i} href={pm.href} target="_blank" rel="noopener noreferrer"
             style={{ display: "block", padding: "16px 20px", border: `1px solid ${B.midnight}55`, textDecoration: "none", borderRadius: 2, background: `${V.indigo}cc`, transition: "all 0.3s", textAlign: "center" }}>
@@ -430,7 +490,7 @@ export default function DreamAtlasIntake() {
 
       <SectionDivider />
       <p style={{ fontFamily: "'Cinzel',serif", fontSize: 12, letterSpacing: "0.15em", color: `${L.mist}44`, marginBottom: 12 }}>ALREADY PAID?</p>
-      <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Dream Atlas Payment Confirmation — ${d.name}`)}&body=${encodeURIComponent(`Hi Jennifer,\n\nI just completed payment for the Dream Atlas & Forbidden Library ($111).\n\nName: ${d.name}\nEmail: ${d.email}\nPayment method: [Venmo/CashApp/PayPal/Stripe]\n\nPlease send my access code when ready.\n\nThank you.`)}`}
+      <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Dream Mapping Payment Confirmation — ${d.name}`)}&body=${encodeURIComponent(`Hi Jennifer,\n\nI just completed payment for Dream Mapping ($127).\n\nName: ${d.name}\nEmail: ${d.email}\nPayment method: [Venmo/CashApp/PayPal/Stripe]\n\nPlease send my access code when ready.\n\nThank you.`)}`}
         style={{ display: "block", width: "min(100%,380px)", padding: "16px 25px", margin: "0 auto", border: `1px solid ${C.teal}33`, textDecoration: "none", textAlign: "center", fontFamily: "'Cinzel',serif", fontSize: 13, letterSpacing: "0.12em", color: G.gold, background: `${B.midnight}33`, borderRadius: 2 }}>
         ✉ I'VE PAID — NOTIFY JENNIFER</a>
       <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 12, color: `${L.mist}18`, marginTop: 12 }}>
@@ -464,7 +524,7 @@ export default function DreamAtlasIntake() {
     <TextInput label="Date of Birth" value={d.dob} onChange={v => set("dob", v)} placeholder="MM/DD/YYYY" />
     <TextInput label="Time of Birth" hint="If known" value={d.tob} onChange={v => set("tob", v)} placeholder="e.g. 9:32 AM" />
     <TextInput label="Place of Birth" value={d.pob} onChange={v => set("pob", v)} placeholder="City, State, Country" />
-    <TextInput label="Email Address" value={d.email} onChange={v => set("email", v)} placeholder="For receiving your Dream Atlas" />
+    <TextInput label="Email Address" value={d.email} onChange={v => set("email", v)} placeholder="For receiving your Dream Mapping" />
     {dn("gate", "deep2", "CONTINUE", !(d.name && d.email))}
   </PageShell>;
 
@@ -567,7 +627,7 @@ export default function DreamAtlasIntake() {
   // ═══════════════════════════════════════════════════════
   if (phase === "complete") {
     const buildSummary = () => {
-      let s = `════════════════════════════════════════\nTHE DREAM ATLAS & FORBIDDEN LIBRARY\nFULL DEEP INTAKE — Celestial Map\n════════════════════════════════════════\n\n`;
+      let s = `════════════════════════════════════════\nDREAM MAPPING\nFULL DEEP INTAKE — Celestial Map\n════════════════════════════════════════\n\n`;
       s += `══ PERSONAL FOUNDATION ══\nName: ${d.name}\nDate of Birth: ${d.dob}\nTime of Birth: ${d.tob || "(not provided)"}\nPlace of Birth: ${d.pob || "(not provided)"}\nEmail: ${d.email}\n\n`;
       s += `══ DREAM FOUNDATIONS ══\nRecall Frequency: ${d.dreamRecall || "(not answered)"}\nRecording Method: ${d.dreamRecord || "(not answered)"}\nEarliest Dream: ${d.firstDream || "(not answered)"}\nChildhood Nightmares: ${d.childhoodNightmares || "(not answered)"}\nCurrent Themes: ${d.currentThemes || "(not answered)"}\n\n`;
       s += `══ RECURRING ANIMALS ══\nAnimals: ${(d.dreamAnimals||[]).join(", ") || "None selected"}\nOther Animals: ${d.otherAnimals || "(none)"}\nEmotional Response: ${d.animalEmotions || "(not answered)"}\n\n`;
@@ -589,10 +649,10 @@ export default function DreamAtlasIntake() {
         <CrescentMoon size={80} />
         <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: G.gold, marginTop: 20, letterSpacing: "0.12em", animation: "moonGlow 4s ease-in-out infinite" }}>ATLAS SEALED</h2>
         <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${L.mist}88`,  marginTop: 12, lineHeight: 1.9, maxWidth: 460, margin: "12px auto 0" }}>
-          Your celestial map has been drawn. Your Dream Atlas will be delivered within 5-7 days.</p>
+          Your celestial map has been drawn. Your Dream Mapping will be delivered within 5-7 days.</p>
         <SectionDivider />
         <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "center", marginBottom: 40 }}>
-          <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Dream Atlas Full Intake — ${d.name}`)}&body=${encodeURIComponent(summary)}`}
+          <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Dream Mapping — Full Intake — ${d.name}`)}&body=${encodeURIComponent(summary)}`}
             style={{ display: "block", width: "min(100%,400px)", padding: "18px 30px", border: `2px solid ${G.gold}44`, textDecoration: "none", textAlign: "center", fontFamily: "'Cinzel',serif", fontSize: 15, letterSpacing: "0.15em", color: G.pale, background: `${C.teal}22`, borderRadius: 2, animation: "goldBorderPulse 3s ease-in-out infinite" }}>
             ✉ SEND DREAM MAP VIA EMAIL</a>
           <div onClick={() => { navigator.clipboard.writeText(summary).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500) }) }}
@@ -605,7 +665,7 @@ export default function DreamAtlasIntake() {
             <pre style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}44`, lineHeight: 1.8, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{summary}</pre></div>
         </div>
         <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}44`, marginTop: 35, lineHeight: 1.9,  }}>
-          Your Dream Atlas will be delivered within 5-7 days.<br />
+          Your Dream Mapping will be delivered within 5-7 days.<br />
           <span style={{ color: `${G.gold}55` }}>theforgottencode780@gmail.com</span> · (423) 388-8304</p>
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 9, color: `${G.gold}22`, marginTop: 40, letterSpacing: "0.15em" }}>
           © Jennifer Leigh West · The Forgotten Code Research Institute · Mirror Protocol™ · Dream Atlas™</p>

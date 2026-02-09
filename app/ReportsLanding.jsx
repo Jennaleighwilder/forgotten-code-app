@@ -32,21 +32,21 @@ function SigilIcon({ type, size = 48, color }) {
 }
 
 const REPORTS = [
-  { id: 1, name: "Bloodline: Ancestral Tree", sigil: "bloodline", tier: "premium", price: 127, desc: "Uncover the magic woven into your bloodline", focus: "Ancestral gifts · bloodline patterns · sacred geography" },
-  { id: 2, name: "Dream Mapping", sigil: "dream", tier: "premium", price: 127, desc: "Navigate your dreamscape atlas", focus: "Dream Atlas · Forbidden Library · recurring visions" },
-  { id: 3, name: "Lovers, Liars & All Things Patterned", sigil: "lovers", tier: "premium", price: 127, desc: "Decode the architecture of your connections", focus: "DYAD Engine™ · Mirror Protocol™ · soul contracts" },
+  { id: 1, name: "Bloodline: Roots of Your Becoming", sigil: "bloodline", tier: "premium", price: 127, desc: "Maps ancestral gifts & trauma", focus: "Reveals hidden inheritance patterns · Tracks sacred geography · Connects bloodline memory to present identity" },
+  { id: 2, name: "Dream Mapping", sigil: "dream", tier: "premium", price: 127, desc: "Complete atlas of recurring dreams", focus: "Symbol dictionary unique to you · Nightmare patterns + subconscious messaging · Archetypal architecture" },
+  { id: 3, name: "Lovers, Liars & All Things Patterned", sigil: "lovers", tier: "premium", price: 127, desc: "Compatibility mapping · Karmic loops", focus: "Soul-bond dynamics · Union design" },
   { id: 4, name: "Business Identity Map", sigil: "business", tier: "premium", price: 127, desc: "Your wealth positioning blueprint", focus: "Wealth geography · venue infiltration · scaling" },
   { id: 5, name: "Spiritual Entrepreneur", sigil: "entrepreneur", tier: "premium", price: 127, desc: "Business alchemy decoded", focus: "90-day transformation · wealth protocols" },
   { id: 6, name: "Desire: The Forbidden Mirror", sigil: "desire", tier: "standard", price: 79, desc: "Beauty, desire, and sovereignty", focus: "Shame alchemy · erotic self-discovery" },
   { id: 7, name: "Attachment Bonds", sigil: "attachment", tier: "standard", price: 79, desc: "Your love pattern forensics", focus: "Attachment architecture · toxic cycle breaking" },
   { id: 8, name: "Financial Identity Map", sigil: "financial", tier: "standard", price: 79, desc: "Your money archetypes revealed", focus: "Money wounds · prosperity sabotage patterns" },
   { id: 9, name: "Rage & Resilience", sigil: "rage", tier: "standard", price: 79, desc: "Trauma transformed to power", focus: "Ancestral fire · phoenix ashes · sacred combat" },
-  { id: 10, name: "The Siren's Call", sigil: "siren", tier: "standard", price: 79, desc: "Voice activation prophecy", focus: "Origins of voice · naming power · prophecy" },
-  { id: 11, name: "Past Lives: Soul Map", sigil: "pastlives", tier: "standard", price: 79, desc: "Karmic patterns decoded", focus: "Soul contracts · death patterns · gifts carried" },
+  { id: 10, name: "The Siren's Call: Your Voice, Your Truth", sigil: "siren", tier: "standard", price: 79, desc: "What are you actually meant to say?", focus: "Where your words come from · How your message naturally moves · How you build honest expression · How your inner signal comes alive" },
+  { id: 11, name: "Soul Map of Past Lives", sigil: "pastlives", tier: "standard", price: 79, desc: "What is your soul repeating?", focus: "Old patterns that return · Agreements across lifetimes · Stories that echo again · Gifts kept, debts remembered" },
   { id: 12, name: "The Calling", sigil: "calling", tier: "standard", price: 79, desc: "Faith & divine purpose", focus: "Spiritual gifts · prophetic calling" },
 ];
 
-const LIVE_ROUTES = { 1: "/bloodline", 2: "/dream-atlas", 3: "/lovers" };
+const LIVE_ROUTES = { 1: "/bloodline", 2: "/dream-atlas", 3: "/lovers", 10: "/sirens-call", 11: "/past-lives" };
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@400;500;600&display=swap');

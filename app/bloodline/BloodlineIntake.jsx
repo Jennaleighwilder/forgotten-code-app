@@ -186,6 +186,37 @@ function Header({title,sub,progress}){return<div style={{textAlign:"center",marg
   <Divider/></div>}
 
 // ════════════════════════════════════════════════
+// MINI REPORT — 5 questions, one per screen, A/B/C/D → pre-written report
+// ════════════════════════════════════════════════
+
+const BLOODLINE_QUESTIONS = [
+  { q: "When you think about your family history, what pulls you most?", A: "There are secrets no one will talk about", B: "I feel connected to a culture or land I've never visited", C: "Someone in my family had gifts that were hidden or suppressed", D: "I've always felt I carry something that didn't start with me" },
+  { q: "Which of these have you experienced?", A: "Knowing things about family members before being told", B: "Recurring dreams about ancestors or old places", C: "Physical marks, conditions, or traits that feel like they carry meaning", D: "A pull toward a spiritual tradition you weren't raised in" },
+  { q: "The family wound that echoes loudest is:", A: "Abandonment or exile — someone was cut off", B: "Silence — something was buried and never spoken", C: "Power misused — authority became control", D: "Gifts denied — someone's true nature was suppressed" },
+  { q: "If your bloodline had a hidden gift, it would be:", A: "Sight — knowing what others can't see", B: "Protection — an unbreakable shield that runs in the family", C: "Fire — a dangerous power that transforms everything it touches", D: "Memory — carrying knowledge across generations without being taught" },
+  { q: "What do you most want to know?", A: "Why my family fractured the way it did", B: "What gifts am I carrying that I haven't activated yet", C: "Where my bloodline actually comes from — the deeper truth", D: "What my ancestors need me to know right now" },
+];
+
+function getDominantAnswer(answers) {
+  const counts = { A: 0, B: 0, C: 0, D: 0 };
+  answers.forEach(a => { if (a && counts.hasOwnProperty(a)) counts[a]++; });
+  const max = Math.max(...Object.values(counts));
+  const dominantLetters = Object.keys(counts).filter(k => counts[k] === max);
+  if (dominantLetters.length === 1) return dominantLetters[0];
+  const q5 = answers[4];
+  if (q5 && dominantLetters.includes(q5)) return q5;
+  return "MIXED";
+}
+
+const BLOODLINE_REPORTS = {
+  A: "Your Bloodline Signature: The Exile's Return\n\nYour bloodline carries the scar of severance. Somewhere in your lineage, someone was cut off — cast out, silenced, or forced to disappear. That fracture didn't heal. It echoed. It shaped who stayed, who left, who stopped speaking, and who carried the weight of what was never explained.\n\nYou feel this as a pull toward the missing. The family member no one mentions. The story that changes depending on who tells it. The silence that sits in the center of every gathering like an uninvited guest.\n\nWhat you are sensing is real. The fracture in your bloodline created a gap — and you were born into the gap. You are the one who came back to the place your ancestor was forced to leave.\n\nWhat your full Bloodline Dossier reveals:\nThe exact ancestral wound pattern that created the exile. The hidden gifts that were carried out when your ancestor was cast off. The sacred lineage roles that have been waiting for someone to return and reclaim them. Your dossier traces the thread from the original fracture to you — and maps the power that was preserved in the leaving.",
+  B: "Your Bloodline Signature: The Ancestral Rememberer\n\nYour body knows things your biography doesn't explain. You feel drawn to places you've never been, traditions you weren't taught, and landscapes that feel more like home than the one you grew up in. This is not imagination. This is blood memory activating.\n\nYour lineage carries an unusually strong thread of cultural encoding — the kind that survives migration, assimilation, and even deliberate erasure. Somewhere in your ancestry, someone carried a tradition so deeply that it embedded itself in the line. It didn't need to be taught. It passed through the blood.\n\nYou are the generation where that memory is surfacing. The pull you feel toward certain lands, certain practices, certain symbols — that is your ancestors remembering themselves through you.\n\nWhat your full Bloodline Dossier reveals:\nThe specific cultural and spiritual lineages encoded in your blood. The ancestral homeland connections your body already recognizes. The sacred practices your line carried that are now seeking expression through you. Your dossier maps the geography of your heritage — the lands, the traditions, and the gifts your bloodline preserved beneath the surface.",
+  C: "Your Bloodline Signature: The Gift Carrier\n\nThere is a power in your bloodline that was not safe to carry openly. Someone before you had abilities — sight, healing, knowing, influence — that the world around them could not accept. So the gift went underground. It was hidden in silence, disguised as eccentricity, or buried under shame.\n\nBut gifts don't disappear. They compress. They concentrate. And they resurface in the descendant who is finally ready to carry them without apology.\n\nThat is you. The traits you've always sensed in yourself — the ones that felt too intense, too strange, too much — those are not accidents. They are inherited power that has been waiting for a vessel strong enough to hold it openly.\n\nWhat your full Bloodline Dossier reveals:\nThe specific gifts your ancestors carried and how they were suppressed. The physical, emotional, and spiritual markers that confirm your inheritance. The activation pattern — how to consciously step into what your bloodline has been preserving for you. Your dossier names the gifts, traces their lineage, and maps the path to claiming them fully.",
+  D: "Your Bloodline Signature: The Living Bridge\n\nYou have always carried more than your own story. The weight you feel — the one that doesn't match your personal experience — belongs to your line. You are processing emotions, patterns, and unfinished business that spans generations. This is not dysfunction. This is a sacred role.\n\nIn every bloodline, there is one who is born to bridge what came before with what comes next. The bridge doesn't just connect — it translates. It takes the unspoken grief, the unfulfilled potential, the interrupted callings of the ancestors, and channels them into something the future can use.\n\nYou didn't choose this. You were chosen for it. And the heaviness you sometimes feel is not weakness — it is the weight of a lineage trusting you to carry it forward.\n\nWhat your full Bloodline Dossier reveals:\nThe specific intergenerational patterns flowing through you and where they originated. The ancestral callings that were interrupted and are now seeking completion through you. The sacred role your bloodline assigned you before you were born. Your dossier maps the full inheritance — not just what you carry, but what you are meant to do with it.",
+  MIXED: "Your Bloodline Signature: The Convergence Point\n\nYour answers don't cluster into one pattern because your bloodline doesn't move in one direction. You are a convergence — a point where multiple ancestral threads are meeting in a single life. The exile, the remembering, the suppressed gifts, the generational weight — they are all present because they are all active.\n\nThis is rare. Most people carry one dominant bloodline signature. You are carrying several simultaneously, which means your lineage is complex, layered, and demanding. It also means the potential encoded in your blood is extraordinary.\n\nYou are not confused about your heritage. You are overwhelmed by the volume of what is trying to come through.\n\nWhat your full Bloodline Dossier reveals:\nThe multiple ancestral streams flowing through you and how they interact. Which lineage threads are dominant, which are dormant, and which are in active conflict. The convergence map — how your bloodline is attempting to unify its scattered power through you. Your dossier untangles the threads and gives you clarity on what you are carrying and why.",
+};
+
+// ════════════════════════════════════════════════
 // OPTION LISTS
 // ════════════════════════════════════════════════
 
@@ -207,6 +238,7 @@ export default function BloodlineIntake() {
   const [phase, setPhase] = useState("intro");
   const [d, setD] = useState({
     name:"",email:"",dob:"",tob:"",pob:"",location:"",otherNames:"",
+    miniAnswers:["","","","",""],
     miniWhisper:"",miniSurnames:"",miniCountries:"",miniPatterns:[],miniMystery:"",
     accessCode:"",codeError:false,
     dnaSource:"",dnaNotes:"",
@@ -237,12 +269,12 @@ export default function BloodlineIntake() {
         background:"linear-gradient(90deg,#d4c4a0 0%,#f0e0c0 20%,#ffffff 35%,#f5ddb5 50%,#d4c4a0 65%,#c8a870 80%,#d4c4a0 100%)",backgroundSize:"200% 100%",
         WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text",animation:"titleShimmer 6s ease-in-out infinite",
         filter:"drop-shadow(0 2px 12px #8b1a1a33) drop-shadow(0 0 40px #8b1a1a18)",textShadow:"0 0 40px rgba(180,140,80,0.2), 0 0 80px rgba(180,140,80,0.1)"}}>BLOODLINE</h1>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.2rem,3.5vw,1.65rem)",color:"#C4B59A",marginTop:12,letterSpacing:"0.04em",animation:"subtitlePulse 5s ease-in-out infinite"}}>Ancestral Heritage Dossier</p>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.2rem,3.5vw,1.65rem)",color:"#C4B59A",marginTop:12,letterSpacing:"0.04em",animation:"subtitlePulse 5s ease-in-out infinite"}}>Roots of Your Becoming</p>
       <div style={{fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:"0.4em",color:"rgba(255,248,240,0.7)",marginTop:20}}>MINI PREVIEW + FULL DEEP INTAKE</div>
       <Divider/>
       <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.05rem,2.5vw,1.18rem)",color:"rgba(255,248,240,0.85)",lineHeight:2,maxWidth:480,}}>
-        Your blood carries codes older than language. Give us your name and one whisper — receive a free ancestral glimpse. If the ancestors call you deeper, unlock the full Heritage Dossier.</p>
-      <div style={{marginTop:40}}><Btn label="BEGIN THE BLOODLINE" onClick={()=>go("mini1")} primary gold/></div>
+        Your blood carries codes older than language. Give us your name and one whisper — receive a free ancestral glimpse. If the ancestors call you deeper, unlock the full Bloodline: Roots of Your Becoming.</p>
+      <div style={{marginTop:40}}><Btn label="CONTINUE" onClick={()=>go("start")} primary gold/></div>
       <div style={{marginTop:60,display:"flex",alignItems:"center",gap:12}}>
         <div style={{width:30,height:1,background:`${R.blood}0c`}}/>
         <p style={{fontFamily:"'Cinzel',serif",fontSize:9,color:"rgba(255,248,240,0.65)",letterSpacing:"0.2em"}}>The Forgotten Code Research Institute</p>
@@ -250,21 +282,45 @@ export default function BloodlineIntake() {
       <div style={{position:"fixed",bottom:24,left:"50%",transform:"translateX(-50%)",fontFamily:"'Cinzel',serif",fontSize:10,letterSpacing:"0.3em",color:"rgba(255,248,240,0.5)",animation:"scrollPulse 2.5s ease-in-out infinite",zIndex:20}}>scroll</div>
     </div></Shell>;
 
-  // ── MINI INTAKE: Step 1 — Identity ──
-  if(phase==="mini1") return<Shell step="mini1">
-    <Header title="FIRST THREAD" sub="Before the ancestors will speak, they need your name"/>
-    <TI label="Full Name" value={d.name} onChange={v=>set("name",v)} placeholder="First, middle, last"/>
-    <TI label="Email Address" value={d.email} onChange={v=>set("email",v)} placeholder="For receiving your reading"/>
-    <TI label="In one sentence — what does your bloodline whisper to you at night?" hint="The thing you can't explain but can't stop feeling" value={d.miniWhisper} onChange={v=>set("miniWhisper",v)} placeholder="I've always felt that my family..." multi rows={3}/>
-    
-    {nav(null,"miniResult","REVEAL MY BLOODLINE GLIMPSE",!(d.name&&d.email))}</Shell>;
+  // ── START: Name + Email (minimal, before Q1) ──
+  if(phase==="start") return<Shell step="start">
+    <div style={{minHeight:"80vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",maxWidth:420,margin:"0 auto"}}>
+      <div style={{fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:"0.3em",color:`${T.dust}66`,marginBottom:24}}>BEFORE WE BEGIN</div>
+      <TI label="Your Name" value={d.name} onChange={v=>set("name",v)} placeholder="First and last"/>
+      <TI label="Email Address" value={d.email} onChange={v=>set("email",v)} placeholder="For receiving your reading"/>
+      <div style={{marginTop:36,width:"100%"}}><Btn label="BEGIN THE BLOODLINE" onClick={()=>go("q1")} primary gold disabled={!(d.name&&d.email)}/></div>
+    </div></Shell>;
 
-  
-
-  
+  // ── MINI: 5 questions one at a time, A/B/C/D → pre-written report ──
+  const qIndex = phase==="q1"?0:phase==="q2"?1:phase==="q3"?2:phase==="q4"?3:phase==="q5"?4:-1;
+  const answers = d.miniAnswers || ["","","","",""];
+  const setAnswer = (i, letter) => { const a = [...answers]; a[i] = letter; set("miniAnswers", a); go(i < 4 ? `q${i+2}` : "miniResult"); };
+  if (qIndex >= 0) {
+    const q = BLOODLINE_QUESTIONS[qIndex];
+    const opts = [{ letter: "A", text: q.A }, { letter: "B", text: q.B }, { letter: "C", text: q.C }, { letter: "D", text: q.D }];
+    return <Shell step={`q${qIndex+1}`}>
+      <div style={{ textAlign: "center", marginBottom: 28 }}>
+        <div style={{ fontFamily: "'Cinzel',serif", fontSize: 11, letterSpacing: "0.2em", color: `${T.dust}44`, marginBottom: 20 }}>QUESTION {qIndex + 1} OF 5</div>
+        <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.1rem,2.8vw,1.35rem)", color: E.parchment, lineHeight: 1.6, maxWidth: 520, margin: "0 auto" }}>"{q.q}"</p>
+        <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 32 }}>
+          {[0,1,2,3,4].map(i => <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: i <= qIndex ? `${R.blood}66` : `${E.bark}22` }} />)}
+        </div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {opts.map(({ letter, text }) => (
+          <div key={letter} onClick={() => setAnswer(qIndex, letter)} style={{ padding: "18px 20px", cursor: "pointer", border: `1px solid ${E.bark}44`, background: `${D.loam}cc`, borderRadius: 2, fontFamily: "'Crimson Text',serif", fontSize: 15, color: `${T.bone}99`, lineHeight: 1.6, transition: "all 0.3s", display: "flex", alignItems: "flex-start", gap: 12 }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = `${R.blood}55`; e.currentTarget.style.boxShadow = `0 0 18px ${R.blood}15` }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = `${E.bark}44`; e.currentTarget.style.boxShadow = "none" }}>
+            <span style={{ fontFamily: "'Cinzel',serif", fontSize: 14, color: `${R.blood}99`, flexShrink: 0 }}>{letter})</span>
+            <span style={{ fontStyle: "normal" }}>{text}</span>
+          </div>
+        ))}
+      </div>
+    </Shell>;
+  }
 
   // ── MINI RESULT ──
-  if(phase==="miniResult") return<MiniResult data={d} onDeeper={()=>go("gate")} onBack={()=>go("mini1")}/>;
+  if(phase==="miniResult") return<MiniResult data={d} dominant={getDominantAnswer(answers)} onDeeper={()=>go("gate")} onBack={()=>go("q1")}/>;
 
   // ── GATE — Pay & Get Access Code ──
   if(phase==="gate") return<Shell step="gate">
@@ -272,11 +328,11 @@ export default function BloodlineIntake() {
       <DNAHelix size={70}/>
       <h2 style={{fontFamily:"'Cinzel',serif",fontSize:"clamp(1.8rem,5vw,2.5rem)",color:E.parchment,marginTop:15,letterSpacing:"0.1em"}}>UNLOCK THE FULL BLOODLINE</h2>
       <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1.05rem,2.5vw,1.18rem)",color:`${T.bone}44`,marginTop:12,lineHeight:2,maxWidth:480,margin:"12px auto 0"}}>
-        Your ancestral glimpse revealed the surface. The full Heritage Dossier goes seven generations deep — tracing physical markers, spiritual gifts, family mysteries, sacred objects, and the hidden codes written in your blood.</p>
+        Your ancestral glimpse revealed the surface. Bloodline: Roots of Your Becoming goes seven generations deep — tracing physical markers, spiritual gifts, family mysteries, sacred objects, and the hidden codes written in your blood.</p>
       <Divider/>
 
       <div style={{background:`${D.loam}cc`,border:`1px solid ${E.bark}33`,padding:"30px 25px",borderRadius:2,textAlign:"left",maxWidth:460,margin:"0 auto 30px"}}>
-        <div style={{fontFamily:"'Cinzel',serif",fontSize:12,letterSpacing:"0.2em",color:`${T.dust}55`,marginBottom:18}}>YOUR HERITAGE DOSSIER INCLUDES</div>
+        <div style={{fontFamily:"'Cinzel',serif",fontSize:12,letterSpacing:"0.2em",color:`${T.dust}55`,marginBottom:18}}>BLOODLINE: ROOTS OF YOUR BECOMING INCLUDES</div>
         {["Deep ancestral bloodline tracing — seven generations","Physical markers, genetic patterns, and body memory","Spiritual gifts, suppressed abilities, and awakening map","Family mysteries, secrets, and supernatural events","Sacred objects, symbols, and tradition mapping","Generational pattern analysis and healing pathways"].map((s,i)=>
           <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:12}}>
             <div style={{color:`${R.blood}55`,fontSize:12,marginTop:2,flexShrink:0}}>◈</div>
@@ -285,7 +341,7 @@ export default function BloodlineIntake() {
           Delivered within 5-7 days.</p>
       </div>
 
-      <div style={{fontFamily:"'Cinzel',serif",fontSize:"clamp(1.5rem,4vw,2rem)",color:E.parchment,letterSpacing:"0.15em",marginBottom:8}}>$111</div>
+      <div style={{fontFamily:"'Cinzel',serif",fontSize:"clamp(1.5rem,4vw,2rem)",color:E.parchment,letterSpacing:"0.15em",marginBottom:8}}>$127</div>
       <p style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.dust}33`,marginBottom:25}}>One-time payment · Lifetime access</p>
 
       <div style={{display:"flex",flexDirection:"column",gap:12,maxWidth:380,margin:"0 auto"}}>
@@ -293,7 +349,7 @@ export default function BloodlineIntake() {
           {label:"PAY WITH STRIPE",href:"https://buy.stripe.com/PLACEHOLDER",icon:"◇",note:"Credit / Debit Card"},
           {label:"PAY WITH VENMO",href:"https://venmo.com/u/Jennifer-Coley-4",icon:"◈",note:"@Jennifer-Coley-4"},
           {label:"PAY WITH CASHAPP",href:"https://cash.app/$jenniferWilderWest",icon:"◆",note:"$jenniferWilderWest"},
-          {label:"PAY WITH PAYPAL",href:"https://paypal.me/JSnider364/111",icon:"◉",note:"PayPal.me/JSnider364"}
+          {label:"PAY WITH PAYPAL",href:"https://paypal.me/JSnider364/127",icon:"◉",note:"PayPal.me/JSnider364"}
         ].map((pm,i)=>
           <a key={i} href={pm.href} target="_blank" rel="noopener noreferrer"
             style={{display:"block",padding:"16px 20px",border:`1px solid ${E.bark}44`,textDecoration:"none",borderRadius:2,
@@ -310,7 +366,7 @@ export default function BloodlineIntake() {
       <p style={{fontFamily:"'Cinzel',serif",fontSize:12,letterSpacing:"0.15em",color:`${T.dust}44`,marginBottom:12}}>ALREADY PAID?</p>
       <p style={{fontFamily:"'Crimson Text',serif",fontSize:14,color:`${T.bone}33`,lineHeight:1.8,maxWidth:420,margin:"0 auto 18px",}}>
         Let Jennifer know so she can send your access code.</p>
-      <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Bloodline Payment Confirmation — ${d.name}`)}&body=${encodeURIComponent(`Hi Jennifer,\n\nI just completed payment for the Bloodline Heritage Dossier ($111).\n\nName: ${d.name}\nEmail: ${d.email}\nPayment method: [Venmo/CashApp/PayPal/Stripe]\n\nPlease send my access code when ready.\n\nThank you.`)}`}
+      <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Bloodline Payment Confirmation — ${d.name}`)}&body=${encodeURIComponent(`Hi Jennifer,\n\nI just completed payment for the Bloodline: Roots of Your Becoming ($127).\n\nName: ${d.name}\nEmail: ${d.email}\nPayment method: [Venmo/CashApp/PayPal/Stripe]\n\nPlease send my access code when ready.\n\nThank you.`)}`}
         style={{display:"block",width:"min(100%,380px)",padding:"16px 25px",margin:"0 auto",border:`1px solid ${R.blood}33`,textDecoration:"none",textAlign:"center",fontFamily:"'Cinzel',serif",fontSize:13,letterSpacing:"0.12em",color:E.parchment,background:`${R.wine}22`,borderRadius:2}}>
         ✉ I'VE PAID — NOTIFY JENNIFER</a>
       <p style={{fontFamily:"'Crimson Text',serif",fontSize:12,color:`${T.dust}18`,marginTop:12}}>
@@ -344,7 +400,7 @@ export default function BloodlineIntake() {
     <TI label="Time of Birth" hint="If known — for astrological mapping" value={d.tob} onChange={v=>set("tob",v)} placeholder="e.g. 4:12 PM"/>
     <TI label="Place of Birth" value={d.pob} onChange={v=>set("pob",v)} placeholder="City, State/Region, Country"/>
     <TI label="Current Location" value={d.location} onChange={v=>set("location",v)} placeholder="City, State"/>
-    <TI label="Email Address" value={d.email} onChange={v=>set("email",v)} placeholder="For receiving your Heritage Dossier"/>
+    <TI label="Email Address" value={d.email} onChange={v=>set("email",v)} placeholder="For receiving your Roots of Your Becoming"/>
     {dn("gate","deep2","CONTINUE",!(d.name&&d.email))}</Shell>;
 
   if(phase==="deep2") return<Shell step="deep2">
@@ -426,41 +482,31 @@ export default function BloodlineIntake() {
 // MINI RESULT — Free preview reading
 // ════════════════════════════════════════════════
 
-function MiniResult({data:d,onDeeper,onBack}) {
+function MiniResult({data:d,dominant,onDeeper,onBack}) {
   const [show,setShow]=useState(false);
   useEffect(()=>{setTimeout(()=>setShow(true),300)},[]);
-
-  const hasWhisper=d.miniWhisper&&d.miniWhisper.trim().length>0;
+  const reportText = BLOODLINE_REPORTS[dominant] || BLOODLINE_REPORTS.MIXED;
+  const paragraphs = reportText.split("\n\n").filter(Boolean);
 
   return<Shell step="miniResult">
     <div style={{opacity:show?1:0,transform:show?"translateY(0)":"translateY(30px)",transition:"all 1s ease",textAlign:"center"}}>
       <DNAHelix size={70}/>
       <h2 style={{fontFamily:"'Cinzel',serif",fontSize:"clamp(1.8rem,5vw,2.8rem)",color:E.parchment,marginTop:15,letterSpacing:"0.1em",textShadow:`0 0 20px ${R.blood}33`}}>YOUR BLOODLINE GLIMPSE</h2>
-      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1rem,2.5vw,1.15rem)",color:`${T.dust}55`,marginTop:12,lineHeight:1.9,maxWidth:460,margin:"12px auto 0"}}>
-        The ancestors have noticed you.</p>
       <Divider/>
 
-      {/* Mini reading content */}
       <div style={{background:`${D.loam}cc`,border:`1px solid ${E.bark}33`,padding:"30px 25px",borderRadius:2,textAlign:"left",marginBottom:30}}>
-        <div style={{fontFamily:"'Cinzel',serif",fontSize:12,letterSpacing:"0.25em",color:`${T.dust}22`,marginBottom:25}}>INITIAL TRACE</div>
-        
-        <p style={{fontFamily:"'Crimson Text',serif",fontSize:16,color:`${T.bone}55`,lineHeight:2,marginBottom:20}}>
-          {d.name} — something in your blood is trying to speak. The fact that you're here means a thread has been activated in your ancestral line.</p>
-
-        {hasWhisper&&<div style={{marginBottom:22,padding:"18px 20px",borderLeft:`2px solid ${R.blood}33`,background:`${R.wine}0a`}}>
-          <div style={{fontFamily:"'Cinzel',serif",fontSize:10,letterSpacing:"0.2em",color:`${R.blood}44`,marginBottom:8}}>YOUR WHISPER</div>
-          <p style={{fontFamily:"'Crimson Text',serif",fontSize:15,color:`${T.bone}44`,lineHeight:1.9,}}>"{d.miniWhisper}"</p>
-        </div>}
-
-        <p style={{fontFamily:"'Crimson Text',serif",fontSize:15,color:`${T.dust}44`,lineHeight:2}}>
-          This whisper is the surface of something much deeper. Your full Heritage Dossier will trace the surnames, migration patterns, physical markers, spiritual gifts, generational trauma, family secrets, and sacred codes that live in your blood — going back seven generations.</p>
+        {paragraphs.map((para,i)=>(
+          <p key={i} style={{fontFamily:"'Crimson Text',serif",fontSize: i===0 ? 16 : 15,color: i===0 ? `${T.bone}99` : `${T.bone}44`,lineHeight:2,marginBottom:20,fontStyle:"normal"}}>{para}</p>
+        ))}
       </div>
 
-
-
+      <Divider/>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1rem,2.2vw,1.15rem)",color:`${T.bone}88`,marginBottom:20}}>Ready to see the full map?</p>
       <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center"}}>
-        <Btn label="UNLOCK THE FULL BLOODLINE →" onClick={onDeeper} primary full/>
+        <Btn label="ORDER YOUR FULL READING — $127" onClick={onDeeper} primary full/>
       </div>
+      <p style={{fontFamily:"'Crimson Text',serif",fontSize:12,color:`${T.dust}44`,marginTop:20,maxWidth:420,margin:"20px auto 0",lineHeight:1.7,fontStyle:"normal"}}>
+        After purchase, you'll receive a personal access code to complete your full intake. Jennifer will personally generate your complete Bloodline: Roots of Your Becoming and deliver it within 5-7 business days.</p>
 
       <div style={{marginTop:30}}><Btn label="← EDIT MY ANSWERS" onClick={onBack}/></div>
     </div></Shell>;
@@ -475,7 +521,7 @@ function Complete({data:d,onBack}) {
   const [copied,setCopied]=useState(false);
   useEffect(()=>{setTimeout(()=>setShow(true),300)},[]);
 
-  const build=()=>{let s=`════════════════════════════════════════\nBLOODLINE — ANCESTRAL HERITAGE DOSSIER\nFULL DEEP INTAKE\n════════════════════════════════════════\n\n`;
+  const build=()=>{let s=`════════════════════════════════════════\nBLOODLINE: ROOTS OF YOUR BECOMING\nFULL DEEP INTAKE\n════════════════════════════════════════\n\n`;
     const add=(h,pairs)=>{s+=`═══ ${h} ═══\n`;pairs.forEach(([k,v])=>{if(v&&(typeof v==="string"?v.trim():v.length))s+=`${k}: ${Array.isArray(v)?v.join(", "):v}\n`});s+="\n"};
     add("SACRED IDENTITY",[["Name",d.name],["Other Names",d.otherNames],["Email",d.email],["DOB",d.dob],["TOB",d.tob],["POB",d.pob],["Location",d.location]]);
     add("GENETIC FOUNDATION",[["DNA Source",d.dnaSource],["DNA Notes",d.dnaNotes]]);
@@ -497,10 +543,10 @@ function Complete({data:d,onBack}) {
         WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text",animation:"titleShimmer 6s ease-in-out infinite",
         filter:"drop-shadow(0 2px 12px #8b1a1a33)"}}>BLOODLINE SEALED</h2>
       <p style={{fontFamily:"'Crimson Text',serif",fontSize:"clamp(1rem,2.5vw,1.15rem)",color:`${T.dust}55`,marginTop:12,lineHeight:1.9,maxWidth:460,margin:"12px auto 0"}}>
-        Your ancestral codes have been captured. Your Heritage Dossier will be delivered within 5-7 days.</p>
+        Your ancestral codes have been captured. Your Bloodline: Roots of Your Becoming will be delivered within 5-7 days.</p>
       <Divider/>
       <div style={{display:"flex",flexDirection:"column",gap:14,alignItems:"center",marginBottom:40}}>
-        <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Bloodline Full Heritage Intake — ${d.name}`)}&body=${encodeURIComponent(summary)}`}
+        <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Bloodline: Roots of Your Becoming — Full Intake — ${d.name}`)}&body=${encodeURIComponent(summary)}`}
           style={{display:"block",width:"min(100%,400px)",padding:"18px 30px",border:`2px solid ${R.blood}40`,textDecoration:"none",textAlign:"center",fontFamily:"'Cinzel',serif",fontSize:15,letterSpacing:"0.15em",color:E.parchment,background:`${R.wine}33`,borderRadius:2,animation:"bloodPulse 3s ease-in-out infinite"}}>
           ✉ SEND BLOODLINE VIA EMAIL</a>
         <div onClick={()=>{navigator.clipboard.writeText(summary).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2500)})}}
@@ -513,7 +559,7 @@ function Complete({data:d,onBack}) {
           <pre style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.bone}25`,lineHeight:1.8,whiteSpace:"pre-wrap",wordBreak:"break-word"}}>{summary}</pre></div>
       </div>
       <p style={{fontFamily:"'Crimson Text',serif",fontSize:13,color:`${T.dust}25`,marginTop:35,lineHeight:1.9,}}>
-        Your Heritage Dossier will be delivered within 5-7 days.<br/>
+        Your Bloodline: Roots of Your Becoming will be delivered within 5-7 days.<br/>
         <span style={{color:`${R.blood}33`}}>theforgottencode780@gmail.com</span> · (423) 388-8304</p>
       <p style={{fontFamily:"'Inter',sans-serif",fontSize:9,color:`${E.bark}22`,marginTop:40,letterSpacing:"0.15em"}}>
         © Jennifer Leigh West · The Forgotten Code Research Institute</p>

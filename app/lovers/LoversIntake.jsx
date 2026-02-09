@@ -316,6 +316,19 @@ function TI({ label, hint, value, onChange, placeholder, multi, rows }) {
       onBlur={e => { e.target.style.borderColor = `${P.hot}22`; e.target.style.boxShadow = "none" }} /></div>;
 }
 
+function MiniSelect({ label, value, onChange, options }) {
+  return <div>
+    <label style={labelStyle}>{label}</label>
+    <select value={value} onChange={e => onChange(e.target.value)}
+      style={{ ...inputBase, cursor: "pointer", appearance: "none",
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffb6c1' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
+        backgroundRepeat: "no-repeat", backgroundPosition: "right 16px center" }}>
+      <option value="">Choose one...</option>
+      {options.map(o => <option key={o} value={o}>{o}</option>)}
+    </select>
+  </div>;
+}
+
 function Btn({ label, onClick, disabled, primary, full }) {
   const [hover, setHover] = useState(false);
   return <div onClick={() => !disabled && onClick()} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
@@ -333,11 +346,40 @@ function Btn({ label, onClick, disabled, primary, full }) {
 
 const ACCESS_CODE = "LOVERS2026";
 
+// Mini report — 5 questions one per screen, A/B/C/D → pre-written report (exact wording, no AI)
+const LOVERS_QUESTIONS = [
+  { q: "In relationships, your deepest pattern is:", A: "I attract the same type of person over and over", B: "I lose myself — I become what they need", C: "I keep walls up until it's too late", D: "I see the real them before they show me, and I stay anyway" },
+  { q: "The lie you tell yourself most in love is:", A: "\"This time will be different\"", B: "\"I don't need that much\"", C: "\"If I just give more, they'll finally see me\"", D: "\"I'm too much for anyone to handle\"" },
+  { q: "When a relationship ends, what haunts you?", A: "The version of me I became with them", B: "The signs I ignored", C: "How fast I was replaced or forgotten", D: "That I still understand why they did what they did" },
+  { q: "The love you secretly want but won't say out loud:", A: "Someone who stays without being convinced", B: "Someone who matches my intensity without flinching", C: "Someone who sees the parts I hide and doesn't run", D: "Someone who fights FOR me, not with me" },
+  { q: "What do you most need to understand about your love patterns?", A: "Why I keep choosing the same wound", B: "What I'm actually afraid of underneath it all", C: "Whether I'm repeating something that didn't start with me", D: "How to break the cycle without breaking myself" },
+];
+
+function getDominantAnswer(answers) {
+  const counts = { A: 0, B: 0, C: 0, D: 0 };
+  answers.forEach(a => { if (a && counts.hasOwnProperty(a)) counts[a]++; });
+  const max = Math.max(...Object.values(counts));
+  const dominantLetters = Object.keys(counts).filter(k => counts[k] === max);
+  if (dominantLetters.length === 1) return dominantLetters[0];
+  const q5 = answers[4];
+  if (q5 && dominantLetters.includes(q5)) return q5;
+  return "MIXED";
+}
+
+const LOVERS_REPORTS = {
+  A: "Your Love Pattern: The Loop Runner\n\nYou already know the pattern. You have watched yourself walk into the same room with a different face at the door, and you have felt the sickening recognition of realizing — again — that this is the one you always choose. Different name. Same architecture.\n\nThe loop is not about bad taste or poor judgment. It is a code running beneath your conscious choices. You are drawn to a specific emotional signature because your system was calibrated to recognize it as love. It is not love. It is familiarity wearing love's clothes.\n\nThe hardest part is not that you keep choosing it. The hardest part is that you see it happening and still cannot stop. That is not weakness. That is a pattern too deep for willpower alone to interrupt.\n\nWhat your full Pattern Map reveals:\nThe origin point of your loop — where the pattern was first encoded. The specific emotional signature you are calibrated to seek and why your system reads it as love. The architectural blueprint of every relationship that has followed this code. Your Pattern Map uses the Mirror Protocol™ and DYAD Engine™ to decode the loop at its source — so you can finally see the machinery, not just the result.",
+  B: "Your Love Pattern: The Invisible Giver\n\nYou love by disappearing. Not all at once — slowly. You adjust. You accommodate. You read what they need and you become it, so gradually that by the time you realize you've lost yourself, you can't remember what you looked like before them.\n\nThe lie that holds this pattern in place is the smallest one: \"I don't need that much.\" You do. You need enormously. But somewhere you learned that your needs were too much, too heavy, too inconvenient — so you made yourself lighter. You gave more. You asked for less. And you called it love.\n\nIt is not love. It is a survival strategy that outlived the danger it was built for. And it is costing you everything.\n\nWhat your full Pattern Map reveals:\nThe moment you first learned to make yourself small for love. The specific needs you buried and what happens when they surface. The relationship architecture that repeats when you give from an empty place. Your Pattern Map traces the Invisible Giver pattern to its root and shows you what your love looks like when you stop disappearing.",
+  C: "Your Love Pattern: The Watcher\n\nYou see everything. You clock the micro-expressions, the shifts in tone, the distance that opens between what someone says and what they mean. You are hypervigilant in love because at some point, not seeing cost you something you couldn't afford to lose.\n\nSo you built walls. Not obvious ones — yours are sophisticated. You let people close enough to think they're in, but there is a room they never reach. You watch from that room. You assess. You wait for the evidence that confirms what you already expect: that they will leave, or lie, or replace you with someone easier to love.\n\nThe walls don't protect you. They guarantee the outcome you fear. Because no one can reach someone who is watching from behind glass.\n\nWhat your full Pattern Map reveals:\nThe original betrayal or loss that activated your surveillance system. The specific walls you built and the exact point where you stop letting people in. The relationship pattern that forms when you love from behind glass. Your Pattern Map uses the DYAD Engine™ to decode what you are actually protecting — and what it would take to let someone into the room.",
+  D: "Your Love Pattern: The Mirror Keeper\n\nYou hold the mirror for everyone. You see people with devastating clarity — their wounds, their patterns, their potential, their lies — and you stay. Not because you are naive. Because you understand. You understand so deeply that you absorb their pain as if comprehension were the same as responsibility.\n\nThis is the cruelest pattern because it looks like strength. You are the one who holds it together. The one who forgives with full knowledge of what was done. The one who fights for people who have not yet learned to fight for themselves.\n\nBut who holds the mirror for you? Who sees YOUR pattern with the same clarity you give everyone else? The answer, so far, is no one. Because you have made yourself the seer and never the seen.\n\nWhat your full Pattern Map reveals:\nWhy you were built to carry this role and who assigned it to you. The cost of seeing without being seen — the specific ways this pattern has eroded your own foundation. The love architecture that forms when a Mirror Keeper finally allows themselves to be reflected. Your Pattern Map decodes your gift and your wound as two sides of the same thread.",
+  MIXED: "Your Love Pattern: The Pattern Breaker\n\nYour answers don't settle into one pattern because you are running several. The loop, the giving, the walls, the mirror — they take turns. You are not confused about love. You are exhausted by the number of programs running simultaneously.\n\nThis is actually a sign of transition. When a single dominant pattern starts fracturing into multiple overlapping patterns, it means the original code is breaking down. You are not stuck in one loop anymore — you are between loops. The old architecture is crumbling and the new one hasn't been built yet.\n\nThis is the most disorienting place to be. It is also the most powerful. Because right now, before the next pattern calcifies, you have a window to choose differently.\n\nWhat your full Pattern Map reveals:\nThe multiple love patterns operating in your system and how they interact. Which pattern is original, which are adaptations, and which is trying to emerge. The window you are in right now — the specific opportunity to rewrite your love code before it hardens. Your Pattern Map catches you at the break point and gives you the architecture for what comes next.",
+};
+
 // ═══ MAIN COMPONENT ═══
 export default function LoversIntake() {
   const [phase, setPhase] = useState("intro");
   const [d, setD] = useState({
     name: "", email: "", partner: "", relStatus: "", miniWhisper: "",
+    miniAnswers: ["", "", "", "", ""],
     accessCode: "", codeError: false,
     mcqAnswers: [], qi: 0,
     dyadAnswers: ["", "", "", "", ""],
@@ -364,7 +406,7 @@ export default function LoversIntake() {
       <Divider />
       <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: "rgba(255,248,240,0.85)", lineHeight: 2, maxWidth: 480, fontStyle: "normal" }}>
         Every relationship has a pattern. A code running underneath the surface that neither of you can see but both of you feel. Give us one whisper about love — and we'll show you the thread.</p>
-      <div style={{ marginTop: 40 }}><Btn label="BEGIN THE PATTERN MAP" onClick={() => go("mini1")} primary /></div>
+      <div style={{ marginTop: 40 }}><Btn label="CONTINUE" onClick={() => go("start")} primary /></div>
       <div style={{ marginTop: 60, display: "flex", alignItems: "center", gap: 12 }}>
         <div style={{ width: 30, height: 1, background: `${P.hot}0c` }} />
         <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: 9, color: "rgba(255,248,240,0.65)", letterSpacing: "0.2em", fontStyle: "normal" }}>The Forgotten Code Research Institute</p>
@@ -372,37 +414,63 @@ export default function LoversIntake() {
       </div>
     </div></Shell>;
 
-  // ── MINI TEASER ──
-  if (phase === "mini1") return <Shell step="mini1">
-    <Header title="FIRST THREAD" sub="Before the patterns reveal themselves" />
-    <TI label="Your Name" value={d.name} onChange={v => set("name", v)} placeholder="First and last" />
-    <TI label="Email Address" value={d.email} onChange={v => set("email", v)} placeholder="For receiving your reading" />
-    <TI label="What's the one thing you can't say out loud about love?" hint="The pattern you feel but can't name" value={d.miniWhisper} onChange={v => set("miniWhisper", v)} placeholder="I always end up..." multi rows={3} />
-    {nav(null, "miniResult", "REVEAL MY PATTERN GLIMPSE", !(d.name && d.email))}</Shell>;
-
-  // ── MINI RESULT ──
-  if (phase === "miniResult") return <Shell step="miniResult">
-    <div style={{ textAlign: "center" }}>
-      <NeonHeart size={70} />
-      <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: P.hot, marginTop: 15, letterSpacing: "0.1em", textShadow: `0 0 20px ${P.hot}33` }}>YOUR PATTERN GLIMPSE</h2>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: "rgba(255,248,240,0.85)",  marginTop: 12, lineHeight: 1.9 }}>What you said is the first thread. The full map shows why it keeps repeating — and how to change it.</p>
-      <Divider />
-      <div style={{ background: `${D.slate}cc`, border: `1px solid ${P.hot}22`, padding: "30px 25px", borderRadius: 2, textAlign: "left", marginBottom: 30 }}>
-        <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 12, letterSpacing: "0.25em", color: "rgba(255,248,240,0.65)", marginBottom: 25, fontWeight: 700 }}>INITIAL TRACE</div>
-        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 16, color: "rgba(255,248,240,0.85)", lineHeight: 2,  marginBottom: 20 }}>
-          {d.name} — you named something you usually can't say. That whisper is the surface. The full Lovers dossier goes 24 categories deep: attachment wounds, defense mechanisms, communication loops, trust architecture. Mirror Protocol™ reflects your pattern back. DYAD Engine™ cracks the code. Hand-crafted by Jennifer, no AI.</p>
-        {d.miniWhisper && d.miniWhisper.trim() && <div style={{ marginBottom: 22, padding: "18px 20px", borderLeft: `2px solid ${P.hot}44`, background: `${P.hot}08` }}>
-          <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 10, letterSpacing: "0.2em", color: `${P.hot}55`, marginBottom: 8, fontWeight: 700 }}>YOUR WHISPER</div>
-          <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 15, color: `${P.blush}55`, lineHeight: 1.9,  }}>"{d.miniWhisper}"</p>
-        </div>}
-        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 15, color: `${P.blush}44`, lineHeight: 2 }}>
-          You get the full map: the wounds, the loops, the exits, and the codes your nervous system is running without your permission. Most people never see it. You're one step away.</p>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "center" }}>
-        <Btn label="UNLOCK THE FULL PATTERN MAP →" onClick={() => go("gate")} primary full />
-      </div>
-      <div style={{ marginTop: 30 }}><Btn label="← EDIT MY ANSWERS" onClick={() => go("mini1")} /></div>
+  // ── START: Name + Email (minimal, before Q1) ──
+  if (phase === "start") return <Shell step="start">
+    <div style={{ minHeight: "80vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxWidth: 420, margin: "0 auto" }}>
+      <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 11, letterSpacing: "0.3em", color: `${P.blush}66`, marginBottom: 24 }}>BEFORE WE BEGIN</div>
+      <TI label="Your Name" value={d.name} onChange={v => set("name", v)} placeholder="First and last" />
+      <TI label="Email Address" value={d.email} onChange={v => set("email", v)} placeholder="For receiving your reading" />
+      <div style={{ marginTop: 36, width: "100%" }}><Btn label="BEGIN THE PATTERN MAP" onClick={() => go("q1")} primary disabled={!(d.name && d.email)} full /></div>
     </div></Shell>;
+
+  // ── MINI: 5 questions one at a time, A/B/C/D → pre-written report ──
+  const loversQIndex = phase === "q1" ? 0 : phase === "q2" ? 1 : phase === "q3" ? 2 : phase === "q4" ? 3 : phase === "q5" ? 4 : -1;
+  const loversAnswers = d.miniAnswers || ["", "", "", "", ""];
+  const setLoversAnswer = (i, letter) => { const a = [...loversAnswers]; a[i] = letter; set("miniAnswers", a); go(i < 4 ? `q${i + 2}` : "miniResult"); };
+  if (loversQIndex >= 0) {
+    const q = LOVERS_QUESTIONS[loversQIndex];
+    const opts = [{ letter: "A", text: q.A }, { letter: "B", text: q.B }, { letter: "C", text: q.C }, { letter: "D", text: q.D }];
+    return <Shell step={`q${loversQIndex + 1}`}>
+      <div style={{ textAlign: "center", marginBottom: 28 }}>
+        <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 11, letterSpacing: "0.2em", color: `${P.blush}44`, marginBottom: 20 }}>QUESTION {loversQIndex + 1} OF 5</div>
+        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.1rem,2.8vw,1.35rem)", color: "rgba(255,248,240,0.9)", lineHeight: 1.6, maxWidth: 520, margin: "0 auto", fontStyle: "normal" }}>"{q.q}"</p>
+        <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 32 }}>
+          {[0, 1, 2, 3, 4].map(i => <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: i <= loversQIndex ? `${P.hot}66` : `${P.blush}22` }} />)}
+        </div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {opts.map(({ letter, text }) => (
+          <div key={letter} onClick={() => setLoversAnswer(loversQIndex, letter)} style={{ padding: "18px 20px", cursor: "pointer", border: `1px solid ${P.blush}44`, background: `${D.slate}cc`, borderRadius: 2, fontFamily: "'Playfair Display',serif", fontSize: 15, color: `${P.blush}99`, lineHeight: 1.6, transition: "all 0.3s", display: "flex", alignItems: "flex-start", gap: 12, fontStyle: "normal" }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = `${P.hot}55`; e.currentTarget.style.boxShadow = `0 0 18px ${P.hot}15`; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = `${P.blush}44`; e.currentTarget.style.boxShadow = "none"; }}>
+            <span style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 14, color: `${P.hot}99`, flexShrink: 0 }}>{letter})</span>
+            <span style={{ fontStyle: "normal" }}>{text}</span>
+          </div>
+        ))}
+      </div>
+    </Shell>;
+  }
+
+  // ── MINI RESULT (pre-written report only; no AI) ──
+  if (phase === "miniResult") {
+    const dominant = getDominantAnswer(loversAnswers);
+    const reportText = LOVERS_REPORTS[dominant] || LOVERS_REPORTS.MIXED;
+    return <Shell step="miniResult">
+      <div style={{ textAlign: "center" }}>
+        <NeonHeart size={70} />
+        <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: P.hot, marginTop: 15, letterSpacing: "0.1em", textShadow: `0 0 20px ${P.hot}33`, fontStyle: "normal" }}>YOUR PATTERN GLIMPSE</h2>
+        <Divider />
+        <div style={{ background: `${D.slate}cc`, border: `1px solid ${P.hot}22`, padding: "30px 25px", borderRadius: 2, textAlign: "left", marginBottom: 30 }}>
+          {reportText.split("\n\n").map((para, i) => <p key={i} style={{ fontFamily: "'Playfair Display',serif", fontSize: 15, color: "rgba(255,248,240,0.85)", lineHeight: 2, marginBottom: 18, fontStyle: "normal" }}>{para}</p>)}
+        </div>
+        <div style={{ height: 1, background: `linear-gradient(90deg, transparent, ${P.hot}44, transparent)`, margin: "28px 0 20px" }} />
+        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.05rem,2.5vw,1.15rem)", color: "rgba(255,248,240,0.9)", marginBottom: 20, fontStyle: "normal" }}>Ready to see the full map?</p>
+        <div style={{ marginBottom: 16 }}><Btn label="ORDER YOUR FULL READING — $127" onClick={() => go("gate")} primary full /></div>
+        <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: 12, color: `${P.blush}66`, maxWidth: 420, margin: "0 auto", lineHeight: 1.7, fontStyle: "normal" }}>After purchase, you'll receive a personal access code to complete your full intake. Jennifer will personally generate your complete Pattern Map and deliver it within 5-7 business days.</p>
+        <div style={{ marginTop: 30 }}><Btn label="← EDIT MY ANSWERS" onClick={() => go("q1")} /></div>
+      </div>
+    </Shell>;
+  }
 
   // ── GATE — Payment ──
   if (phase === "gate") return <Shell step="gate">
@@ -422,7 +490,7 @@ export default function LoversIntake() {
           Delivered within 5-7 days.</p>
       </div>
 
-      <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.5rem,4vw,2rem)", color: P.hot, letterSpacing: "0.15em", marginBottom: 8 }}>$111</div>
+      <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.5rem,4vw,2rem)", color: P.hot, letterSpacing: "0.15em", marginBottom: 8 }}>$127</div>
       <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: `${P.blush}33`,  marginBottom: 25 }}>One-time payment · Lifetime access</p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 380, margin: "0 auto" }}>
@@ -430,7 +498,7 @@ export default function LoversIntake() {
           { label: "PAY WITH STRIPE", href: "https://buy.stripe.com/PLACEHOLDER", icon: "◇", note: "Credit / Debit Card" },
           { label: "PAY WITH VENMO", href: "https://venmo.com/u/Jennifer-Coley-4", icon: "♥", note: "@Jennifer-Coley-4" },
           { label: "PAY WITH CASHAPP", href: "https://cash.app/$jenniferWilderWest", icon: "♦", note: "$jenniferWilderWest" },
-          { label: "PAY WITH PAYPAL", href: "https://paypal.me/JSnider364/111", icon: "♠", note: "PayPal.me/JSnider364" }
+          { label: "PAY WITH PAYPAL", href: "https://paypal.me/JSnider364/127", icon: "♠", note: "PayPal.me/JSnider364" }
         ].map((pm, i) =>
           <a key={i} href={pm.href} target="_blank" rel="noopener noreferrer"
             style={{ display: "block", padding: "16px 20px", border: `1px solid ${P.hot}33`, textDecoration: "none", borderRadius: 2, background: `${D.slate}cc`, transition: "all 0.3s", textAlign: "center" }}>
@@ -446,7 +514,7 @@ export default function LoversIntake() {
       <p style={{ fontFamily: "'Manrope',sans-serif", fontSize: 12, letterSpacing: "0.15em", color: `${P.blush}44`, marginBottom: 12, fontWeight: 700 }}>ALREADY PAID?</p>
       <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 14, color: `${P.blush}33`, lineHeight: 1.8, maxWidth: 420, margin: "0 auto 18px",  }}>
         Let Jennifer know so she can send your access code.</p>
-      <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Lovers & Liars Payment Confirmation — ${d.name}`)}&body=${encodeURIComponent(`Hi Jennifer,\n\nI just completed payment for the Lovers, Liars & All Things Patterned Dossier ($111).\n\nName: ${d.name}\nEmail: ${d.email}\nPayment method: [Venmo/CashApp/PayPal/Stripe]\n\nPlease send my access code when ready.\n\nThank you.`)}`}
+      <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Lovers & Liars Payment Confirmation — ${d.name}`)}&body=${encodeURIComponent(`Hi Jennifer,\n\nI just completed payment for the Lovers, Liars & All Things Patterned Dossier ($127).\n\nName: ${d.name}\nEmail: ${d.email}\nPayment method: [Venmo/CashApp/PayPal/Stripe]\n\nPlease send my access code when ready.\n\nThank you.`)}`}
         style={{ display: "block", width: "min(100%,380px)", padding: "16px 25px", margin: "0 auto", border: `1px solid ${P.hot}33`, textDecoration: "none", textAlign: "center", fontFamily: "'Bebas Neue',sans-serif", fontSize: 14, letterSpacing: "0.12em", color: P.pale, background: `${P.hot}18`, borderRadius: 2 }}>
         ✉ I'VE PAID — NOTIFY JENNIFER</a>
       <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 12, color: `${P.blush}18`, marginTop: 12 }}>
