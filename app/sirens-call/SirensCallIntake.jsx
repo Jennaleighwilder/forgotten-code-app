@@ -217,13 +217,15 @@ export default function SirensCallIntake() {
   // START — Name + Email
   if (phase === "start")
     return (
-      <div style={{ minHeight: "100vh", background: INK, color: SILVER, fontFamily: "'Lora', serif", padding: "80px 24px", maxWidth: 420, margin: "0 auto" }}>
-        <div style={{ fontFamily: "'Raleway', sans-serif", fontSize: 11, letterSpacing: "0.3em", color: CORAL_DIM, marginBottom: 24, fontStyle: "normal" }}>BEFORE WE BEGIN</div>
-        <label style={{ display: "block", fontFamily: "'Raleway', sans-serif", fontSize: 13, color: WARM_GREY, marginBottom: 6, fontStyle: "normal" }}>Your Name</label>
-        <input value={d.name} onChange={(e) => set("name", e.target.value)} placeholder="First and last" style={{ width: "100%", padding: "14px 18px", background: "rgba(196,107,107,0.02)", border: "1px solid rgba(196,107,107,0.08)", color: SILVER, fontFamily: "'Lora', serif", fontSize: 16, marginBottom: 20, fontStyle: "normal" }} />
-        <label style={{ display: "block", fontFamily: "'Raleway', sans-serif", fontSize: 13, color: WARM_GREY, marginBottom: 6, fontStyle: "normal" }}>Email Address</label>
-        <input value={d.email} onChange={(e) => set("email", e.target.value)} placeholder="For receiving your reading" type="email" style={{ width: "100%", padding: "14px 18px", background: "rgba(196,107,107,0.02)", border: "1px solid rgba(196,107,107,0.08)", color: SILVER, fontFamily: "'Lora', serif", fontSize: 16, marginBottom: 36, fontStyle: "normal" }} />
-        <Btn label="SPEAK INTO THE VOID" onClick={() => go("q1")} primary disabled={!(d.name && d.email)} />
+      <div style={{ minHeight: "100vh", width: "100%", background: INK, color: SILVER, fontFamily: "'Lora', serif", padding: "80px 24px" }}>
+        <div style={{ maxWidth: 420, margin: "0 auto" }}>
+          <div style={{ fontFamily: "'Raleway', sans-serif", fontSize: 11, letterSpacing: "0.3em", color: CORAL_DIM, marginBottom: 24, fontStyle: "normal" }}>BEFORE WE BEGIN</div>
+          <label style={{ display: "block", fontFamily: "'Raleway', sans-serif", fontSize: 13, color: WARM_GREY, marginBottom: 6, fontStyle: "normal" }}>Your Name</label>
+          <input value={d.name} onChange={(e) => set("name", e.target.value)} placeholder="First and last" style={{ width: "100%", padding: "14px 18px", background: "rgba(196,107,107,0.02)", border: "1px solid rgba(196,107,107,0.08)", color: SILVER, fontFamily: "'Lora', serif", fontSize: 16, marginBottom: 20, fontStyle: "normal" }} />
+          <label style={{ display: "block", fontFamily: "'Raleway', sans-serif", fontSize: 13, color: WARM_GREY, marginBottom: 6, fontStyle: "normal" }}>Email Address</label>
+          <input value={d.email} onChange={(e) => set("email", e.target.value)} placeholder="For receiving your reading" type="email" style={{ width: "100%", padding: "14px 18px", background: "rgba(196,107,107,0.02)", border: "1px solid rgba(196,107,107,0.08)", color: SILVER, fontFamily: "'Lora', serif", fontSize: 16, marginBottom: 36, fontStyle: "normal" }} />
+          <Btn label="SPEAK INTO THE VOID" onClick={() => go("q1")} primary disabled={!(d.name && d.email)} />
+        </div>
       </div>
     );
 

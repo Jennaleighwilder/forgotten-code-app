@@ -251,13 +251,15 @@ export default function PastLivesIntake() {
   // START — Name + Email
   if (phase === "start")
     return (
-      <div style={{ minHeight: "100vh", background: VOID, color: BONE, fontFamily: "'EB Garamond', serif", padding: "80px 24px", maxWidth: 420, margin: "0 auto" }}>
-        <div style={{ fontFamily: "'Cinzel', serif", fontSize: 11, letterSpacing: "0.3em", color: ASH, marginBottom: 24, fontStyle: "normal" }}>BEFORE WE BEGIN</div>
-        <label style={{ display: "block", fontFamily: "'Cormorant Garamond', serif", fontSize: 13, color: ASH, marginBottom: 6, fontStyle: "normal" }}>Your Name</label>
-        <input value={d.name} onChange={(e) => set("name", e.target.value)} placeholder="First and last" style={{ width: "100%", padding: "14px 18px", background: "rgba(201,168,76,0.03)", border: "1px solid rgba(201,168,76,0.12)", color: BONE, fontFamily: "'EB Garamond', serif", fontSize: 16, marginBottom: 20, fontStyle: "normal" }} />
-        <label style={{ display: "block", fontFamily: "'Cormorant Garamond', serif", fontSize: 13, color: ASH, marginBottom: 6, fontStyle: "normal" }}>Email Address</label>
-        <input value={d.email} onChange={(e) => set("email", e.target.value)} placeholder="For receiving your reading" type="email" style={{ width: "100%", padding: "14px 18px", background: "rgba(201,168,76,0.03)", border: "1px solid rgba(201,168,76,0.12)", color: BONE, fontFamily: "'EB Garamond', serif", fontSize: 16, marginBottom: 36, fontStyle: "normal" }} />
-        <Btn label="ENTER THE ARCHIVE" onClick={() => go("q1")} primary disabled={!(d.name && d.email)} />
+      <div style={{ minHeight: "100vh", width: "100%", background: VOID, color: BONE, fontFamily: "'EB Garamond', serif", padding: "80px 24px" }}>
+        <div style={{ maxWidth: 420, margin: "0 auto" }}>
+          <div style={{ fontFamily: "'Cinzel', serif", fontSize: 11, letterSpacing: "0.3em", color: ASH, marginBottom: 24, fontStyle: "normal" }}>BEFORE WE BEGIN</div>
+          <label style={{ display: "block", fontFamily: "'Cormorant Garamond', serif", fontSize: 13, color: ASH, marginBottom: 6, fontStyle: "normal" }}>Your Name</label>
+          <input value={d.name} onChange={(e) => set("name", e.target.value)} placeholder="First and last" style={{ width: "100%", padding: "14px 18px", background: "rgba(201,168,76,0.03)", border: "1px solid rgba(201,168,76,0.12)", color: BONE, fontFamily: "'EB Garamond', serif", fontSize: 16, marginBottom: 20, fontStyle: "normal" }} />
+          <label style={{ display: "block", fontFamily: "'Cormorant Garamond', serif", fontSize: 13, color: ASH, marginBottom: 6, fontStyle: "normal" }}>Email Address</label>
+          <input value={d.email} onChange={(e) => set("email", e.target.value)} placeholder="For receiving your reading" type="email" style={{ width: "100%", padding: "14px 18px", background: "rgba(201,168,76,0.03)", border: "1px solid rgba(201,168,76,0.12)", color: BONE, fontFamily: "'EB Garamond', serif", fontSize: 16, marginBottom: 36, fontStyle: "normal" }} />
+          <Btn label="ENTER THE ARCHIVE" onClick={() => go("q1")} primary disabled={!(d.name && d.email)} />
+        </div>
       </div>
     );
 
