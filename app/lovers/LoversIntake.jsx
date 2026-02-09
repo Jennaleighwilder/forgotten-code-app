@@ -200,34 +200,49 @@ textarea:focus,input:focus{outline:none}
 @keyframes dustFloat{0%{transform:translateY(0) translateX(0);opacity:0}8%{opacity:0.15}92%{opacity:0.08}100%{transform:translateY(-100vh) translateX(15px);opacity:0}}
 `;
 
-// ═══ FALLING NEON HEARTS — rain of 💖 behind content ═══
+// ═══ FALLING NEON HEARTS — neon outline SVG hearts (no emoji) ═══
 const FALLING_HEARTS = [
-  { left: 3, fs: 14, dur: 8, delay: 0 }, { left: 10, fs: 20, dur: 11, delay: 1 }, { left: 17, fs: 12, dur: 9, delay: 3 }, { left: 24, fs: 18, dur: 10, delay: 0.5 }, { left: 31, fs: 15, dur: 12, delay: 2 },
-  { left: 38, fs: 22, dur: 8.5, delay: 4 }, { left: 45, fs: 11, dur: 13, delay: 1.5 }, { left: 52, fs: 16, dur: 9.5, delay: 3.5 }, { left: 59, fs: 24, dur: 11.5, delay: 0.8 }, { left: 66, fs: 13, dur: 10.5, delay: 2.5 },
-  { left: 73, fs: 19, dur: 8.8, delay: 4.5 }, { left: 80, fs: 14, dur: 12.5, delay: 1.2 }, { left: 87, fs: 21, dur: 9.2, delay: 3.2 }, { left: 94, fs: 15, dur: 11.2, delay: 0.3 }, { left: 7, fs: 17, dur: 10.8, delay: 5 },
-  { left: 21, fs: 12, dur: 13.5, delay: 2.8 }, { left: 35, fs: 23, dur: 8.3, delay: 4.2 }, { left: 49, fs: 14, dur: 11.8, delay: 1.8 }, { left: 63, fs: 18, dur: 9.8, delay: 3.8 }, { left: 77, fs: 16, dur: 12.2, delay: 0.6 },
-  { left: 14, fs: 20, dur: 10.3, delay: 5.5 }, { left: 42, fs: 11, dur: 14, delay: 2.2 }, { left: 56, fs: 19, dur: 8.7, delay: 4.8 }, { left: 70, fs: 13, dur: 11.5, delay: 1.4 }, { left: 91, fs: 17, dur: 9.4, delay: 3.6 },
+  { left: 3, w: 14, dur: 8, delay: 0 }, { left: 10, w: 20, dur: 11, delay: 1 }, { left: 17, w: 12, dur: 9, delay: 3 }, { left: 24, w: 18, dur: 10, delay: 0.5 }, { left: 31, w: 15, dur: 12, delay: 2 },
+  { left: 38, w: 22, dur: 8.5, delay: 4 }, { left: 45, w: 11, dur: 13, delay: 1.5 }, { left: 52, w: 16, dur: 9.5, delay: 3.5 }, { left: 59, w: 24, dur: 11.5, delay: 0.8 }, { left: 66, w: 13, dur: 10.5, delay: 2.5 },
+  { left: 73, w: 19, dur: 8.8, delay: 4.5 }, { left: 80, w: 14, dur: 12.5, delay: 1.2 }, { left: 87, w: 21, dur: 9.2, delay: 3.2 }, { left: 94, w: 15, dur: 11.2, delay: 0.3 }, { left: 7, w: 17, dur: 10.8, delay: 5 },
+  { left: 21, w: 12, dur: 13.5, delay: 2.8 }, { left: 35, w: 23, dur: 8.3, delay: 4.2 }, { left: 49, w: 14, dur: 11.8, delay: 1.8 }, { left: 63, w: 18, dur: 9.8, delay: 3.8 }, { left: 77, w: 16, dur: 12.2, delay: 0.6 },
+  { left: 14, w: 20, dur: 10.3, delay: 5.5 }, { left: 42, w: 11, dur: 14, delay: 2.2 }, { left: 56, w: 19, dur: 8.7, delay: 4.8 }, { left: 70, w: 13, dur: 11.5, delay: 1.4 }, { left: 91, w: 17, dur: 9.4, delay: 3.6 },
 ];
+
+// Neon outline only (stroke, no fill) — same shape as NeonHeart, scales clean at small sizes
+const OutlineHeartSvg = () => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%", display: "block" }}>
+    <path
+      d="M30 50 L10 28 A11 11 0 0 1 30 18 A11 11 0 0 1 50 28 Z"
+      fill="none"
+      stroke="#ff69b4"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
 function FallingHearts() {
   return (
     <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 1, overflow: "hidden" }} aria-hidden="true">
       {FALLING_HEARTS.map((h, i) => (
-        <span
+        <div
           key={i}
           style={{
             position: "absolute",
             left: `${h.left}%`,
             top: "-5%",
-            fontSize: h.fs,
-            opacity: 0.6,
-            filter: "drop-shadow(0 0 6px #ff69b4) drop-shadow(0 0 12px #ff1493) drop-shadow(0 0 20px #ff69b4)",
+            width: h.w,
+            height: h.w,
+            opacity: 0.7,
+            filter: "drop-shadow(0 0 4px #ff69b4) drop-shadow(0 0 8px #ff1493) drop-shadow(0 0 16px #c71585)",
             animation: `heartFall ${h.dur}s linear ${h.delay}s infinite`,
             WebkitAnimation: `heartFall ${h.dur}s linear ${h.delay}s infinite`,
           }}
         >
-          💖
-        </span>
+          <OutlineHeartSvg />
+        </div>
       ))}
     </div>
   );
