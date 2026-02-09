@@ -190,17 +190,52 @@ html,body{overflow-x:hidden;font-style:normal}
 p, input, textarea, label { font-style: normal }
 textarea:focus,input:focus{outline:none}
 ::selection{background:#ff2d7b33;color:#fff0f5}
-@keyframes neonFlicker{0%,100%{opacity:1;filter:brightness(1)}5%{opacity:0.35}10%{opacity:1}15%{opacity:0.25}22%{opacity:0.9}28%{opacity:0.3}35%{opacity:1}42%{opacity:0.2}48%{opacity:0.85}55%{opacity:0.4}62%{opacity:1}70%{opacity:0.3}78%{opacity:0.95}85%{opacity:0.25}92%{opacity:1}}
-@-webkit-keyframes neonFlicker{0%,100%{opacity:1;filter:brightness(1)}5%{opacity:0.35}10%{opacity:1}15%{opacity:0.25}22%{opacity:0.9}28%{opacity:0.3}35%{opacity:1}42%{opacity:0.2}48%{opacity:0.85}55%{opacity:0.4}62%{opacity:1}70%{opacity:0.3}78%{opacity:0.95}85%{opacity:0.25}92%{opacity:1}}
+@keyframes neonFlicker{0%,100%{opacity:1;filter:brightness(1)}50%{opacity:0.85;filter:brightness(0.95)}}
+@-webkit-keyframes neonFlicker{0%,100%{opacity:1;filter:brightness(1)}50%{opacity:0.85;filter:brightness(0.95)}}
+@keyframes heartFall{0%{transform:translateY(-10vh) rotate(0deg);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
+@-webkit-keyframes heartFall{0%{transform:translateY(-10vh) rotate(0deg);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
 @keyframes neonBorderPulse{0%,100%{border-color:rgba(255,45,123,0.35);box-shadow:0 0 8px rgba(255,45,123,0.15)}50%{border-color:rgba(255,45,123,0.6);box-shadow:0 0 18px rgba(255,45,123,0.25)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes btnSweep{0%{transform:translateX(-100%) skewX(-12deg)}100%{transform:translateX(200%) skewX(-12deg)}}
 @keyframes dustFloat{0%{transform:translateY(0) translateX(0);opacity:0}8%{opacity:0.15}92%{opacity:0.08}100%{transform:translateY(-100vh) translateX(15px);opacity:0}}
 `;
 
-// ═══ REAL NEON HEART — White-hot core, pink bleed, tube highlight, subtle flicker ═══
+// ═══ FALLING NEON HEARTS — rain of 💖 behind content ═══
+const FALLING_HEARTS = [
+  { left: 3, fs: 14, dur: 8, delay: 0 }, { left: 10, fs: 20, dur: 11, delay: 1 }, { left: 17, fs: 12, dur: 9, delay: 3 }, { left: 24, fs: 18, dur: 10, delay: 0.5 }, { left: 31, fs: 15, dur: 12, delay: 2 },
+  { left: 38, fs: 22, dur: 8.5, delay: 4 }, { left: 45, fs: 11, dur: 13, delay: 1.5 }, { left: 52, fs: 16, dur: 9.5, delay: 3.5 }, { left: 59, fs: 24, dur: 11.5, delay: 0.8 }, { left: 66, fs: 13, dur: 10.5, delay: 2.5 },
+  { left: 73, fs: 19, dur: 8.8, delay: 4.5 }, { left: 80, fs: 14, dur: 12.5, delay: 1.2 }, { left: 87, fs: 21, dur: 9.2, delay: 3.2 }, { left: 94, fs: 15, dur: 11.2, delay: 0.3 }, { left: 7, fs: 17, dur: 10.8, delay: 5 },
+  { left: 21, fs: 12, dur: 13.5, delay: 2.8 }, { left: 35, fs: 23, dur: 8.3, delay: 4.2 }, { left: 49, fs: 14, dur: 11.8, delay: 1.8 }, { left: 63, fs: 18, dur: 9.8, delay: 3.8 }, { left: 77, fs: 16, dur: 12.2, delay: 0.6 },
+  { left: 14, fs: 20, dur: 10.3, delay: 5.5 }, { left: 42, fs: 11, dur: 14, delay: 2.2 }, { left: 56, fs: 19, dur: 8.7, delay: 4.8 }, { left: 70, fs: 13, dur: 11.5, delay: 1.4 }, { left: 91, fs: 17, dur: 9.4, delay: 3.6 },
+];
+
+function FallingHearts() {
+  return (
+    <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 1, overflow: "hidden" }} aria-hidden="true">
+      {FALLING_HEARTS.map((h, i) => (
+        <span
+          key={i}
+          style={{
+            position: "absolute",
+            left: `${h.left}%`,
+            top: "-5%",
+            fontSize: h.fs,
+            opacity: 0.6,
+            filter: "drop-shadow(0 0 6px #ff69b4) drop-shadow(0 0 12px #ff1493) drop-shadow(0 0 20px #ff69b4)",
+            animation: `heartFall ${h.dur}s linear ${h.delay}s infinite`,
+            WebkitAnimation: `heartFall ${h.dur}s linear ${h.delay}s infinite`,
+          }}
+        >
+          💖
+        </span>
+      ))}
+    </div>
+  );
+}
+
+// ═══ NEON HEART ICON — slow dreamy flicker (3s+, no strobe) ═══
 function NeonHeart({ size = 80, delay = 0 }) {
-  return <div style={{ width: size, height: size, animation: `neonFlicker 2.2s ease-in-out ${delay}s infinite`, WebkitAnimation: `neonFlicker 2.2s ease-in-out ${delay}s infinite`, lineHeight: 0, margin: "0 auto", willChange: "opacity" }}>
+  return <div style={{ width: size, height: size, animation: `neonFlicker 3s ease-in-out ${delay}s infinite`, WebkitAnimation: `neonFlicker 3s ease-in-out ${delay}s infinite`, lineHeight: 0, margin: "0 auto" }}>
     <svg viewBox="0 0 60 60" width="100%" height="100%">
       <defs>
         <filter id="ngGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -224,6 +259,7 @@ function Shell({ children, step }) {
   useEffect(() => { setShow(false); setTimeout(() => setShow(true), 100) }, [step]);
   return <div style={{ minHeight: "100vh", padding: "50px 24px 100px", background: D.black, position: "relative" }}>
     <style>{CSS}</style>
+    <FallingHearts />
     <FilmGrain />
     <DustEmbers />
     <div style={{ position: "fixed", inset: 0, pointerEvents: "none", background: `radial-gradient(ellipse at 30% 60%,${P.hot}06,transparent 55%),radial-gradient(ellipse at 70% 20%,${P.violet}05,transparent 50%)`, zIndex: 3 }} />
@@ -307,7 +343,7 @@ export default function LoversIntake() {
         <NeonHeart size={50} delay={1.4} />
       </div>
       <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(3.5rem,14vw,6.5rem)", letterSpacing: "0.12em", lineHeight: 0.95, marginTop: 24,
-        color: P.hot, textShadow: "0 0 4px rgba(255,255,255,0.9), 0 0 12px #ff2d7b, 0 0 28px #ff2d7b88, 0 0 48px #ff2d7b44, 0 0 80px #ff2d7b22", animation: "neonFlicker 2.2s ease-in-out 0.4s infinite", WebkitAnimation: "neonFlicker 2.2s ease-in-out 0.4s infinite" }}>LOVERS<br/><span style={{ fontSize: "0.5em", letterSpacing: "0.3em", color: P.neon, opacity: 0.7 }}>LIARS &</span><br/>ALL THINGS<br/>PATTERNED</h1>
+        color: P.hot, textShadow: "0 0 4px rgba(255,255,255,0.9), 0 0 12px #ff2d7b, 0 0 28px #ff2d7b88, 0 0 48px #ff2d7b44, 0 0 80px #ff2d7b22", animation: "neonFlicker 3s ease-in-out 0.4s infinite", WebkitAnimation: "neonFlicker 3s ease-in-out 0.4s infinite" }}>LOVERS<br/><span style={{ fontSize: "0.5em", letterSpacing: "0.3em", color: P.neon, opacity: 0.7 }}>LIARS &</span><br/>ALL THINGS<br/>PATTERNED</h1>
       <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: "#C4B59A", fontStyle: "normal", marginTop: 18 }}>Mirror Protocol™ · DYAD Engine™</p>
       <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 11, letterSpacing: "0.4em", color: "rgba(255,248,240,0.7)", marginTop: 20 }}>MINI PREVIEW + FULL DEEP INTAKE</div>
       <Divider />
