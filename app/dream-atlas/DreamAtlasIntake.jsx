@@ -337,7 +337,7 @@ export default function DreamAtlasIntake() {
   }));
   const go = ph => { setPhase(ph); window.scrollTo({ top: 0, behavior: "smooth" }) };
   const nav = (back, next, label = "CONTINUE", dis = false) => <div style={{ display: "flex", justifyContent: back ? "space-between" : "flex-end", marginTop: 40 }}>
-    {back && <NavButton label="\u2190 BACK" onClick={() => go(back)} />}<NavButton label={label} onClick={() => go(next)} primary disabled={dis} /></div>;
+    {back && <NavButton label="← BACK" onClick={() => go(back)} />}<NavButton label={label} onClick={() => go(next)} primary disabled={dis} /></div>;
 
   // \u2500\u2500 INTRO \u2500\u2500
   if (phase === "intro") return <PageShell section={0}>
@@ -346,6 +346,8 @@ export default function DreamAtlasIntake() {
       <h1 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(2rem,7vw,3.5rem)", color: G.pale, letterSpacing: "0.1em", marginTop: 30, lineHeight: 1.1, textShadow: `0 0 15px ${B.cobalt}88,0 0 40px ${C.teal}22,0 0 80px ${B.ocean}11` }}>THE DREAM ATLAS</h1>
       <div style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.1rem,3vw,1.5rem)", color: "#C4B59A",  marginTop: 10 }}>& The Forbidden Library</div>
       <div style={{ fontFamily: "'Cinzel',serif", fontSize: 11, letterSpacing: "0.35em", color: "rgba(255,248,240,0.7)", marginTop: 25 }}>MINI PREVIEW + FULL DEEP INTAKE</div>
+      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.2rem)", color: `${L.frost}44`, lineHeight: 2, maxWidth: 480, marginTop: 28 }}>
+        Your dreams are not random. They are the oldest language your soul still speaks. Give us one returning dream — and we'll show you the thread your sleeping mind has been weaving.</p>
       <SectionDivider />
       <div style={{ marginTop: 40 }}><NavButton label="OPEN THE ATLAS" onClick={() => go("mini1")} primary /></div>
       <div style={{ marginTop: 60, display: "flex", alignItems: "center", gap: 12 }}>
@@ -361,7 +363,7 @@ export default function DreamAtlasIntake() {
     <SectionHeader title="FIRST THREAD" sub="Before the atlas opens" />
     <TextInput label="Your Name" value={d.name} onChange={v => set("name", v)} placeholder="First, middle, last" />
     <TextInput label="Email Address" value={d.email} onChange={v => set("email", v)} placeholder="For receiving your atlas" />
-    <TextInput label="What dream keeps coming back?" hint="The one your sleeping mind won\u2019t let go of \u2014 even fragments count" value={d.miniWhisper} onChange={v => set("miniWhisper", v)} placeholder="I keep dreaming about..." multiline rows={3} />
+    <TextInput label="What dream keeps coming back?" hint="The one your sleeping mind won't let go of — even fragments count" value={d.miniWhisper} onChange={v => set("miniWhisper", v)} placeholder="I keep dreaming about..." multiline rows={3} />
     {nav(null, "miniResult", "REVEAL MY DREAM GLIMPSE", !(d.name && d.email))}
   </PageShell>;
 
@@ -370,21 +372,21 @@ export default function DreamAtlasIntake() {
     <div style={{ textAlign: "center" }}>
       <CrescentMoon size={70} />
       <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: G.pale, marginTop: 15, letterSpacing: "0.1em", textShadow: `0 0 15px ${B.cobalt}66,0 0 30px ${C.teal}22` }}>YOUR DREAM GLIMPSE</h2>
-      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${L.whisper}55`,  marginTop: 12, lineHeight: 1.9 }}>The dreamscape has noticed you.</p>
+      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: `${L.whisper}55`,  marginTop: 12, lineHeight: 1.9 }}>What you wrote is just the first thread. The full map goes twelve layers deep.</p>
       <SectionDivider />
       <div style={{ background: `${V.indigo}cc`, border: `1px solid ${B.midnight}44`, padding: "30px 25px", borderRadius: 2, textAlign: "left", marginBottom: 30 }}>
         <div style={{ fontFamily: "'Cinzel',serif", fontSize: 12, letterSpacing: "0.25em", color: `${L.mist}33`, marginBottom: 25 }}>INITIAL TRACE</div>
         <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 16, color: `${L.frost}55`, lineHeight: 2,  marginBottom: 20 }}>
-          {d.name} \u2014 something in your dreamscape is trying to surface. The fact that you\u2019re here means a thread has been activated in the architecture of your sleeping mind.</p>
+          {d.name} — the dream you keep returning to is the surface of something your soul has been writing for years. Every symbol, animal guide, shadow figure, and forbidden book in your nights is part of one architecture. You've just named the first thread.</p>
         {d.miniWhisper && d.miniWhisper.trim() && <div style={{ marginBottom: 22, padding: "18px 20px", borderLeft: `2px solid ${C.teal}44`, background: `${B.midnight}33` }}>
           <div style={{ fontFamily: "'Cinzel',serif", fontSize: 10, letterSpacing: "0.2em", color: `${C.teal}55`, marginBottom: 8 }}>YOUR RETURNING DREAM</div>
           <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 15, color: `${L.frost}55`, lineHeight: 1.9,  }}>"{d.miniWhisper}"</p>
         </div>}
         <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 15, color: `${L.mist}44`, lineHeight: 2 }}>
-          This returning dream is the surface of something your soul has been writing for years. Your full Dream Atlas maps every symbol, landscape, shadow figure, portal, and forbidden book \u2014 revealing the hidden architecture your sleeping mind has been building.</p>
+          The full Dream Atlas decodes that architecture — hand-crafted by Jennifer, no AI. You get the complete map: every recurring symbol, landscape, portal, and the Forbidden Library your soul has been writing in the dark. Most people never see it. You're one step away.</p>
       </div>
-      <NavButton label="UNLOCK THE FULL DREAM ATLAS \u2192" onClick={() => go("gate")} primary />
-      <div style={{ marginTop: 30 }}><NavButton label="\u2190 EDIT MY ANSWERS" onClick={() => go("mini1")} /></div>
+      <NavButton label="UNLOCK THE FULL DREAM ATLAS →" onClick={() => go("gate")} primary />
+      <div style={{ marginTop: 30 }}><NavButton label="← EDIT MY ANSWERS" onClick={() => go("mini1")} /></div>
     </div>
   </PageShell>;
 
@@ -394,20 +396,20 @@ export default function DreamAtlasIntake() {
       <CrescentMoon size={70} />
       <h2 style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.8rem,5vw,2.5rem)", color: G.pale, marginTop: 15, letterSpacing: "0.1em" }}>UNLOCK THE FULL ATLAS</h2>
       <p style={{ fontFamily: "'Crimson Text',serif", fontSize: "clamp(1.05rem,2.5vw,1.18rem)", color: `${L.frost}44`,  marginTop: 12, lineHeight: 2, maxWidth: 480, margin: "12px auto 0" }}>
-        Your dream glimpse revealed the surface. The full Dream Atlas goes twelve layers deep \u2014 mapping every symbol, animal guide, shadow figure, dream landscape, portal crossing, and the forbidden books your soul has been writing in the dark.</p>
+        Your dream glimpse revealed the surface. The full Dream Atlas goes twelve layers deep — mapping every symbol, animal guide, shadow figure, dream landscape, portal crossing, and the forbidden books your soul has been writing in the dark.</p>
       <SectionDivider />
       <div style={{ background: `${V.indigo}cc`, border: `1px solid ${B.midnight}44`, padding: "30px 25px", borderRadius: 2, textAlign: "left", maxWidth: 460, margin: "0 auto 30px" }}>
         <div style={{ fontFamily: "'Cinzel',serif", fontSize: 12, letterSpacing: "0.2em", color: `${L.mist}55`, marginBottom: 18 }}>YOUR DREAM ATLAS INCLUDES</div>
-        {["Dream foundations \u2014 earliest memories, recurring themes, childhood patterns", "Animal guides, totems, and dream guardians across your lifetime", "Sacred objects, motifs, and the language your dreams speak", "Shadow figures \u2014 beings, entities, and unresolved encounters", "Dream landscapes, portals, and threshold crossings", "The Forbidden Library \u2014 the books your soul keeps writing", "Synchronicities and dream-to-waking connections"].map((s, i) =>
+        {["Dream foundations — earliest memories, recurring themes, childhood patterns", "Animal guides, totems, and dream guardians across your lifetime", "Sacred objects, motifs, and the language your dreams speak", "Shadow figures — beings, entities, and unresolved encounters", "Dream landscapes, portals, and threshold crossings", "The Forbidden Library — the books your soul keeps writing", "Synchronicities and dream-to-waking connections"].map((s, i) =>
           <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12 }}>
-            <div style={{ color: `${C.teal}55`, fontSize: 12, marginTop: 2, flexShrink: 0 }}>\u263D</div>
+            <div style={{ color: `${C.teal}55`, fontSize: 12, marginTop: 2, flexShrink: 0 }}>☽</div>
             <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 14, color: `${L.frost}44`, lineHeight: 1.6 }}>{s}</p></div>)}
         <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}33`,  marginTop: 14, lineHeight: 1.7 }}>
-          Delivered within 5-7 days.</p>
+          Hand-crafted personally by Jennifer. No AI generation. Delivered within 5-7 days.</p>
       </div>
 
       <div style={{ fontFamily: "'Cinzel',serif", fontSize: "clamp(1.5rem,4vw,2rem)", color: G.gold, letterSpacing: "0.15em", marginBottom: 8 }}>$111</div>
-      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}33`,  marginBottom: 25 }}>One-time payment \u00b7 Lifetime access</p>
+      <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 13, color: `${L.mist}33`,  marginBottom: 25 }}>One-time payment · Lifetime access</p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 380, margin: "0 auto" }}>
         {[
@@ -428,11 +430,11 @@ export default function DreamAtlasIntake() {
 
       <SectionDivider />
       <p style={{ fontFamily: "'Cinzel',serif", fontSize: 12, letterSpacing: "0.15em", color: `${L.mist}44`, marginBottom: 12 }}>ALREADY PAID?</p>
-      <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Dream Atlas Payment Confirmation \u2014 ${d.name}`)}&body=${encodeURIComponent(`Hi Jennifer,\n\nI just completed payment for the Dream Atlas & Forbidden Library ($111).\n\nName: ${d.name}\nEmail: ${d.email}\nPayment method: [Venmo/CashApp/PayPal/Stripe]\n\nPlease send my access code when ready.\n\nThank you.`)}`}
+      <a href={`mailto:theforgottencode780@gmail.com?subject=${encodeURIComponent(`Dream Atlas Payment Confirmation — ${d.name}`)}&body=${encodeURIComponent(`Hi Jennifer,\n\nI just completed payment for the Dream Atlas & Forbidden Library ($111).\n\nName: ${d.name}\nEmail: ${d.email}\nPayment method: [Venmo/CashApp/PayPal/Stripe]\n\nPlease send my access code when ready.\n\nThank you.`)}`}
         style={{ display: "block", width: "min(100%,380px)", padding: "16px 25px", margin: "0 auto", border: `1px solid ${C.teal}33`, textDecoration: "none", textAlign: "center", fontFamily: "'Cinzel',serif", fontSize: 13, letterSpacing: "0.12em", color: G.gold, background: `${B.midnight}33`, borderRadius: 2 }}>
-        \u2709 I\u2019VE PAID \u2014 NOTIFY JENNIFER</a>
+        ✉ I'VE PAID — NOTIFY JENNIFER</a>
       <p style={{ fontFamily: "'Crimson Text',serif", fontSize: 12, color: `${L.mist}18`, marginTop: 12 }}>
-        theforgottencode780@gmail.com \u00b7 (423) 388-8304</p>
+        theforgottencode780@gmail.com · (423) 388-8304</p>
 
       <SectionDivider />
       <p style={{ fontFamily: "'Cinzel',serif", fontSize: 12, letterSpacing: "0.15em", color: `${L.mist}44`, marginBottom: 18 }}>HAVE YOUR ACCESS CODE?</p>
@@ -445,7 +447,7 @@ export default function DreamAtlasIntake() {
         <div style={{ marginTop: 18, textAlign: "center" }}>
           <NavButton label="UNLOCK FULL INTAKE" onClick={() => { if (d.accessCode === ACCESS_CODE) go("deep1"); else set("codeError", true) }} primary /></div>
       </div>
-      <div style={{ marginTop: 35, textAlign: "center" }}><NavButton label="\u2190 BACK" onClick={() => go("miniResult")} /></div>
+      <div style={{ marginTop: 35, textAlign: "center" }}><NavButton label="← BACK" onClick={() => go("miniResult")} /></div>
     </div>
   </PageShell>;
 

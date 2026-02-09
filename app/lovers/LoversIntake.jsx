@@ -385,18 +385,18 @@ export default function LoversIntake() {
     <div style={{ textAlign: "center" }}>
       <NeonHeart size={70} />
       <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.8rem,5vw,2.8rem)", color: P.hot, marginTop: 15, letterSpacing: "0.1em", textShadow: `0 0 20px ${P.hot}33` }}>YOUR PATTERN GLIMPSE</h2>
-      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: "rgba(255,248,240,0.85)",  marginTop: 12, lineHeight: 1.9 }}>The patterns have noticed you.</p>
+      <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1rem,2.5vw,1.15rem)", color: "rgba(255,248,240,0.85)",  marginTop: 12, lineHeight: 1.9 }}>What you said is the first thread. The full map shows why it keeps repeating — and how to change it.</p>
       <Divider />
       <div style={{ background: `${D.slate}cc`, border: `1px solid ${P.hot}22`, padding: "30px 25px", borderRadius: 2, textAlign: "left", marginBottom: 30 }}>
         <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 12, letterSpacing: "0.25em", color: "rgba(255,248,240,0.65)", marginBottom: 25, fontWeight: 700 }}>INITIAL TRACE</div>
         <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 16, color: "rgba(255,248,240,0.85)", lineHeight: 2,  marginBottom: 20 }}>
-          {d.name} — something in your love pattern is trying to be seen. The fact that you're here means a thread has been activated in your relational code.</p>
+          {d.name} — you named something you usually can't say. That whisper is the surface. The full Lovers dossier goes 24 categories deep: attachment wounds, defense mechanisms, communication loops, trust architecture. Mirror Protocol™ reflects your pattern back. DYAD Engine™ cracks the code. Hand-crafted by Jennifer, no AI.</p>
         {d.miniWhisper && d.miniWhisper.trim() && <div style={{ marginBottom: 22, padding: "18px 20px", borderLeft: `2px solid ${P.hot}44`, background: `${P.hot}08` }}>
           <div style={{ fontFamily: "'Manrope',sans-serif", fontSize: 10, letterSpacing: "0.2em", color: `${P.hot}55`, marginBottom: 8, fontWeight: 700 }}>YOUR WHISPER</div>
           <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 15, color: `${P.blush}55`, lineHeight: 1.9,  }}>"{d.miniWhisper}"</p>
         </div>}
         <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 15, color: `${P.blush}44`, lineHeight: 2 }}>
-          This whisper is the surface of something much deeper. Your full Pattern Dossier maps 24 attachment categories, 5 DYAD depth questions, and reveals the invisible architecture of your relationship — the wounds, the loops, the exits, and the codes your nervous system is running without your permission.</p>
+          You get the full map: the wounds, the loops, the exits, and the codes your nervous system is running without your permission. Most people never see it. You're one step away.</p>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "center" }}>
         <Btn label="UNLOCK THE FULL PATTERN MAP →" onClick={() => go("gate")} primary full />
